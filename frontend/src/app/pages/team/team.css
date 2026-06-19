@@ -1,0 +1,152 @@
+.hero-sub {
+  background: linear-gradient(rgba(0, 43, 91, 0.65), rgba(0, 43, 91, 0.65)),
+    url("https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=1600&q=80") center/cover no-repeat;
+}
+.hero-sub h1 {
+  color: var(--gold);
+}
+
+/* ── Sections ── */
+.section-padding {
+  padding: 80px 5%;
+}
+
+/* ── Centered header ── */
+.centered-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 48px;
+}
+
+.centered-header h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+
+.centered-header p {
+  font-size: 1.05rem;
+  color: var(--text-muted, #555);
+  line-height: 1.7;
+}
+
+/* ── Decorative underline on section titles ── */
+.section-title-line {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 12px;
+}
+
+.section-title-line::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  width: 60px;
+  height: 3px;
+  background-color: var(--gold);
+  border-radius: 2px;
+  transition: transform 0.6s ease 0.2s;
+}
+
+.reveal-element.active .section-title-line::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ── Vision / Mission grid (2 cards) ── */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.value-card {
+  background: var(--white, #fff);
+  border: 1px solid rgba(0, 43, 91, 0.12);
+  border-radius: 12px;
+  padding: 36px 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.value-card h3 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.value-card p {
+  font-size: 0.97rem;
+  color: var(--text-muted, #555);
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ── Core Values grid (4 cards, 2 cols) ── */
+.values-grid-2col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.value-card-2 {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 32px 28px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.value-card-2:hover {
+  background: rgba(255, 255, 255, 0.13);
+  transform: translateY(-4px);
+}
+
+.value-card-2 h4 {
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.value-card-2 p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 56px 6%;
+  }
+
+  .values-grid,
+  .values-grid-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .value-card,
+  .value-card-2 {
+    padding: 28px 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-padding {
+    padding: 40px 5%;
+  }
+}

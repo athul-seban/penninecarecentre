@@ -1,0 +1,48 @@
+.hero-sub {
+  background: linear-gradient(rgba(0, 43, 91, 0.65), rgba(0, 43, 91, 0.65)),
+    url("https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&q=80&w=2000") center/cover no-repeat;
+}
+.hero-sub h1 { color: var(--gold); }
+.hero-sub p { font-size: 1.2rem; font-weight: 300; letter-spacing: 1px; opacity: 0.95; color: var(--white); }
+.section-padding { padding: 100px 10%; }
+.centered-header { text-align: center; max-width: 900px; margin: 0 auto 60px; }
+.centered-header h2 { font-size: 2.8rem; color: var(--navy); text-transform: uppercase; letter-spacing: 3px; position: relative; padding-bottom: 15px; }
+.section-title-line::after { content: ""; position: absolute; width: 0; height: 3px; background: var(--gold); bottom: 0; left: 50%; transform: translateX(-50%); transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.3s; }
+.reveal-element.active .section-title-line::after { width: 80px; }
+.centered-header p { font-size: 1.15rem; opacity: 0.9; margin-top: 25px; }
+.benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 40px; }
+.benefit-card { background: var(--white); padding: 40px; border-radius: 4px; border: 1px solid rgba(0, 43, 91, 0.05); box-shadow: 15px 15px 0 var(--gold); transition: var(--transition); will-change: transform, box-shadow; }
+.benefit-card:hover { transform: translateY(-8px); box-shadow: 20px 20px 0 var(--navy); }
+.benefit-card i { font-size: 2.2rem; color: var(--gold); margin-bottom: 20px; display: block; }
+.benefit-card h3 { font-size: 1.4rem; color: var(--navy); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+.benefit-card p { font-size: 1rem; color: #555; }
+.job-listings-container { margin-top: 50px; }
+.job-card { background: var(--white); padding: 40px; border-radius: 4px; border: 1px solid rgba(0, 43, 91, 0.05); margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); box-shadow: 0 10px 30px rgba(0, 43, 91, 0.02); }
+.job-card:hover { transform: scale(1.01) translateY(-3px); border-color: var(--gold); box-shadow: 0 15px 35px rgba(197, 160, 89, 0.1); }
+.job-details h3 { font-size: 1.8rem; color: var(--navy); margin-bottom: 10px; }
+.job-meta { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600; }
+.job-meta span { display: flex; align-items: center; gap: 8px; }
+.job-desc { color: #555; font-size: 1.05rem; max-width: 750px; }
+.apply-form-section { background-color: var(--navy); color: var(--white); }
+.apply-form-section h2 { color: var(--gold) !important; }
+.apply-form-section p { color: var(--white) !important; opacity: 0.9; }
+.apply-form-wrapper { max-width: 800px; margin: 50px auto 0; background: var(--white); padding: 60px; border-radius: 4px; box-shadow: 20px 20px 0 var(--gold); color: var(--navy); }
+.apply-form-wrapper h3 { margin-bottom: 35px; font-size: 2rem; font-family: var(--font-serif); text-transform: capitalize; text-align: center; }
+.form-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+.form-group { margin-bottom: 25px; }
+.form-group label { display: block; font-size: 0.85rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; color: var(--navy); margin-bottom: 8px; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 16px 20px; border: 1px solid rgba(0, 43, 91, 0.12); background: var(--cream); font-family: var(--font-primary); font-size: 0.95rem; outline: none; transition: var(--transition); border-radius: 4px; color: var(--navy); }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); background: var(--white); box-shadow: 0 0 10px rgba(197, 160, 89, 0.15); }
+.file-upload-box { position: relative; border: 2px dashed rgba(197, 160, 89, 0.4); padding: 30px; text-align: center; border-radius: 4px; background-color: var(--cream); cursor: pointer; transition: var(--transition); }
+.file-upload-box:hover { border-color: var(--gold); background-color: var(--white); }
+.file-upload-box i { font-size: 2rem; color: var(--gold); margin-bottom: 10px; display: block; }
+.file-upload-box input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.btn-submit { display: block; width: 100%; text-align: center; background: var(--navy); color: var(--white); border: 1px solid var(--navy); padding: 16px 30px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 0.85rem; font-family: var(--font-primary); transition: var(--transition); position: relative; overflow: hidden; z-index: 1; cursor: pointer; border-radius: 4px; }
+.btn-submit:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(197, 160, 89, 0.15); }
+@media (max-width: 968px) {
+  .section-padding { padding: 60px 5%; }
+  .benefit-card { padding: 30px; box-shadow: 12px 12px 0 var(--gold) !important; }
+  .job-card { flex-direction: column; align-items: flex-start; gap: 20px; padding: 30px; }
+  .form-grid-2col { grid-template-columns: 1fr; gap: 0; }
+  .apply-form-wrapper { padding: 40px 25px; box-shadow: 12px 12px 0 var(--gold) !important; }
+}

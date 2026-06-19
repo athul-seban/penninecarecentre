@@ -1,0 +1,88 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>Careers</h1>
+        <p>Manage job listings</p>
+      </div>
+      <button class="btn-primary" (click)="openAdd()">+ Add Job</button>
+    </div>
+
+    @if (showForm) {
+      <div class="modal-overlay">
+        <div class="modal">
+          <h2>{{ editingId ? 'Edit Job' : 'Add Job' }}</h2>
+          <form (ngSubmit)="save()">
+            <div class="form-group">
+              <label>Job Title</label>
+              <input type="text" [(ngModel)]="form.title" name="title" required />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Department</label>
+                <input type="text" [(ngModel)]="form.department" name="department" />
+              </div>
+              <div class="form-group">
+                <label>Location</label>
+                <input type="text" [(ngModel)]="form.location" name="location" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Employment Type</label>
+              <input type="text" [(ngModel)]="form.type" name="type" placeholder="Full-time, Part-time..." />
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea [(ngModel)]="form.description" name="description" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Requirements</label>
+              <textarea [(ngModel)]="form.requirements" name="requirements" rows="3"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+              <button type="submit" class="btn-primary" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+    @if (loading) {
+      <div class="loading">Loading...</div>
+    }
+    @if (!loading) {
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Department</th>
+              <th>Location</th>
+              <th>Type</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (c of careers; track c._id || c.id) {
+              <tr>
+                <td>{{ c.title }}</td>
+                <td>{{ c.department }}</td>
+                <td>{{ c.location }}</td>
+                <td>{{ c.type }}</td>
+                <td class="actions">
+                  <button class="btn-edit" (click)="openEdit(c)">Edit</button>
+                  <button class="btn-delete" (click)="delete(c._id || c.id)">Delete</button>
+                </td>
+              </tr>
+            }
+            @if (careers.length === 0) {
+              <tr><td colspan="5" class="empty">No job listings found</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

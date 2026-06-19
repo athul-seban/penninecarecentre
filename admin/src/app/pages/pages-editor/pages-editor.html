@@ -1,0 +1,53 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <h1>Pages</h1>
+      <p>Edit page content, hero text, and meta information</p>
+    </div>
+    @if (loading) {
+      <div class="loading">Loading...</div>
+    }
+    @if (!loading) {
+      <div class="pages-layout">
+        <div class="pages-list">
+          @for (p of pages; track p.key || p._id) {
+            <div
+              class="page-item"
+              [class.active]="selectedPage?.key === p.key"
+              (click)="selectPage(p)">
+              {{ p.key || p.title || p.name }}
+            </div>
+          }
+          @if (pages.length === 0) {
+            <div class="empty-hint">No pages found</div>
+          }
+        </div>
+        @if (selectedPage) {
+          <div class="page-edit">
+            <h2>Edit: {{ selectedPage.key || selectedPage.title }}</h2>
+            @for (field of pageFields(selectedPage); track field) {
+              <div class="form-group">
+                <label>{{ field }}</label>
+                <textarea [(ngModel)]="selectedPage[field]" [name]="field" rows="2"></textarea>
+              </div>
+            }
+            <div class="form-actions">
+              @if (saved) {
+                <span class="saved-msg">Changes saved!</span>
+              }
+              <button class="btn-primary" (click)="save()" [disabled]="saving">
+                {{ saving ? 'Saving...' : 'Save Changes' }}
+              </button>
+            </div>
+          </div>
+        }
+        @if (!selectedPage) {
+          <div class="page-edit empty-state">
+            <p>Select a page from the list to edit its content</p>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

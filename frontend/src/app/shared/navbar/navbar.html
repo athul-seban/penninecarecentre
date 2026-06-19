@@ -1,0 +1,38 @@
+<!-- Announcement Banner -->
+<div class="announcement-banner" [class.hidden]="!bannerVisible">
+  <span>&#127881; <strong>Update:</strong> Pennine Care Centre is proud to celebrate our CQC Rating of <strong>"Good"</strong> across all monitored frameworks! <a routerLink="/services">Read Report</a></span>
+  <button class="announcement-close" (click)="dismissBanner()" aria-label="Close Announcement">&times;</button>
+</div>
+
+<!-- Main Navigation -->
+<nav [class.scrolled]="scrolled" [style.top]="bannerVisible ? 'var(--banner-height)' : '0'">
+  <a class="logo" routerLink="/">Pennine Care Centre</a>
+  <ul class="nav-links">
+    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">About Us</a></li>
+    <li><a routerLink="/pennine-suite" routerLinkActive="active">Pennine Suite</a></li>
+    <li><a routerLink="/moorland-suite" routerLinkActive="active">Moorland Suite</a></li>
+    <li><a routerLink="/services" routerLinkActive="active">Services</a></li>
+    <li><a routerLink="/life-at-pennine" routerLinkActive="active">Life at Pennine</a></li>
+    <li><a routerLink="/team" routerLinkActive="active">Our Team</a></li>
+    <li><a routerLink="/contact" routerLinkActive="active">Contact Us</a></li>
+  </ul>
+  <button class="mobile-nav-toggle" (click)="toggleMenu()" aria-label="Open Navigation Menu">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu-overlay" [class.open]="menuOpen">
+  <button class="close-menu-btn" (click)="closeMenu()" aria-label="Close Navigation Menu">&times;</button>
+  <ul class="mobile-nav-links">
+    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">About Us</a></li>
+    <li><a routerLink="/pennine-suite" routerLinkActive="active" (click)="closeMenu()">Pennine Suite</a></li>
+    <li><a routerLink="/moorland-suite" routerLinkActive="active" (click)="closeMenu()">Moorland Suite</a></li>
+    <li><a routerLink="/services" routerLinkActive="active" (click)="closeMenu()">Services</a></li>
+    <li><a routerLink="/life-at-pennine" routerLinkActive="active" (click)="closeMenu()">Life at Pennine</a></li>
+    <li><a routerLink="/team" routerLinkActive="active" (click)="closeMenu()">Our Team</a></li>
+    <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact Us</a></li>
+  </ul>
+</div>

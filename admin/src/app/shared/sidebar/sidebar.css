@@ -1,0 +1,76 @@
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: #002b5b;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+}
+.brand {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(197,160,89,0.3);
+  display: flex;
+  flex-direction: column;
+}
+.brand-name {
+  color: #c5a059;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.brand-sub {
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.nav {
+  flex: 1;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.nav-item:hover {
+  background: rgba(197,160,89,0.15);
+  color: #c5a059;
+}
+.nav-item.active {
+  background: rgba(197,160,89,0.2);
+  color: #c5a059;
+  border-left: 3px solid #c5a059;
+}
+.icon {
+  font-size: 8px;
+  opacity: 0.6;
+}
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(197,160,89,0.3);
+}
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid rgba(197,160,89,0.5);
+  color: #c5a059;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.logout-btn:hover {
+  background: rgba(197,160,89,0.15);
+}

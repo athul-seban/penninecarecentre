@@ -1,0 +1,70 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>Reviews</h1>
+        <p>Manage customer reviews and testimonials</p>
+      </div>
+      <button class="btn-primary" (click)="openAdd()">+ Add Review</button>
+    </div>
+
+    @if (showForm) {
+      <div class="modal-overlay">
+        <div class="modal">
+          <h2>{{ editingId ? 'Edit Review' : 'Add Review' }}</h2>
+          <form (ngSubmit)="save()">
+            <div class="form-group">
+              <label>Author Name</label>
+              <input type="text" [(ngModel)]="form.author" name="author" required />
+            </div>
+            <div class="form-group">
+              <label>Rating (1–5)</label>
+              <input type="number" [(ngModel)]="form.rating" name="rating" min="1" max="5" />
+            </div>
+            <div class="form-group">
+              <label>Review Text</label>
+              <textarea [(ngModel)]="form.text" name="text" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" [(ngModel)]="form.date" name="date" />
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+              <button type="submit" class="btn-primary" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+    @if (loading) {
+      <div class="loading">Loading...</div>
+    }
+    @if (!loading) {
+      @if (reviews.length === 0) {
+        <div class="empty">No reviews found</div>
+      } @else {
+        <div class="reviews-grid">
+          @for (r of reviews; track r._id || r.id) {
+            <div class="review-card">
+              <div class="review-header">
+                <strong>{{ r.author }}</strong>
+                <span class="stars">{{ stars(r.rating) }}</span>
+              </div>
+              <p>{{ r.text }}</p>
+              <div class="review-footer">
+                <span class="date">{{ r.date }}</span>
+                <div class="actions">
+                  <button class="btn-edit" (click)="openEdit(r)">Edit</button>
+                  <button class="btn-delete" (click)="delete(r._id || r.id)">Delete</button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

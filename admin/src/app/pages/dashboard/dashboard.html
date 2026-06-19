@@ -1,0 +1,48 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <h1>Dashboard</h1>
+      <p>Welcome to Pennine Care Centre Admin Panel</p>
+    </div>
+    @if (!loading) {
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.team }}</div>
+          <div class="stat-label">Team Members</div>
+          <a routerLink="/team" class="stat-link">Manage Team &rarr;</a>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.careers }}</div>
+          <div class="stat-label">Job Listings</div>
+          <a routerLink="/careers" class="stat-link">Manage Careers &rarr;</a>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.reviews }}</div>
+          <div class="stat-label">Reviews</div>
+          <a routerLink="/reviews" class="stat-link">Manage Reviews &rarr;</a>
+        </div>
+      </div>
+    }
+    @if (loading) {
+      <div class="loading">Loading...</div>
+    }
+    <div class="quick-links">
+      <h2>Quick Actions</h2>
+      <div class="links-grid">
+        <a routerLink="/pages" class="quick-card">
+          <strong>Edit Pages</strong>
+          <span>Update hero text, meta tags, and page sections</span>
+        </a>
+        <a routerLink="/settings" class="quick-card">
+          <strong>Site Settings</strong>
+          <span>Update contact info, address and other settings</span>
+        </a>
+        <a routerLink="/media" class="quick-card">
+          <strong>Media Library</strong>
+          <span>Upload and manage images and files</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

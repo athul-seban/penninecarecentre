@@ -1,0 +1,43 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>Media Library</h1>
+        <p>Upload and manage images and files</p>
+      </div>
+      <label class="btn-upload" [class.uploading]="uploading">
+        {{ uploading ? 'Uploading...' : '+ Upload Files' }}
+        <input type="file" multiple (change)="onFileSelect($event)" [disabled]="uploading" style="display:none" />
+      </label>
+    </div>
+
+    @if (loading) {
+      <div class="loading">Loading...</div>
+    }
+    @if (!loading && files.length === 0) {
+      <div class="empty">
+        <p>No media files uploaded yet</p>
+      </div>
+    }
+    @if (!loading && files.length > 0) {
+      <div class="media-grid">
+        @for (f of files; track f._id || f.id) {
+          <div class="media-item">
+            <div class="media-preview">
+              @if (isImage(f)) {
+                <img [src]="getUrl(f)" [alt]="getFilename(f)" />
+              } @else {
+                <div class="file-icon"><span>FILE</span></div>
+              }
+            </div>
+            <div class="media-info">
+              <span class="filename">{{ getFilename(f) }}</span>
+              <button class="btn-delete-sm" (click)="delete(f._id || f.id)">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

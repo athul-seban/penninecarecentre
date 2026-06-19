@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+**/dist/
+build/
+
+# Environment files - never commit secrets
+.env
+**/.env
+.env.local
+.env.production
+
+# Angular cache
+.angular/
+**/.angular/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# PostgreSQL
+*.sql.bak
+
+# Temp / uploads
+uploads/
+backend/uploads/

@@ -1,0 +1,74 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>Team Members</h1>
+        <p>Manage team member profiles</p>
+      </div>
+      <button class="btn-primary" (click)="openAdd()">+ Add Member</button>
+    </div>
+
+    @if (showForm) {
+      <div class="modal-overlay">
+        <div class="modal">
+          <h2>{{ editingId ? 'Edit Member' : 'Add Member' }}</h2>
+          <form (ngSubmit)="save()">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" [(ngModel)]="form.name" name="name" required />
+            </div>
+            <div class="form-group">
+              <label>Role / Title</label>
+              <input type="text" [(ngModel)]="form.role" name="role" required />
+            </div>
+            <div class="form-group">
+              <label>Bio</label>
+              <textarea [(ngModel)]="form.bio" name="bio" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Image URL</label>
+              <input type="text" [(ngModel)]="form.imageUrl" name="imageUrl" />
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+              <button type="submit" class="btn-primary" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+    @if (loading) {
+      <div class="loading">Loading...</div>
+    }
+    @if (!loading) {
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (m of members; track m._id || m.id) {
+              <tr>
+                <td>{{ m.name }}</td>
+                <td>{{ m.role }}</td>
+                <td class="actions">
+                  <button class="btn-edit" (click)="openEdit(m)">Edit</button>
+                  <button class="btn-delete" (click)="delete(m._id || m.id)">Delete</button>
+                </td>
+              </tr>
+            }
+            @if (members.length === 0) {
+              <tr><td colspan="3" class="empty">No team members found</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>
