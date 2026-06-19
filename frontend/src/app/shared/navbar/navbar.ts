@@ -13,17 +13,19 @@ export class NavbarComponent implements OnInit {
   menuOpen = false;
   scrolled = false;
   bannerVisible = true;
+  scrollPct = 0;
 
   ngOnInit(): void {
     const dismissed = localStorage.getItem('announcement-dismissed');
-    if (dismissed === 'true') {
-      this.bannerVisible = false;
-    }
+    if (dismissed === 'true') this.bannerVisible = false;
   }
 
   @HostListener('window:scroll')
   onScroll(): void {
-    this.scrolled = window.scrollY > 50;
+    const y = window.scrollY;
+    this.scrolled = y > 50;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    this.scrollPct = docH > 0 ? Math.min(100, (y / docH) * 100) : 0;
   }
 
   toggleMenu(): void {

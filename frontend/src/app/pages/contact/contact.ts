@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-contact',
@@ -10,12 +11,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './contact.css'
 })
 export class ContactComponent implements AfterViewInit {
-  contactForm = {
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  };
+  contactForm = { name: '', email: '', phone: '', subject: '', message: '' };
+  submitting = false;
+  submitted = false;
+  submitError = '';
+
+  constructor(private http: HttpClient) {}
 
   ngAfterViewInit(): void {
     const observer = new IntersectionObserver((entries, obs) => {
@@ -30,7 +31,19 @@ export class ContactComponent implements AfterViewInit {
   }
 
   onSubmit(): void {
-    console.log('Contact form submitted:', this.contactForm);
-    // Backend integration pending
+    if (this.submitting) return;
+    this.submitting = true;
+    this.submitError = '';
+    this.http.post('http://localhost:3000/api/contact', this.contactForm).subscribe({
+      next: () => {
+        this.submitted = true;
+        this.submitting = false;
+        this.contactForm = { name: '', email: '', phone: '', subject: '', message: '' };
+      },
+      error: () => {
+        this.submitting = false;
+        this.submitError = 'Sorry, there was a problem sending your message. Please try again or call us directly.';
+      }
+    });
   }
 }

@@ -654,6 +654,152 @@
 }
 
 /* ============================================================
+   HERO ENHANCEMENTS
+   ============================================================ */
+.hero-eyebrow {
+  display: inline-block;
+  animation: eyebrowReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+@keyframes eyebrowReveal {
+  from { opacity: 0; letter-spacing: 8px; }
+  to   { opacity: 1; letter-spacing: 3px; }
+}
+.hero-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(0,43,91,0.65) 0%,
+    rgba(0,20,45,0.45) 50%,
+    rgba(197,160,89,0.08) 100%
+  );
+}
+
+/* Scroll cue */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.75);
+  opacity: 0;
+  animation: fadeInCue 1s ease forwards 1.8s;
+  z-index: 5;
+}
+@keyframes fadeInCue { to { opacity: 1; } }
+.mouse-icon {
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+.mouse-wheel {
+  width: 4px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 2px;
+  animation: scrollWheel 1.8s ease-in-out infinite;
+}
+@keyframes scrollWheel {
+  0%   { transform: translateY(0);   opacity: 1; }
+  60%  { transform: translateY(12px); opacity: 0; }
+  100% { transform: translateY(0);   opacity: 0; }
+}
+.scroll-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   FEATURE CARD ENHANCEMENTS
+   ============================================================ */
+.feature-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,43,91,0.85) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+.feature-card:hover::after { opacity: 1; }
+.feature-card h4 {
+  position: relative;
+  z-index: 2;
+  transition:
+    color     0.4s ease,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.feature-card:hover h4 {
+  color: var(--gold);
+  transform: translateY(-4px);
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 3;
+}
+.feature-card:hover::before { transform: scaleX(1); }
+
+/* ============================================================
+   TESTIMONIAL DOT → PILL MORPH
+   ============================================================ */
+.testimonial-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  transition:
+    width      0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.4s ease,
+    border-color 0.3s ease;
+}
+.testimonial-dots .dot.active {
+  width: 32px;
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: none;
+}
+.testimonial-dots .dot.active::after { display: none; }
+
+/* ============================================================
+   SUITE CONTENT CARD — shimmer border pulse
+   ============================================================ */
+.suite-content {
+  background-image:
+    linear-gradient(var(--navy), var(--navy)),
+    linear-gradient(135deg, var(--gold) 0%, transparent 60%, var(--gold) 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* ============================================================
+   AWARDS STRIP — enhanced
+   ============================================================ */
+.awards-strip img {
+  will-change: filter, transform, opacity;
+}
+.awards-strip img:hover {
+  filter: grayscale(0%) drop-shadow(0 4px 12px rgba(197,160,89,0.35));
+  transform: scale(1.12) translateY(-6px);
+}
+
+/* ============================================================
    RESPONSIVE — max-width: 968px
    ============================================================ */
 @media (max-width: 968px) {

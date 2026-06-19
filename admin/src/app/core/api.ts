@@ -71,6 +71,17 @@ export class ApiService {
     return this.http.put(`${this.BASE}/settings`, updates, { headers: this.auth.getHeaders() });
   }
 
+  // Contact Submissions
+  getContactSubmissions(): Observable<any> {
+    return this.http.get(`${this.BASE}/contact`, { headers: this.auth.getHeaders() });
+  }
+  updateContactSubmission(id: string, data: { status: string; notes?: string }): Observable<any> {
+    return this.http.patch(`${this.BASE}/contact/${id}`, data, { headers: this.auth.getHeaders() });
+  }
+  deleteContactSubmission(id: string): Observable<any> {
+    return this.http.delete(`${this.BASE}/contact/${id}`, { headers: this.auth.getHeaders() });
+  }
+
   // Media
   getMedia(): Observable<any> {
     return this.http.get(`${this.BASE}/media`, { headers: this.auth.getHeaders() });

@@ -39,22 +39,61 @@
         <div class="settings-section">
           <h2 class="section-heading"><i class="fas fa-cog"></i> Site Configuration</h2>
           @for (field of fields; track field.key) {
-            <div class="form-group">
-              <label>{{ field.label }}</label>
-              @if (field.type === 'toggle') {
-                <div class="toggle-row">
-                  <label class="toggle">
-                    <input type="checkbox"
-                      [checked]="values[field.key] === 'true'"
-                      (change)="values[field.key] = $any($event.target).checked ? 'true' : 'false'" />
-                    <span class="slider"></span>
-                  </label>
-                  <span class="toggle-label">{{ values[field.key] === 'true' ? 'Visible' : 'Hidden' }}</span>
-                </div>
-              } @else {
-                <input [type]="field.type" [(ngModel)]="values[field.key]" [name]="field.key" />
-              }
-            </div>
+            @if (field.group !== 'email') {
+              <div class="form-group">
+                <label>{{ field.label }}</label>
+                @if (field.type === 'toggle') {
+                  <div class="toggle-row">
+                    <label class="toggle">
+                      <input type="checkbox"
+                        [checked]="values[field.key] === 'true'"
+                        (change)="values[field.key] = $any($event.target).checked ? 'true' : 'false'" />
+                      <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">{{ values[field.key] === 'true' ? 'Visible' : 'Hidden' }}</span>
+                  </div>
+                } @else {
+                  <input [type]="field.type" [(ngModel)]="values[field.key]" [name]="field.key" />
+                }
+              </div>
+            }
+          }
+        </div>
+
+        <!-- ── EMAIL / SMTP SETTINGS ──────────────────── -->
+        <div class="settings-section">
+          <h2 class="section-heading"><i class="fas fa-envelope"></i> Email & SMTP Configuration</h2>
+          <p class="section-desc">
+            Contact form submissions are stored in the admin and optionally emailed to you.
+            Configure SMTP below to enable email notifications. Gmail users: use an
+            <strong>App Password</strong>, host <code>smtp.gmail.com</code>, port <code>587</code>.
+          </p>
+          @for (field of fields; track field.key) {
+            @if (field.group === 'email') {
+              <div class="form-group">
+                <label>{{ field.label }}</label>
+                @if (field.type === 'toggle') {
+                  <div class="toggle-row">
+                    <label class="toggle">
+                      <input type="checkbox"
+                        [checked]="values[field.key] === 'true'"
+                        (change)="values[field.key] = $any($event.target).checked ? 'true' : 'false'" />
+                      <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">{{ values[field.key] === 'true' ? 'SSL On' : 'SSL Off' }}</span>
+                  </div>
+                } @else if (field.key === 'email.smtp.pass') {
+                  <div class="password-wrap">
+                    <input [type]="showPass ? 'text' : 'password'" [(ngModel)]="values[field.key]" [name]="field.key" />
+                    <button type="button" class="toggle-pass" (click)="showPass = !showPass">
+                      {{ showPass ? 'Hide' : 'Show' }}
+                    </button>
+                  </div>
+                } @else {
+                  <input [type]="field.type" [(ngModel)]="values[field.key]" [name]="field.key" />
+                }
+              </div>
+            }
           }
         </div>
 

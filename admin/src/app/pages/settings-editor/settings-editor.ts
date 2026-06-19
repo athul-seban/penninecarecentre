@@ -38,7 +38,16 @@ export class SettingsEditor implements OnInit {
     { key: 'announcement.active', label: 'Show Announcement',  type: 'toggle',   group: 'announcement' },
     { key: 'site.cqcRating',      label: 'CQC Rating',         type: 'text',     group: 'seo' },
     { key: 'site.googleMapsUrl',  label: 'Google Maps Embed URL', type: 'text',  group: 'contact' },
+    { key: 'email.smtp.host',     label: 'SMTP Host',          type: 'text',     group: 'email' },
+    { key: 'email.smtp.port',     label: 'SMTP Port',          type: 'text',     group: 'email' },
+    { key: 'email.smtp.secure',   label: 'Use SSL',            type: 'toggle',   group: 'email' },
+    { key: 'email.smtp.user',     label: 'SMTP Username',      type: 'email',    group: 'email' },
+    { key: 'email.smtp.pass',     label: 'SMTP Password',      type: 'password', group: 'email' },
+    { key: 'email.contact.to',    label: 'Forward Enquiries To', type: 'email',  group: 'email' },
+    { key: 'email.contact.from',  label: 'Send From Address',  type: 'email',    group: 'email' },
   ];
+
+  showPass = false;
 
   values: Record<string, string> = {};
 

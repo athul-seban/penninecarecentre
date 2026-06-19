@@ -15,6 +15,13 @@ const DEFAULT_SETTINGS = [
   { key: 'site.cqcRating', value: 'Outstanding', group: 'seo', label: 'CQC Rating' },
   { key: 'site.googleMapsUrl', value: '', group: 'contact', label: 'Google Maps Embed URL' },
   { key: 'site.theme', value: 'classic', group: 'theme', label: 'Website Design Theme' },
+  { key: 'email.smtp.host', value: '', group: 'email', label: 'SMTP Host (e.g. smtp.gmail.com)' },
+  { key: 'email.smtp.port', value: '587', group: 'email', label: 'SMTP Port' },
+  { key: 'email.smtp.secure', value: 'false', group: 'email', label: 'Use SSL (true/false)' },
+  { key: 'email.smtp.user', value: '', group: 'email', label: 'SMTP Username / Email' },
+  { key: 'email.smtp.pass', value: '', group: 'email', label: 'SMTP Password / App Password' },
+  { key: 'email.contact.to', value: '', group: 'email', label: 'Forward Enquiries To (email address)' },
+  { key: 'email.contact.from', value: '', group: 'email', label: 'Send Emails From (display address)' },
 ];
 
 @Injectable()

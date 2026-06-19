@@ -15,6 +15,7 @@ export const routes: Routes = [
       { path: 'reviews', loadComponent: () => import('./pages/reviews-manager/reviews-manager').then(m => m.ReviewsManager) },
       { path: 'settings', loadComponent: () => import('./pages/settings-editor/settings-editor').then(m => m.SettingsEditor) },
       { path: 'media', loadComponent: () => import('./pages/media-library/media-library').then(m => m.MediaLibrary) },
+      { path: 'contact', loadComponent: () => import('./pages/contact-manager/contact-manager').then(m => m.ContactManager) },
     ]
   }
 ];

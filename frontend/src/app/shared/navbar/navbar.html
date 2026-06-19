@@ -1,3 +1,6 @@
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" [style.width.%]="scrollPct"></div>
+
 <!-- Announcement Banner -->
 <div class="announcement-banner" [class.hidden]="!bannerVisible">
   <span>&#127881; <strong>Update:</strong> Pennine Care Centre is proud to celebrate our CQC Rating of <strong>"Good"</strong> across all monitored frameworks! <a routerLink="/services">Read Report</a></span>
@@ -16,7 +19,7 @@
     <li><a routerLink="/team" routerLinkActive="active">Our Team</a></li>
     <li><a routerLink="/contact" routerLinkActive="active">Contact Us</a></li>
   </ul>
-  <button class="mobile-nav-toggle" (click)="toggleMenu()" aria-label="Open Navigation Menu">
+  <button class="mobile-nav-toggle" [class.is-open]="menuOpen" (click)="toggleMenu()" aria-label="Open Navigation Menu">
     <span class="bar"></span>
     <span class="bar"></span>
     <span class="bar"></span>

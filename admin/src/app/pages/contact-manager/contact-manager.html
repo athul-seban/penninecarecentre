@@ -1,0 +1,110 @@
+<div class="page-wrap">
+  <div class="page-header">
+    <div>
+      <h1>Contact Enquiries</h1>
+      <p class="sub">Submissions from the website contact form</p>
+    </div>
+    <div class="header-stats">
+      <span class="stat-chip new">{{ countByStatus('new') }} New</span>
+      <span class="stat-chip replied">{{ countByStatus('replied') }} Replied</span>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    @for (f of [['all','All'],['new','New'],['read','Read'],['replied','Replied'],['archived','Archived']]; track f[0]) {
+      <button class="filter-btn" [class.active]="filterStatus === f[0]" (click)="setFilter(f[0])">
+        {{ f[1] }}
+        @if (f[0] !== 'all') {
+          <span class="filter-count">{{ countByStatus(f[0]) }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  @if (loading) {
+    <div class="loading-state">Loading submissions...</div>
+  } @else if (filtered.length === 0) {
+    <div class="empty-state">
+      <i class="icon">✉️</i>
+      <p>No {{ filterStatus === 'all' ? '' : filterStatus }} submissions yet</p>
+    </div>
+  } @else {
+    <div class="submissions-layout" [class.has-detail]="selected">
+
+      <!-- List -->
+      <div class="submissions-list">
+        @for (sub of filtered; track sub.id) {
+          <div class="submission-card" [class.selected]="selected?.id === sub.id" [class.is-new]="sub.status === 'new'" (click)="open(sub)">
+            <div class="card-top">
+              <div class="avatar" [attr.data-initial]="sub.name[0]">{{ sub.name[0] }}</div>
+              <div class="card-meta">
+                <span class="card-name">{{ sub.name }}</span>
+                <span class="card-email">{{ sub.email }}</span>
+              </div>
+              <span class="badge" [class]="badgeClass(sub.status)">{{ sub.status }}</span>
+            </div>
+            @if (sub.subject) {
+              <div class="card-subject">{{ sub.subject }}</div>
+            }
+            <div class="card-preview">{{ sub.message | slice:0:100 }}{{ sub.message.length > 100 ? '…' : '' }}</div>
+            <div class="card-date">{{ formatDate(sub.createdAt) }}</div>
+          </div>
+        }
+      </div>
+
+      <!-- Detail Panel -->
+      @if (selected) {
+        <div class="detail-panel">
+          <div class="detail-header">
+            <div class="detail-info">
+              <h2>{{ selected.name }}</h2>
+              <a [href]="'mailto:' + selected.email" class="detail-email">{{ selected.email }}</a>
+              @if (selected.phone) {
+                <span class="detail-phone">📞 {{ selected.phone }}</span>
+              }
+            </div>
+            <button class="close-btn" (click)="close()" title="Close">✕</button>
+          </div>
+
+          @if (selected.subject) {
+            <div class="detail-subject">{{ selected.subject }}</div>
+          }
+
+          <div class="detail-date">Received {{ formatDate(selected.createdAt) }}</div>
+
+          <div class="detail-message">{{ selected.message }}</div>
+
+          <!-- Status Selector -->
+          <div class="status-row">
+            <label>Status</label>
+            <div class="status-buttons">
+              @for (s of ['new','read','replied','archived']; track s) {
+                <button class="status-btn" [class.active]="selected.status === s" (click)="setStatus(selected, $any(s))">
+                  {{ s | titlecase }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="notes-section">
+            <label for="notes">Internal Notes</label>
+            <textarea id="notes" [(ngModel)]="notesDraft" rows="4" placeholder="Add private notes about this enquiry…"></textarea>
+          </div>
+
+          <!-- Actions -->
+          <div class="action-row">
+            <button class="btn-reply" (click)="mailto(selected)">✉ Reply by Email</button>
+            <button class="btn-save" (click)="save()" [disabled]="saving">{{ saving ? 'Saving…' : 'Save Notes' }}</button>
+            <button class="btn-delete" (click)="delete(selected)">🗑 Delete</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (toast) {
+    <div class="toast">{{ toast }}</div>
+  }
+</div>

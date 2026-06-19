@@ -74,6 +74,16 @@
 .toggle input:checked + .slider::before { transform: translateX(22px); }
 .toggle-label { font-size: 13px; color: #555; }
 
+/* Password field with show/hide */
+.password-wrap { position: relative; display: flex; }
+.password-wrap input { flex: 1; padding-right: 72px; }
+.toggle-pass { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: 1px solid #ddd; border-radius: 5px; padding: 3px 10px; font-size: 12px; font-weight: 600; cursor: pointer; color: #555; transition: all 0.2s; }
+.toggle-pass:hover { border-color: #c5a059; color: #c5a059; }
+
+/* Section description */
+.section-desc { color: #888; font-size: 13px; margin-bottom: 16px; line-height: 1.6; }
+.section-desc code { background: #f0f0f0; border-radius: 4px; padding: 1px 5px; font-family: monospace; }
+
 /* Actions */
 .form-actions { display: flex; align-items: center; gap: 14px; justify-content: flex-end; margin-top: 8px; }
 .saved-msg { color: #2a9d8f; font-size: 14px; font-weight: 600; }
