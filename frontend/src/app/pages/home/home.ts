@@ -21,17 +21,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private testimonialTimer: any;
 
   pennineImages = [
-    { src: 'pennine care 6.PNG', alt: 'Pennine Suite Exterior' },
-    { src: 'pennice drone 2.PNG', alt: 'Pennine Suite Interior' },
-    { src: 'PennineSuite2.png', alt: 'Pennine Suite Lounge' },
-    { src: 'hero.PNG', alt: 'Pennine Suite Scenic Views' }
+    { src: '/assets/images/pennine-suite-exterior.png', alt: 'Pennine Suite Exterior' },
+    { src: '/assets/images/pennine-care-drone.png', alt: 'Pennine Suite Interior' },
+    { src: '/assets/images/pennine-suite-lounge.png', alt: 'Pennine Suite Lounge' },
+    { src: '/assets/images/pennine-suite-hero.png', alt: 'Pennine Suite Scenic Views' }
   ];
 
   moorlandImages = [
-    { src: 'pennine entrance.PNG', alt: 'Moorland Suite Bedroom View' },
-    { src: 'Community Spaces 1.png', alt: 'Moorland Suite Lounge Area' },
-    { src: 'MoorlandSuite2.png', alt: 'Moorland Suite Dining Area' },
-    { src: 'MoorlandSuite3.png', alt: 'Moorland Suite Garden Exterior' }
+    { src: '/assets/images/pennine-care-entrance.png', alt: 'Moorland Suite Bedroom View' },
+    { src: '/assets/images/community-spaces-lounge.png', alt: 'Moorland Suite Lounge Area' },
+    { src: '/assets/images/moorland-suite-dining.png', alt: 'Moorland Suite Dining Area' },
+    { src: '/assets/images/moorland-suite-garden-exterior.png', alt: 'Moorland Suite Garden Exterior' }
   ];
 
   testimonials = [

@@ -1,7 +1,7 @@
 .hero-sub {
   height: 50vh;
   background: linear-gradient(rgba(0, 43, 91, 0.7), rgba(0, 43, 91, 0.7)),
-    url("/assets/images/PennineSuite1.png") center/cover no-repeat;
+    url("/assets/images/pennine-suite-interior.png") center/cover no-repeat;
 }
 .hero-sub h1 { color: var(--gold); }
 .hero-sub p { font-size: 1.2rem; font-weight: 300; letter-spacing: 1px; opacity: 0.95; color: var(--white); }

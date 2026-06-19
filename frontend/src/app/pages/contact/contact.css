@@ -1,6 +1,6 @@
 .hero-sub {
   background: linear-gradient(rgba(0, 43, 91, 0.65), rgba(0, 43, 91, 0.65)),
-    url("/assets/images/PennineSuite1.png") center/cover no-repeat;
+    url("/assets/images/pennine-suite-interior.png") center/cover no-repeat;
 }
 .hero-sub h1 {
   color: var(--gold);

@@ -292,63 +292,136 @@ body:not([data-theme]) {
   --btn-text: #002b5b;
 }
 
-/* Theme 2: Modern Dark — near-black with electric cyan */
+/* ─── Theme 2: Modern Dark — near-black with electric cyan ─── */
 body[data-theme="modern"] {
-  --gold: #00d4ff;
-  --gold-light: #33deff;
-  --navy: #e0e8ff;
-  --cream: #0d0d1a;
-  --white: #161628;
-  --nav-bg: rgba(13,13,26,0.96);
-  --footer-bg: #08080f;
-  --section-alt: #12121e;
-  --btn-text: #0d0d1a;
+  --gold:        #00d4ff;
+  --gold-light:  #33deff;
+  --navy:        #c8d8f0;
+  --cream:       #0d0d1a;
+  --white:       #141427;
+  --nav-bg:      rgba(10,10,20,0.97);
+  --footer-bg:   #060610;
+  --section-alt: #111122;
+  --btn-text:    #0d0d1a;
   color-scheme: dark;
 }
-body[data-theme="modern"] { background-color: #0d0d1a; color: #e0e8ff; }
-body[data-theme="modern"] .row-text p { color: #a0aec0; }
-body[data-theme="modern"] nav { background-color: rgba(13,13,26,0.96); }
-body[data-theme="modern"] footer { background: #08080f; }
+body[data-theme="modern"] {
+  background-color: var(--cream);
+  color: var(--navy);
+}
+/* text overrides */
+body[data-theme="modern"] .row-text p,
+body[data-theme="modern"] .policy-card p,
+body[data-theme="modern"] .policy-card li { color: #90a8cc; }
+body[data-theme="modern"] .row-text h2,
+body[data-theme="modern"] h1, body[data-theme="modern"] h2,
+body[data-theme="modern"] h3, body[data-theme="modern"] h4 { color: var(--gold); }
+/* sections */
+body[data-theme="modern"] .alternating-container { background: #0d0d1a; }
+body[data-theme="modern"] .grid-section { background: #111122 !important; }
+body[data-theme="modern"] .feature-card { background: #141427; border-color: rgba(0,212,255,0.12); }
+body[data-theme="modern"] .feature-card h4 { color: #c8d8f0; }
+body[data-theme="modern"] .feature-card:hover { border-color: var(--gold); box-shadow: 0 0 20px rgba(0,212,255,0.15); }
+body[data-theme="modern"] .intro-box { background: #111122; border-color: rgba(0,212,255,0.2); }
+body[data-theme="modern"] .intro-box p { color: #90a8cc; }
+body[data-theme="modern"] .peace-section { background: #111122; }
+body[data-theme="modern"] .peace-text h2 { color: var(--gold); }
+body[data-theme="modern"] .peace-text p { color: #90a8cc; }
+body[data-theme="modern"] .peace-quote { color: var(--gold); border-color: var(--gold); }
+body[data-theme="modern"] .contact-form-wrapper { background: #141427; border-color: rgba(0,212,255,0.1); }
+body[data-theme="modern"] .contact-form-wrapper h3 { color: var(--gold); }
+body[data-theme="modern"] .form-group input,
+body[data-theme="modern"] .form-group textarea { background: #0d0d1a; color: #c8d8f0; border-color: rgba(0,212,255,0.15); }
+body[data-theme="modern"] .form-group input::placeholder,
+body[data-theme="modern"] .form-group textarea::placeholder { color: #5a6f8c; }
+body[data-theme="modern"] .policy-card { background: #141427; border-color: rgba(0,212,255,0.1); box-shadow: 20px 20px 0 var(--gold); }
+body[data-theme="modern"] .policy-card h2 { color: #c8d8f0; border-color: rgba(0,212,255,0.15); }
+body[data-theme="modern"] .awards-strip { background: #111122; }
+body[data-theme="modern"] .section-title-line::after { background: var(--gold); }
+body[data-theme="modern"] .row-text h2::after { background: var(--gold); }
+body[data-theme="modern"] .info-item p { color: #90a8cc; }
 
-/* Theme 3: Warm Sage — forest green with warm copper */
+/* ─── Theme 3: Warm Sage — forest green with warm copper ─── */
 body[data-theme="sage"] {
-  --gold: #b8925a;
-  --gold-light: #cc9f6a;
-  --navy: #2a4523;
-  --cream: #f4f0e6;
-  --white: #ffffff;
-  --nav-bg: rgba(42,69,35,0.94);
-  --footer-bg: #1c2e18;
-  --section-alt: #e8e0d0;
-  --btn-text: #2a4523;
+  --gold:        #a07840;
+  --gold-light:  #b88c50;
+  --navy:        #1e3518;
+  --cream:       #f5f1e8;
+  --white:       #ffffff;
+  --nav-bg:      rgba(30,53,24,0.95);
+  --footer-bg:   #122010;
+  --section-alt: #ebe4d2;
+  --btn-text:    #1e3518;
 }
 body[data-theme="sage"] .btn-gold:hover { background: var(--gold); color: #fff; }
+body[data-theme="sage"] .grid-section { background: var(--navy) !important; }
+body[data-theme="sage"] .grid-section h2 { color: var(--gold) !important; }
+body[data-theme="sage"] .feature-card { background: #fff; border: 1px solid rgba(30,53,24,0.08); }
+body[data-theme="sage"] .life-card { background: rgba(255,255,255,0.07) !important; }
+body[data-theme="sage"] .life-card h4 { color: var(--gold); }
+body[data-theme="sage"] .intro-box { border-color: var(--gold); }
+body[data-theme="sage"] .peace-section { background: var(--section-alt); }
+body[data-theme="sage"] .peace-text h2 { color: var(--navy); }
+body[data-theme="sage"] .row-text p { color: #3d4a35; }
+body[data-theme="sage"] .policy-card { background: #fff; box-shadow: 20px 20px 0 var(--gold); }
+body[data-theme="sage"] .testimonials-section { background: var(--section-alt); }
+body[data-theme="sage"] .section-title-line::after { background: var(--gold); }
+body[data-theme="sage"] .row-text h2::after { background: var(--gold); }
 
-/* Theme 4: Rose & Slate — slate blue with dusty rose */
+/* ─── Theme 4: Rose & Slate — slate blue with dusty rose ─── */
 body[data-theme="rose"] {
-  --gold: #c27b6e;
-  --gold-light: #d08e82;
-  --navy: #2c3e50;
-  --cream: #fdf6f4;
-  --white: #ffffff;
-  --nav-bg: rgba(44,62,80,0.94);
-  --footer-bg: #1a252f;
-  --section-alt: #f5eae8;
-  --btn-text: #2c3e50;
+  --gold:        #b5685a;
+  --gold-light:  #c87b6d;
+  --navy:        #243040;
+  --cream:       #fdf5f3;
+  --white:       #ffffff;
+  --nav-bg:      rgba(36,48,64,0.95);
+  --footer-bg:   #161e28;
+  --section-alt: #f5e8e5;
+  --btn-text:    #243040;
 }
+body[data-theme="rose"] .grid-section { background: var(--navy) !important; }
+body[data-theme="rose"] .grid-section h2 { color: var(--gold) !important; }
+body[data-theme="rose"] .feature-card { background: #fff; border: 1px solid rgba(36,48,64,0.07); }
+body[data-theme="rose"] .life-card { background: rgba(255,255,255,0.08) !important; }
+body[data-theme="rose"] .life-card h4 { color: var(--gold); }
+body[data-theme="rose"] .intro-box { border-color: var(--gold); }
+body[data-theme="rose"] .peace-section { background: var(--section-alt); }
+body[data-theme="rose"] .peace-text h2 { color: var(--navy); }
+body[data-theme="rose"] .row-text p { color: #44505d; }
+body[data-theme="rose"] .policy-card { background: #fff; box-shadow: 20px 20px 0 var(--gold); }
+body[data-theme="rose"] .testimonials-section { background: var(--section-alt); }
+body[data-theme="rose"] .contact-form-wrapper { background: #fff; }
+body[data-theme="rose"] .section-title-line::after { background: var(--gold); }
+body[data-theme="rose"] .row-text h2::after { background: var(--gold); }
 
-/* Theme 5: Royal Purple — deep violet with soft lavender */
+/* ─── Theme 5: Royal Purple — deep violet with soft lavender ─── */
 body[data-theme="royal"] {
-  --gold: #9b7ed4;
-  --gold-light: #b09ae0;
-  --navy: #2d1b69;
-  --cream: #f7f4ff;
-  --white: #ffffff;
-  --nav-bg: rgba(45,27,105,0.94);
-  --footer-bg: #180e3d;
-  --section-alt: #ede8fa;
-  --btn-text: #2d1b69;
+  --gold:        #8b6ec4;
+  --gold-light:  #a088d8;
+  --navy:        #26156a;
+  --cream:       #f8f5ff;
+  --white:       #ffffff;
+  --nav-bg:      rgba(38,21,106,0.96);
+  --footer-bg:   #150c40;
+  --section-alt: #ede5ff;
+  --btn-text:    #26156a;
 }
+body[data-theme="royal"] .btn-gold:hover { background: var(--gold); color: #fff; }
+body[data-theme="royal"] .grid-section { background: var(--navy) !important; }
+body[data-theme="royal"] .grid-section h2 { color: var(--gold) !important; }
+body[data-theme="royal"] .feature-card { background: #fff; border: 1px solid rgba(38,21,106,0.07); }
+body[data-theme="royal"] .life-card { background: rgba(255,255,255,0.08) !important; }
+body[data-theme="royal"] .life-card h4 { color: var(--gold); }
+body[data-theme="royal"] .intro-box { border-color: var(--gold); }
+body[data-theme="royal"] .peace-section { background: var(--section-alt); }
+body[data-theme="royal"] .peace-text h2 { color: var(--navy); }
+body[data-theme="royal"] .row-text p { color: #3d2e68; }
+body[data-theme="royal"] .policy-card { background: #fff; box-shadow: 20px 20px 0 var(--gold); }
+body[data-theme="royal"] .testimonials-section { background: var(--section-alt); }
+body[data-theme="royal"] .contact-form-wrapper { background: #fff; }
+body[data-theme="royal"] .section-title-line::after { background: var(--gold); }
+body[data-theme="royal"] .row-text h2::after { background: var(--gold); }
 
 /* WhatsApp float (global) */
 .whatsapp-float {

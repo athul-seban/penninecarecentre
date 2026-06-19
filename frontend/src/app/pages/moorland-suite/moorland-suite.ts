@@ -13,46 +13,46 @@ export class MoorlandSuiteComponent implements AfterViewInit, OnDestroy {
   sliders: { [key: string]: { images: {src:string,alt:string}[], current: number, timer: any } } = {
     haven: {
       images: [
-        { src: 'Community Spaces 1.png', alt: 'Life at Moorland Suite' },
-        { src: '24.png', alt: 'Moorland Suite Garden Exterior' },
-        { src: 'pennine entrance.PNG', alt: 'Moorland Suite Entrance Path' }
+        { src: '/assets/images/community-spaces-lounge.png', alt: 'Life at Moorland Suite' },
+        { src: '/assets/images/moorland-suite-garden.png', alt: 'Moorland Suite Garden Exterior' },
+        { src: '/assets/images/pennine-care-entrance.png', alt: 'Moorland Suite Entrance Path' }
       ],
       current: 0, timer: null
     },
     spaces: {
       images: [
-        { src: 'An Elegant Haven for Gentlemen.png', alt: 'Moorland Suite Community Spaces' },
-        { src: '22.png', alt: 'Moorland Suite Lounge Area' },
-        { src: 'Community Spaces 4.png', alt: 'Moorland Suite Dining Area' }
+        { src: '/assets/images/moorland-suite-community.png', alt: 'Moorland Suite Community Spaces' },
+        { src: '/assets/images/moorland-suite-lounge.png', alt: 'Moorland Suite Lounge Area' },
+        { src: '/assets/images/community-spaces-dining.png', alt: 'Moorland Suite Dining Area' }
       ],
       current: 0, timer: null
     },
     bedrooms: {
       images: [
-        { src: '26.png', alt: 'Tailored Spacious Bedrooms' },
-        { src: '26.png', alt: 'Moorland Suite Cozy Bedroom' },
-        { src: '26.png', alt: 'Moorland Suite Scenic Room View' }
+        { src: '/assets/images/moorland-suite-bedroom.png', alt: 'Tailored Spacious Bedrooms' },
+        { src: '/assets/images/moorland-suite-lounge-2.png', alt: 'Moorland Suite Cozy Bedroom' },
+        { src: '/assets/images/moorland-suite-corridor.png', alt: 'Moorland Suite Scenic Room View' }
       ],
       current: 0, timer: null
     },
     gardens: {
       images: [
-        { src: 'Tranquil Gardens & Outdoors 3.png', alt: 'Scenic Peak District Gardens' },
-        { src: 'MoorlandSuite.png', alt: 'Moorland Suite Secure Patio Area' },
-        { src: 'Copilot_20260520_103057.png', alt: 'Outdoor Relaxation Spaces' }
+        { src: '/assets/images/moorland-suite-gardens.png', alt: 'Scenic Peak District Gardens' },
+        { src: '/assets/images/moorland-suite-patio.png', alt: 'Moorland Suite Secure Patio Area' },
+        { src: '/assets/images/moorland-suite-outdoor.png', alt: 'Outdoor Relaxation Spaces' }
       ],
       current: 0, timer: null
     }
   };
 
   galleryImages = [
-    { src: '21.png', alt: 'Moorland Suite Lounge' },
-    { src: '22.png', alt: 'Moorland Suite Bedroom' },
-    { src: '23.png', alt: 'Moorland Suite Corridors' },
-    { src: '24.png', alt: 'Moorland Suite Dining' },
-    { src: '25.png', alt: 'Moorland Suite Gardens' },
-    { src: '26.png', alt: 'Scenic Overlook' },
-    { src: '27.png', alt: 'Quiet Room' }
+    { src: '/assets/images/moorland-suite-lounge-2.png', alt: 'Moorland Suite Lounge' },
+    { src: '/assets/images/moorland-suite-lounge.png', alt: 'Moorland Suite Bedroom' },
+    { src: '/assets/images/moorland-suite-corridor.png', alt: 'Moorland Suite Corridors' },
+    { src: '/assets/images/moorland-suite-garden.png', alt: 'Moorland Suite Dining' },
+    { src: '/assets/images/moorland-suite-gardens-2.png', alt: 'Moorland Suite Gardens' },
+    { src: '/assets/images/moorland-suite-bedroom.png', alt: 'Scenic Overlook' },
+    { src: '/assets/images/pennine-suite-dining.png', alt: 'Quiet Room' }
   ];
 
   gallerySlide = 0;
