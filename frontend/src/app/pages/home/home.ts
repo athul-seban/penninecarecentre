@@ -1,5 +1,16 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, HostListener, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
+const AVATAR_COLORS = ['#4285f4','#34a853','#fbbc05','#ea4335','#7b1fa2','#00897b','#e65100','#1565c0'];
+
+interface ApiReview {
+  id: string;
+  authorName: string;
+  rating: number;
+  text: string;
+  source: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -9,6 +20,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.css'
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+  private http = inject(HttpClient);
+
   @ViewChild('heroVideo') heroVideo!: ElementRef<HTMLVideoElement>;
   isMuted = true;
   scrollCueVisible = true;
@@ -35,21 +48,34 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     { src: '/assets/images/moorland-suite-garden-exterior.png', alt: 'Moorland Suite Garden Exterior' }
   ];
 
-  testimonials = [
-    { initial: 'K', color: '#4285f4', name: 'Kate T.', subtitle: 'Daughter of Resident • Google Local Guide', date: '2 months ago', text: '"Mum was very resistant to giving up her independence, and the staff have bent over backwards to make this as smooth a transition as possible."' },
-    { initial: 'N', color: '#34a853', name: 'Nigel B.', subtitle: 'Son of Resident • Google Verified Reviewer', date: '3 weeks ago', text: '"My mum has been a resident for 6 weeks and I am very happy with the care she is receiving. Congratulations on your CQC rating of good."' },
-    { initial: 'S', color: '#fbbc05', name: 'Susan S.', subtitle: 'Wife of Resident • Google Verified Reviewer', date: '1 month ago', text: '"I find everyone from the domestics to the carers very helpful. I know he is being cared for and that makes me feel happier."' },
-    { initial: 'A', color: '#ea4335', name: 'Amber L.', subtitle: 'Daughter of Resident • Google Verified Reviewer', date: '2 weeks ago', text: '"The management and staff have been absolutely wonderful. They keep us updated constantly, and the level of care and empathy shown to my dad is exemplary. We could not have chosen a better place."' },
-    { initial: 'M', color: '#7b1fa2', name: 'Mark W.', subtitle: 'Nephew of Resident • Google Verified Reviewer', date: '3 months ago', text: '"Excellent care home with fantastic, dedicated staff who genuinely care. The facilities are modern, clean, and very welcoming. My uncle is settled and very content here."' }
-  ];
+  testimonials: { initial: string; color: string; name: string; subtitle: string; date: string; text: string }[] = [];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.http.get<ApiReview[]>('http://localhost:3000/api/reviews?visible=true').subscribe({
+      next: (reviews) => {
+        this.testimonials = reviews.map((r, i) => ({
+          initial: r.authorName.charAt(0).toUpperCase(),
+          color: AVATAR_COLORS[i % AVATAR_COLORS.length],
+          name: r.authorName,
+          subtitle: r.source ? `${r.source} Verified Reviewer` : 'Verified Reviewer',
+          date: 'Recently',
+          text: `"${r.text}"`,
+        }));
+        if (this.testimonials.length > 0) this.startTestimonialSlider();
+      },
+      error: () => {
+        this.testimonials = [
+          { initial: 'K', color: '#4285f4', name: 'Kate T.', subtitle: 'Daughter of Resident • Google Local Guide', date: '2 months ago', text: '"Mum was very resistant to giving up her independence, and the staff have bent over backwards to make this as smooth a transition as possible."' },
+        ];
+        this.startTestimonialSlider();
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     this.initScrollReveal();
     this.startPennineSlider();
     this.startMoorlandSlider();
-    this.startTestimonialSlider();
   }
 
   @HostListener('window:scroll')
