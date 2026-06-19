@@ -5,12 +5,16 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  Optional,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { ErrorLogService } from '../error-log/error-log.service';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger('ExceptionFilter');
+
+  constructor(@Optional() private readonly errorLogService?: ErrorLogService) {}
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -27,11 +31,25 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getResponse()
         : 'Internal server error';
 
+    const stack = exception instanceof Error ? exception.stack : undefined;
     const logMsg = `${req.method} ${req.originalUrl} → ${status}`;
+
     if (status >= 500) {
-      this.logger.error(logMsg, exception instanceof Error ? exception.stack : String(exception));
+      this.logger.error(logMsg, stack);
     } else if (status >= 400) {
       this.logger.warn(logMsg);
+    }
+
+    // Only log 500+ errors to DB (skip 4xx client errors)
+    if (status >= 500 && this.errorLogService) {
+      this.errorLogService.log({
+        method: req.method,
+        path: req.originalUrl,
+        statusCode: status,
+        message: typeof message === 'string' ? message : JSON.stringify(message),
+        stack,
+        ip: req.ip,
+      }).catch(() => {});
     }
 
     res.status(status).json({

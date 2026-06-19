@@ -3,7 +3,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { LoggingInterceptor } from './common/logging.interceptor';
-import { AllExceptionsFilter } from './common/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -12,7 +11,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalInterceptors(new LoggingInterceptor());
-  app.useGlobalFilters(new AllExceptionsFilter());
+  // AllExceptionsFilter registered via APP_FILTER in ErrorLogModule for DI support
 
   app.enableCors({
     origin: ['http://localhost:4200', 'http://localhost:4300'],

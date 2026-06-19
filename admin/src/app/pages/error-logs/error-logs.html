@@ -1,0 +1,46 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>Error Logs</h1>
+        <p class="sub">Server-side errors (5xx) — saved to database, with file fallback</p>
+      </div>
+      <button class="btn-clear" (click)="clear()" [disabled]="clearing || logs.length === 0">
+        {{ clearing ? 'Clearing…' : '🗑 Clear All Logs' }}
+      </button>
+    </div>
+
+    @if (loading) {
+      <div class="loading-state">Loading logs…</div>
+    } @else if (logs.length === 0) {
+      <div class="empty-state">
+        <span class="empty-icon">✅</span>
+        <p>No server errors recorded. All good!</p>
+      </div>
+    } @else {
+      <div class="log-list">
+        @for (log of logs; track log.id) {
+          <div class="log-card" [class.expanded]="expanded === log.id">
+            <div class="log-summary" (click)="toggle(log.id)">
+              <span class="status-badge">{{ log.statusCode }}</span>
+              <span class="log-method">{{ log.method }}</span>
+              <span class="log-path">{{ log.path }}</span>
+              <span class="log-ip">{{ log.ip }}</span>
+              <span class="log-date">{{ log.createdAt | date:'dd MMM y, HH:mm:ss' }}</span>
+              <span class="expand-icon">{{ expanded === log.id ? '▲' : '▼' }}</span>
+            </div>
+            @if (expanded === log.id) {
+              <div class="log-detail">
+                <div class="log-message">{{ log.message }}</div>
+                @if (log.stack) {
+                  <pre class="log-stack">{{ log.stack }}</pre>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

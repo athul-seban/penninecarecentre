@@ -58,12 +58,22 @@ npm run start:dev
 ```
 - API: http://localhost:3000/api
 - Swagger docs: http://localhost:3000/api/docs
+- All HTTP requests are logged with coloured output in the terminal
 
 ### Default admin login
 - Email: `admin@pinnineCare.com`
 - Password: `Admin@123`
 
-> **Change this immediately** via `PUT /api/auth/change-password`
+> **Change this immediately** via the admin panel Settings page or `PUT /api/auth/change-password`
+
+### Auto-seeded data (first run only)
+On first run, the backend automatically seeds:
+- 1 admin user
+- 8 page content records (with real section text for every page)
+- 17 site settings (theme, contact info, SMTP)
+- 5 Google testimonials/reviews
+- 6 team member profiles
+- 3 open + 1 closed job listings
 
 ---
 
@@ -112,12 +122,51 @@ cd admin && ng serve --port 4300
 
 ---
 
+## Admin Features
+
+### Editing Website Text Content
+1. Log in at http://localhost:4300/login
+2. Go to **Pages** in the sidebar
+3. Select any page (Home, Pennine Suite, Services, etc.)
+4. Edit any labelled text field (Hero Headline, Intro Text, etc.)
+5. Click **Save Changes**
+
+> Page text is stored in the database and fetched by the frontend on each visit.
+
+### Managing Reviews
+1. Go to **Reviews** in the sidebar
+2. Edit existing reviews or add new ones
+3. Toggle visibility — only visible reviews show on the homepage
+
+### Managing Team Members
+1. Go to **Team** in the sidebar
+2. Add/edit/deactivate team members
+3. Upload a photo via the Media Library and paste the URL
+
+### Managing Job Listings
+1. Go to **Careers** in the sidebar
+2. Post new jobs, edit descriptions, mark positions open/closed
+
+### Viewing Contact Enquiries
+1. Go to **Contact Enquiries** in the sidebar
+2. Click any submission to view full message
+3. Mark as Read / Replied / Archived, add internal notes
+
+### Configuring Email Notifications
+1. Go to **Settings** → Email & SMTP Configuration
+2. Enter your SMTP credentials (e.g. Gmail App Password, Brevo, Mailgun)
+3. Set "Forward Enquiries To" to the email that should receive contact form submissions
+4. Click **Save All Settings**
+5. New contact form submissions will be automatically emailed
+
+---
+
 ## Swagger API Documentation
 
 Visit: **http://localhost:3000/api/docs**
 
 1. Click **Authorize** (top right)
-2. Enter your JWT token: `Bearer <token from login>`
+2. Enter your JWT token from: `POST /api/auth/login` response
 3. All endpoints are documented and testable
 
 ---
@@ -173,8 +222,27 @@ server {
     location /api {
         proxy_pass http://localhost:3000;
         proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
     }
 }
+
+# Admin panel on subdomain
+server {
+    listen 80;
+    server_name admin.yourdomain.com;
+
+    root /var/www/pinnineCare/admin/dist/browser;
+    try_files $uri $uri/ /index.html;
+}
+```
+
+### Environment variables for production
+In production, set these instead of using `.env`:
+```bash
+DB_HOST=your-db-host
+DB_PASSWORD=strong-password
+JWT_SECRET=very-long-random-string
+CLOUDINARY_CLOUD_NAME=...
 ```
 
 ---
@@ -182,19 +250,47 @@ server {
 ## Useful Commands
 
 ```bash
-# Check PostgreSQL service
+# Check PostgreSQL service (Windows PowerShell)
 Get-Service postgresql-17
 
 # Start/stop PostgreSQL
 Start-Service postgresql-17
 Stop-Service postgresql-17
 
-# View API logs
+# Backend development with live reload
 cd backend && npm run start:dev
 
-# Build backend
+# Build backend for production
 cd backend && npm run build
 
 # Build frontend for production
 cd frontend && ng build --configuration production
+
+# Build admin for production
+cd admin && ng build --configuration production
 ```
+
+---
+
+## Troubleshooting
+
+### Frontend/Admin blank screen (NG0908)
+Zone.js must be installed and declared. Both `frontend/` and `admin/` need:
+```bash
+npm install zone.js
+```
+And `angular.json` must have:
+```json
+"polyfills": ["zone.js"]
+```
+
+### Images not showing in frontend
+`src/assets/` must be listed in `frontend/angular.json` assets array:
+```json
+{ "glob": "**/*", "input": "src/assets", "output": "assets" }
+```
+
+### Database connection refused
+1. Check PostgreSQL is running: `Get-Service postgresql-17`
+2. Verify `.env` credentials match your PostgreSQL setup
+3. Make sure the database exists: run the CREATE DATABASE command above

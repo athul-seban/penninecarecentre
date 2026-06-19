@@ -4,6 +4,52 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 
+const LABEL_MAP: Record<string, string> = {
+  heroEyebrow: 'Hero Eyebrow Text', heroHeadline: 'Hero Headline', heroCta: 'Hero Button Text',
+  heroTitle: 'Hero Title', heroSubtitle: 'Hero Subtitle', heroSubText: 'Hero Sub Text',
+  heroPretext: 'Hero Pre-text',
+  introTitle: 'Intro Section Title', introText: 'Intro Text', introDetailText: 'Intro Detail Text',
+  pennineTitle: 'Pennine Suite Title', pennineDescription: 'Pennine Suite Description',
+  moorlandTitle: 'Moorland Suite Title', moorlandDescription: 'Moorland Suite Description',
+  testimonialsSubtitle: 'Testimonials Sub-heading', testimonialsTitle: 'Testimonials Title',
+  reviewRating: 'Review Rating Label', reviewCount: 'Review Count Label',
+  peaceTitle: 'Peace of Mind Title', peaceText: 'Peace of Mind Text', peaceQuote: 'Peace of Mind Quote',
+  communityTitle: 'Community Section Title', communityText: 'Community Text', communityQuote: 'Community Quote',
+  communityDetailText: 'Community Detail Text',
+  bedroomsTitle: 'Bedrooms Section Title', bedroomsText: 'Bedrooms Text', bedroomsAmenitiesText: 'Bedroom Amenities',
+  gardensTitle: 'Gardens Section Title', gardensText: 'Gardens Text',
+  wellnessTitle: 'Wellbeing Space Title', wellnessText: 'Wellbeing Space Text',
+  havenTitle: 'Haven Title', havenText: 'Haven Text', havenDetailText: 'Haven Detail Text',
+  spacesTitle: 'Community Spaces Title', spacesText: 'Community Spaces Text',
+  modernisationTitle: 'Modernisation Title', modernisationText: 'Modernisation Text',
+  featureCost: 'Feature: No Hidden Costs (title)', featureCostText: 'Feature: No Hidden Costs (text)',
+  featureTeam: 'Feature: Dedicated Team (title)', featureTeamText: 'Feature: Dedicated Team (text)',
+  featureEnvironment: 'Feature: Fresh Environment (title)', featureEnvironmentText: 'Feature: Fresh Environment (text)',
+  olderPeopleTitle: 'Older People Care Title', olderPeopleText: 'Older People Care Text', olderPeopleDetailText: 'Older People Detail',
+  dementiaTitle: 'Dementia Care Title', dementiaText: 'Dementia Care Text', dementiaDetailText: 'Dementia Care Detail',
+  maleUnitTitle: 'Male Only Unit Title', maleUnitText: 'Male Only Unit Text',
+  rehabilitationTitle: 'Rehabilitation Title', rehabilitationText: 'Rehabilitation Text',
+  endOfLifeTitle: 'End of Life Care Title', endOfLifeText: 'End of Life Care Text',
+  activitiesTitle: 'Activities Title', activitiesText: 'Activities Text',
+  nutritionTitle: 'Nutrition & Hydration Title', nutritionText: 'Nutrition & Hydration Text',
+  careTitle: 'Person Centred Care Title', careText: 'Person Centred Care Text',
+  familyTitle: 'Family Partnerships Title', familyText: 'Family Partnerships Text',
+  innovativeTitle: 'Innovative Care Title', innovativeText: 'Innovative Care Text',
+  visionTitle: 'Our Vision Title', visionText: 'Our Vision Text',
+  missionTitle: 'Our Mission Title', missionText: 'Our Mission Text',
+  valuesTitle: 'Core Values Title', valuesCaring: 'Core Value: Caring',
+  valuesContinuity: 'Core Value: Continuity', valuesCollaboration: 'Core Value: Collaboration', valuesCommitment: 'Core Value: Commitment',
+  contactInfoTitle: 'Contact Info Title', address: 'Address', phone: 'Phone Number', email: 'Email Address',
+  formTitle: 'Contact Form Title', successHeading: 'Success Heading', successMessage: 'Success Message',
+  benefitTitle: 'Benefits Section Title', benefitIntro: 'Benefits Intro',
+  benefitGrowth: 'Benefit: Career Growth (title)', benefitGrowthText: 'Benefit: Career Growth (text)',
+  benefitWellbeing: 'Benefit: Staff Wellbeing (title)', benefitWellbeingText: 'Benefit: Staff Wellbeing (text)',
+  benefitPay: 'Benefit: Pay (title)', benefitPayText: 'Benefit: Pay (text)',
+  jobsTitle: 'Jobs Section Title', jobsIntro: 'Jobs Section Intro',
+  applyTitle: 'Apply Section Title', applyIntro: 'Apply Section Intro',
+  introTitle2: 'Intro Section Title 2',
+};
+
 @Component({
   selector: 'app-pages-editor',
   imports: [CommonModule, FormsModule, Sidebar],
@@ -14,6 +60,8 @@ export class PagesEditor implements OnInit {
   pages: any[] = [];
   loading = true;
   selectedPage: any = null;
+  editableMeta: any = {};
+  editableSections: { key: string; label: string; value: string }[] = [];
   saving = false;
   saved = false;
 
@@ -33,22 +81,44 @@ export class PagesEditor implements OnInit {
     });
   }
 
-  selectPage(p: any) { this.selectedPage = { ...p }; this.saved = false; }
+  selectPage(p: any) {
+    this.selectedPage = p;
+    this.saved = false;
+    this.editableMeta = {
+      title: p.title || '',
+      metaTitle: p.metaTitle || '',
+      metaDescription: p.metaDescription || '',
+    };
+    const sections = p.sections || {};
+    this.editableSections = Object.entries(sections).map(([key, value]) => ({
+      key,
+      label: LABEL_MAP[key] || this.titleCase(key),
+      value: String(value || ''),
+    }));
+  }
 
-  pageFields(page: any): string[] {
-    return Object.keys(page).filter(
-      k => !['key', '_id', 'id', '__v'].includes(k) && typeof page[k] === 'string'
-    );
+  titleCase(s: string): string {
+    return s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
+  }
+
+  pageDisplayName(p: any): string {
+    return p.title || p.pageKey || p.key || '(unnamed)';
   }
 
   save() {
+    if (!this.selectedPage) return;
     this.saving = true;
-    const key = this.selectedPage.key || this.selectedPage._id || this.selectedPage.id;
-    this.api.updatePage(key, this.selectedPage).subscribe({
+    const sections: Record<string, string> = {};
+    this.editableSections.forEach(s => { sections[s.key] = s.value; });
+    const payload = { ...this.editableMeta, sections };
+    const key = this.selectedPage.pageKey || this.selectedPage.key || this.selectedPage.id;
+    this.api.updatePage(key, payload).subscribe({
       next: () => {
         this.saving = false;
         this.saved = true;
-        setTimeout(() => this.saved = false, 2000);
+        setTimeout(() => this.saved = false, 2500);
+        const idx = this.pages.findIndex(p => (p.pageKey || p.key) === key);
+        if (idx > -1) this.pages[idx] = { ...this.pages[idx], ...payload };
       },
       error: () => { this.saving = false; }
     });

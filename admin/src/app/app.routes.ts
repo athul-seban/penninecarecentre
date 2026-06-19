@@ -16,6 +16,7 @@ export const routes: Routes = [
       { path: 'settings', loadComponent: () => import('./pages/settings-editor/settings-editor').then(m => m.SettingsEditor) },
       { path: 'media', loadComponent: () => import('./pages/media-library/media-library').then(m => m.MediaLibrary) },
       { path: 'contact', loadComponent: () => import('./pages/contact-manager/contact-manager').then(m => m.ContactManager) },
+      { path: 'error-logs', loadComponent: () => import('./pages/error-logs/error-logs').then(m => m.ErrorLogs) },
     ]
   }
 ];

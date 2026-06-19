@@ -1,0 +1,29 @@
+.layout { display: flex; }
+.content { margin-left: 240px; flex: 1; padding: 32px; min-height: 100vh; background: #f5f5f5; }
+.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+.page-header h1 { font-size: 1.75rem; color: #002b5b; margin-bottom: 4px; }
+.sub { color: #666; font-size: 0.9rem; }
+.btn-clear { padding: 9px 18px; background: #fff0f0; color: #b91c1c; border: 1px solid #fca5a5; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
+.btn-clear:hover:not(:disabled) { background: #fee2e2; }
+.btn-clear:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.loading-state, .empty-state { text-align: center; padding: 60px 20px; color: #999; }
+.empty-icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+
+.log-list { display: flex; flex-direction: column; gap: 8px; }
+.log-card { background: white; border: 1.5px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+.log-card.expanded { border-color: #ef4444; }
+
+.log-summary { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; transition: background 0.15s; flex-wrap: wrap; }
+.log-summary:hover { background: #fef2f2; }
+
+.status-badge { background: #fee2e2; color: #b91c1c; font-size: 0.75rem; font-weight: 800; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.log-method { font-size: 0.8rem; font-weight: 700; color: #374151; background: #f3f4f6; padding: 2px 8px; border-radius: 4px; }
+.log-path { flex: 1; font-size: 0.85rem; color: #374151; font-family: monospace; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.log-ip { font-size: 0.75rem; color: #9ca3af; white-space: nowrap; }
+.log-date { font-size: 0.75rem; color: #9ca3af; white-space: nowrap; }
+.expand-icon { font-size: 0.7rem; color: #9ca3af; }
+
+.log-detail { padding: 16px; border-top: 1px solid #fee2e2; background: #fef9f9; }
+.log-message { font-size: 0.9rem; color: #374151; margin-bottom: 12px; word-break: break-word; }
+.log-stack { font-size: 0.78rem; color: #6b7280; background: #f3f4f6; border-radius: 6px; padding: 12px 16px; overflow-x: auto; white-space: pre; line-height: 1.6; margin: 0; }

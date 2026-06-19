@@ -10,6 +10,7 @@ import { CareersModule } from './careers/careers.module';
 import { TeamModule } from './team/team.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ContactModule } from './contact/contact.module';
+import { ErrorLogModule } from './error-log/error-log.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ContactModule } from './contact/contact.module';
     TeamModule,
     ReviewsModule,
     ContactModule,
+    ErrorLogModule,
   ],
 })
 export class AppModule {}

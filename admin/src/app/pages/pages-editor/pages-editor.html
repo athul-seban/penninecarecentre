@@ -3,7 +3,7 @@
   <div class="content">
     <div class="page-header">
       <h1>Pages</h1>
-      <p>Edit page content, hero text, and meta information</p>
+      <p>Edit page text content and meta information for every page of the website</p>
     </div>
     @if (loading) {
       <div class="loading">Loading...</div>
@@ -11,30 +11,56 @@
     @if (!loading) {
       <div class="pages-layout">
         <div class="pages-list">
-          @for (p of pages; track p.key || p._id) {
+          @for (p of pages; track p.pageKey || p.key || p.id) {
             <div
               class="page-item"
-              [class.active]="selectedPage?.key === p.key"
+              [class.active]="(selectedPage?.pageKey || selectedPage?.key) === (p.pageKey || p.key)"
               (click)="selectPage(p)">
-              {{ p.key || p.title || p.name }}
+              {{ pageDisplayName(p) }}
             </div>
           }
           @if (pages.length === 0) {
             <div class="empty-hint">No pages found</div>
           }
         </div>
+
         @if (selectedPage) {
           <div class="page-edit">
-            <h2>Edit: {{ selectedPage.key || selectedPage.title }}</h2>
-            @for (field of pageFields(selectedPage); track field) {
+            <h2>{{ pageDisplayName(selectedPage) }}</h2>
+
+            <!-- Meta fields -->
+            <div class="section-group">
+              <div class="section-group-title">SEO & Meta</div>
               <div class="form-group">
-                <label>{{ field }}</label>
-                <textarea [(ngModel)]="selectedPage[field]" [name]="field" rows="2"></textarea>
+                <label>Page Title</label>
+                <textarea [(ngModel)]="editableMeta.title" name="title" rows="1"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Meta Title (browser tab &amp; Google)</label>
+                <textarea [(ngModel)]="editableMeta.metaTitle" name="metaTitle" rows="1"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Meta Description (Google snippet)</label>
+                <textarea [(ngModel)]="editableMeta.metaDescription" name="metaDescription" rows="2"></textarea>
+              </div>
+            </div>
+
+            <!-- Section content fields -->
+            @if (editableSections.length > 0) {
+              <div class="section-group">
+                <div class="section-group-title">Page Content</div>
+                @for (s of editableSections; track s.key) {
+                  <div class="form-group">
+                    <label>{{ s.label }}</label>
+                    <textarea [(ngModel)]="s.value" [name]="s.key" [rows]="s.value.length > 120 ? 4 : 2"></textarea>
+                  </div>
+                }
               </div>
             }
+
             <div class="form-actions">
               @if (saved) {
-                <span class="saved-msg">Changes saved!</span>
+                <span class="saved-msg">✓ Changes saved!</span>
               }
               <button class="btn-primary" (click)="save()" [disabled]="saving">
                 {{ saving ? 'Saving...' : 'Save Changes' }}
@@ -42,6 +68,7 @@
             </div>
           </div>
         }
+
         @if (!selectedPage) {
           <div class="page-edit empty-state">
             <p>Select a page from the list to edit its content</p>
