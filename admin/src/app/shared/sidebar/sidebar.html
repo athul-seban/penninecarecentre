@@ -1,31 +1,39 @@
-<aside class="sidebar">
+<button class="hamburger" (click)="menuOpen = !menuOpen" [attr.aria-expanded]="menuOpen" aria-label="Toggle menu">
+  <span></span><span></span><span></span>
+</button>
+
+@if (menuOpen) {
+  <div class="sidebar-overlay" (click)="close()"></div>
+}
+
+<aside class="sidebar" [class.open]="menuOpen">
   <div class="brand">
     <span class="brand-name">Pennine Care</span>
     <span class="brand-sub">Admin Panel</span>
   </div>
   <nav class="nav">
-    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Dashboard
     </a>
-    <a routerLink="/pages" routerLinkActive="active" class="nav-item">
+    <a routerLink="/pages" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Pages
     </a>
-    <a routerLink="/team" routerLinkActive="active" class="nav-item">
+    <a routerLink="/team" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Team
     </a>
-    <a routerLink="/careers" routerLinkActive="active" class="nav-item">
+    <a routerLink="/careers" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Careers
     </a>
-    <a routerLink="/reviews" routerLinkActive="active" class="nav-item">
+    <a routerLink="/reviews" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Reviews
     </a>
-    <a routerLink="/settings" routerLinkActive="active" class="nav-item">
+    <a routerLink="/settings" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Settings
     </a>
-    <a routerLink="/contact" routerLinkActive="active" class="nav-item">
+    <a routerLink="/contact" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Contact Enquiries
     </a>
-    <a routerLink="/media" routerLinkActive="active" class="nav-item">
+    <a routerLink="/media" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Media
     </a>
   </nav>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 
 type ContactStatus = 'new' | 'read' | 'replied' | 'archived';
 
@@ -20,7 +21,7 @@ interface ContactSubmission {
 @Component({
   selector: 'app-contact-manager',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Sidebar],
   templateUrl: './contact-manager.html',
   styleUrl: './contact-manager.css'
 })

@@ -74,3 +74,54 @@
 .logout-btn:hover {
   background: rgba(197,160,89,0.15);
 }
+
+/* Hamburger button — hidden on desktop */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  background: #002b5b;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #c5a059;
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+
+/* Overlay */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .sidebar-overlay { display: block; }
+
+  .sidebar {
+    transform: translateX(-260px);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    z-index: 150;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
