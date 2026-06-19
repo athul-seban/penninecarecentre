@@ -8,19 +8,20 @@
     </video>
     <div class="hero-overlay"></div>
     <div class="video-controls">
-      <button class="mute-btn" (click)="toggleAudio()" title="Toggle Sound">
+      <button class="mute-btn" (click)="toggleAudio()" [title]="isMuted ? 'Unmute video' : 'Mute video'" [attr.aria-label]="isMuted ? 'Unmute video' : 'Mute video'">
         <i [class]="isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up'"></i>
       </button>
+      <span class="mute-label">{{ isMuted ? 'Sound Off' : 'Sound On' }}</span>
     </div>
     <div class="hero-content">
       <p class="hero-eyebrow">Experience Excellence</p>
       <h1>Caring is what we do best</h1>
       <a routerLink="/contact" class="btn-gold">Book a Visit</a>
     </div>
-    <a href="#suites" class="hero-scroll-cue" aria-label="Scroll down">
+    <button class="hero-scroll-cue" (click)="scrollToSuites()" [class.hidden]="!scrollCueVisible" aria-label="Scroll to suites">
       <span class="mouse-icon"><span class="mouse-wheel"></span></span>
       <span class="scroll-label">Scroll</span>
-    </a>
+    </button>
   </header>
 
   <!-- General Introduction Banner -->

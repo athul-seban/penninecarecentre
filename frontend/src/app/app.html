@@ -1,3 +1,11 @@
 <app-navbar></app-navbar>
 <router-outlet></router-outlet>
 <app-footer></app-footer>
+
+<button
+  class="back-to-top"
+  [class.visible]="showBackToTop"
+  (click)="scrollToTop()"
+  aria-label="Back to top">
+  <i class="fas fa-chevron-up"></i>
+</button>

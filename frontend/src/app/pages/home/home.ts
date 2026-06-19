@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('heroVideo') heroVideo!: ElementRef<HTMLVideoElement>;
   isMuted = true;
+  scrollCueVisible = true;
 
   pennineCurrentIndex = 1;
   moorlandCurrentIndex = 1;
@@ -51,11 +52,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.startTestimonialSlider();
   }
 
+  @HostListener('window:scroll')
+  onScroll(): void {
+    this.scrollCueVisible = window.scrollY < 80;
+  }
+
   toggleAudio(): void {
-    if (this.heroVideo?.nativeElement) {
-      this.heroVideo.nativeElement.muted = !this.heroVideo.nativeElement.muted;
-      this.isMuted = this.heroVideo.nativeElement.muted;
+    const video = this.heroVideo?.nativeElement;
+    if (!video) return;
+    video.muted = !video.muted;
+    this.isMuted = video.muted;
+    if (!video.muted && video.paused) {
+      video.play().catch(() => { video.muted = true; this.isMuted = true; });
     }
+  }
+
+  scrollToSuites(): void {
+    document.getElementById('suites')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // Pennine slider
