@@ -220,4 +220,8 @@ export class PagesEditor implements OnInit {
   assetFilename(assetPath: string): string {
     return assetPath.split('/').pop() || assetPath;
   }
+
+  fullscreenImage = '';
+  openFullscreen(path: string) { this.fullscreenImage = path; }
+  closeFullscreen() { this.fullscreenImage = ''; }
 }
