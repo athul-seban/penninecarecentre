@@ -8,6 +8,7 @@ import { TeamComponent } from './pages/team/team';
 import { ContactComponent } from './pages/contact/contact';
 import { CareersComponent } from './pages/careers/careers';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy';
+import { NotFoundComponent } from './pages/not-found/not-found';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'careers', component: CareersComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
-  { path: '**', redirectTo: '' }
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', component: NotFoundComponent }
 ];

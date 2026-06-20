@@ -1,48 +1,48 @@
 <div id="top">
 <header class="hero-sub">
   <div class="hero-content">
-    <h1>Our Team &amp; Values</h1>
+    <h1>{{ sections['heroTitle'] || 'Our Team &amp; Values' }}</h1>
   </div>
 </header>
 
 <section class="section-padding reveal-element">
   <div class="centered-header">
-    <h2 class="section-title-line">Who We Are</h2>
-    <p>At Pennine Care Centre, our staff are our greatest asset. We are dedicated to creating a rewarding workplace that translates into world-class care for our residents.</p>
+    <h2 class="section-title-line">{{ sections['introTitle'] || 'Who We Are' }}</h2>
+    <p>{{ sections['introText'] || 'At Pennine Care Centre, our staff are our greatest asset. We are dedicated to creating a rewarding workplace that translates into world-class care for our residents.' }}</p>
   </div>
   <div class="values-grid">
     <div class="value-card">
-      <h3>Our Vision</h3>
-      <p>We aspire to consistently develop and deliver compassionate person-centred care services, enabling people to live fulfilled lives and create a rewarding workplace for our staff.</p>
+      <h3>{{ sections['visionTitle'] || 'Our Vision' }}</h3>
+      <p>{{ sections['visionText'] || 'We aspire to consistently develop and deliver compassionate person-centred care services, enabling people to live fulfilled lives and create a rewarding workplace for our staff.' }}</p>
     </div>
     <div class="value-card">
-      <h3>Our Mission</h3>
-      <p>To provide caring services with a focus on compassion, empathy, independence, and choice, meeting the individual needs of our residents within a warm, comfortable, homely environment.</p>
+      <h3>{{ sections['missionTitle'] || 'Our Mission' }}</h3>
+      <p>{{ sections['missionText'] || 'To provide caring services with a focus on compassion, empathy, independence, and choice, meeting the individual needs of our residents within a warm, comfortable, homely environment.' }}</p>
     </div>
   </div>
 </section>
 
 <section class="section-padding reveal-element" style="background-color: var(--navy); border-top: 1px solid rgba(255,255,255,0.1)">
   <div class="centered-header">
-    <h2 style="color: var(--gold)" class="section-title-line">Our Core Values</h2>
+    <h2 style="color: var(--gold)" class="section-title-line">{{ sections['valuesTitle'] || 'Our Core Values' }}</h2>
     <p style="color: var(--white); opacity: 0.9">The principles that guide our everyday interactions and long-term goals.</p>
   </div>
   <div class="values-grid-2col">
     <div class="value-card-2">
       <h4>Caring</h4>
-      <p>The wellbeing of our residents is at the heart of everything we do, treating people with dignity and respect, embracing a caring, safe and supportive culture across our staff teams.</p>
+      <p>{{ sections['valuesCaring'] || 'The wellbeing of our residents is at the heart of everything we do, treating people with dignity and respect, embracing a caring, safe and supportive culture across our staff teams.' }}</p>
     </div>
     <div class="value-card-2">
       <h4>Continuity</h4>
-      <p>We strive to provide a quality service through continuous improvement. We reflect &amp; focus our thoughts, energy, and attention on achieving goals whilst embracing innovation to ensure we continually enhance our service.</p>
+      <p>{{ sections['valuesContinuity'] || 'We strive to provide a quality service through continuous improvement. We reflect &amp; focus our thoughts, energy, and attention on achieving goals whilst embracing innovation to ensure we continually enhance our service.' }}</p>
     </div>
     <div class="value-card-2">
       <h4>Collaboration</h4>
-      <p>We commit to working in partnership with residents, loved ones, and professionals. By involving everyone in planning and decision-making, we ensure transparency and continuous standards.</p>
+      <p>{{ sections['valuesCollaboration'] || 'We commit to working in partnership with residents, loved ones, and professionals. By involving everyone in planning and decision-making, we ensure transparency and continuous standards.' }}</p>
     </div>
     <div class="value-card-2">
       <h4>Commitment</h4>
-      <p>We are committed to meeting the bespoke needs of our residents and will behave professionally &amp; responsibly in the delivery of our services, always supporting each other.</p>
+      <p>{{ sections['valuesCommitment'] || 'We are committed to meeting the bespoke needs of our residents and will behave professionally &amp; responsibly in the delivery of our services, always supporting each other.' }}</p>
     </div>
   </div>
 </section>

@@ -1,8 +1,8 @@
 <div id="top">
 <header class="hero-sub">
   <div class="hero-content">
-    <h1>Life &amp; Care Services</h1>
-    <p>Providing dignity, exceptional support, and professional care in Glossop.</p>
+    <h1>{{ sections['heroTitle'] || 'Life &amp; Care Services' }}</h1>
+    <p>{{ sections['heroSubtitle'] || 'Providing dignity, exceptional support, and professional care in Glossop.' }}</p>
   </div>
 </header>
 
@@ -10,12 +10,12 @@
   <!-- Row 1: Older People Care -->
   <div class="alternating-row reveal-element">
     <div class="row-image">
-      <img src="/assets/images/service-older-people.png" alt="Older People Care Services" />
+      <img [src]="sections['olderPeopleImage'] || '/assets/images/service-older-people.png'" alt="Older People Care Services" />
     </div>
     <div class="row-text">
-      <h2>Older People Care</h2>
-      <p>Our residential and nursing care for older people is centered around promoting independence, comfort, and active engagement. We offer a vibrant, supportive environment where residents can enjoy their daily lives with the peace of mind that professional assistance is always close at hand.</p>
-      <p>Through personalized care planning, we honor each individual's unique life history, ensuring their emotional, physical, and social needs are fully nurtured in a safe and secure setting.</p>
+      <h2>{{ sections['olderPeopleTitle'] || 'Older People Care' }}</h2>
+      <p>{{ sections['olderPeopleText'] || 'Our residential and nursing care for older people is centered around promoting independence, comfort, and active engagement. We offer a vibrant, supportive environment where residents can enjoy their daily lives with the peace of mind that professional assistance is always close at hand.' }}</p>
+      <p>{{ sections['olderPeopleDetailText'] || 'Through personalised care planning, we honour each individual\'s unique life history, ensuring their emotional, physical, and social needs are fully nurtured in a safe and secure setting.' }}</p>
       <a routerLink="/contact" class="btn-gold">Enquire About Care</a>
     </div>
   </div>
@@ -23,48 +23,45 @@
   <!-- Row 2: Dementia Care -->
   <div class="alternating-row row-reverse-desktop reveal-element">
     <div class="row-image">
-      <img src="/assets/images/service-dementia-support.png" alt="Compassionate Dementia Support Services" />
+      <img [src]="sections['dementiaImage'] || '/assets/images/service-dementia-support.png'" alt="Compassionate Dementia Support Services" />
     </div>
     <div class="row-text">
-      <h2>Dementia Care</h2>
-      <p>Our Dementia Care offers a very individualistic and person-centred approach. We do all that we can to make the suite as Dementia friendly as is possible. We use colour palates in our décor which are recommended as being particularly suited to those with Dementia.</p>
-      <p>We have focussed activities that provide an opportunity for our residents to enjoy being part of the community as well as a space to find solace in our lounges. Our gardens are also a safe space where we provide activities and lovely strolls. We are working closely in partnership with the Derbyshire City Council to make changes to the environmental and service delivery to provide targeted support around Dementia Care.</p>
+      <h2>{{ sections['dementiaTitle'] || 'Dementia Care' }}</h2>
+      <p>{{ sections['dementiaText'] || 'Our Dementia Care offers a very individualistic and person-centred approach. We do all that we can to make the suite as Dementia friendly as is possible.' }}</p>
+      <p>{{ sections['dementiaDetailText'] || 'We have focused activities that provide an opportunity for our residents to enjoy being part of the community as well as a space to find solace in our lounges.' }}</p>
     </div>
   </div>
 
   <!-- Row 3: Male Only Unit -->
   <div class="alternating-row reveal-element">
     <div class="row-image">
-      <img src="/assets/images/service-male-only-unit.png" alt="Dedicated Male Only Care Environment" />
+      <img [src]="sections['maleUnitImage'] || '/assets/images/service-male-only-unit.png'" alt="Dedicated Male Only Care Environment" />
     </div>
     <div class="row-text">
-      <h2>Male only Unit</h2>
-      <p>Our male only unit offers all the comfort of the Moorland suite. This suite is dedicated to only male residents. The space offers targeted support, care and activities suited for male residents provided by and large by male staff members.</p>
-      <p>It provides beautifully decorated ensuite large, spacious bedrooms with excellent views of the Peak District and access to a secure garden which can be accessed throughout the day and night, creating an opportunity for residents to enjoy the benefits of service and environment the Moorland suite has to offer.</p>
+      <h2>{{ sections['maleUnitTitle'] || 'Male only Unit' }}</h2>
+      <p>{{ sections['maleUnitText'] || 'Our male only unit offers all the comfort of the Moorland suite. This suite is dedicated to only male residents. The space offers targeted support, care and activities suited for male residents provided by and large by male staff members.' }}</p>
     </div>
   </div>
 
   <!-- Row 4: Rehabilitation -->
   <div class="alternating-row row-reverse-desktop reveal-element">
     <div class="row-image">
-      <img src="/assets/images/service-inhouse-activities.png" alt="Advanced Clinical Rehabilitation Programs" />
+      <img [src]="sections['rehabilitationImage'] || '/assets/images/service-inhouse-activities.png'" alt="Advanced Clinical Rehabilitation Programs" />
     </div>
     <div class="row-text">
-      <h2>Rehabilitation</h2>
-      <p>We work with a range of specialists to create an environment that enables and empowers our residents to rehabilitate to their fullest potential. By providing a person-centred care approach that ensures that we engage with the residents and are sensitive to their needs.</p>
-      <p>We use cutting edge technology to support our work and to assess and treat those on the rehabilitation journey. We have a proven track record in successfully rehabilitating residents to independence, including resettlement back into the community.</p>
+      <h2>{{ sections['rehabilitationTitle'] || 'Rehabilitation' }}</h2>
+      <p>{{ sections['rehabilitationText'] || 'We work with a range of specialists to create an environment that enables and empowers our residents to rehabilitate to their fullest potential. By providing a person-centred care approach that ensures that we engage with the residents and are sensitive to their needs.' }}</p>
     </div>
   </div>
 
   <!-- Row 5: End of Life Care -->
   <div class="alternating-row reveal-element">
     <div class="row-image">
-      <img src="/assets/images/service-end-of-life-care.png" alt="Dignified End of Life and Palliative Care" />
+      <img [src]="sections['endOfLifeImage'] || '/assets/images/service-end-of-life-care.png'" alt="Dignified End of Life and Palliative Care" />
     </div>
     <div class="row-text">
-      <h2>End of life care</h2>
-      <p>Our End of Life care, tenderly overseen by Debbie and our dedicated palliative team, is committed to providing compassionate, dignified, and peaceful support during life's final chapters. We focus deeply on pain management, physical comfort, and emotional solace, ensuring that our residents spend their precious final moments surrounded by love and tranquility.</p>
-      <p>We also provide extensive support, guidance, and a comforting shoulder for families, walking alongside them during this sensitive time. Every aspect of our end-of-life care is tailored to honor the individual's wishes, spiritual needs, and personal dignity, delivering true peace of mind.</p>
+      <h2>{{ sections['endOfLifeTitle'] || 'End of life care' }}</h2>
+      <p>{{ sections['endOfLifeText'] || 'Our End of Life care is committed to providing compassionate, dignified, and peaceful support during life\'s final chapters. We focus deeply on pain management, physical comfort, and emotional solace.' }}</p>
     </div>
   </div>
 </main>

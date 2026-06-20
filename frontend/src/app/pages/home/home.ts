@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, HostListener, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ContentService } from '../../core/content.service';
 
 const AVATAR_COLORS = ['#4285f4','#34a853','#fbbc05','#ea4335','#7b1fa2','#00897b','#e65100','#1565c0'];
 
@@ -21,6 +22,10 @@ interface ApiReview {
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private http = inject(HttpClient);
+  private content = inject(ContentService);
+  private router = inject(Router);
+
+  sections: Record<string, any> = {};
 
   @ViewChild('heroVideo') heroVideo!: ElementRef<HTMLVideoElement>;
   isMuted = true;
@@ -51,6 +56,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   testimonials: { initial: string; color: string; name: string; subtitle: string; date: string; text: string }[] = [];
 
   ngOnInit(): void {
+    this.content.getPage('home').subscribe({
+      next: (s: any) => {
+        this.sections = s;
+        if (Array.isArray(s.pennineImages) && s.pennineImages.length > 0) {
+          this.pennineImages = s.pennineImages.map((url: string) => ({ src: url, alt: '' }));
+        }
+        if (Array.isArray(s.moorlandImages) && s.moorlandImages.length > 0) {
+          this.moorlandImages = s.moorlandImages.map((url: string) => ({ src: url, alt: '' }));
+        }
+      },
+      error: () => this.router.navigate(['/not-found'])
+    });
     this.http.get<ApiReview[]>('http://localhost:3000/api/reviews?visible=true').subscribe({
       next: (reviews) => {
         this.testimonials = reviews.map((r, i) => ({

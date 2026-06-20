@@ -1,6 +1,7 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { ContentService } from '../../core/content.service';
 
 @Component({
   selector: 'app-moorland-suite',
@@ -9,8 +10,36 @@ import { RouterLink } from '@angular/router';
   templateUrl: './moorland-suite.html',
   styleUrl: './moorland-suite.css'
 })
-export class MoorlandSuiteComponent implements AfterViewInit, OnDestroy {
-  sliders: { [key: string]: { images: {src:string,alt:string}[], current: number, timer: any } } = {
+export class MoorlandSuiteComponent implements OnInit, AfterViewInit, OnDestroy {
+  sections: Record<string, any> = {};
+
+  constructor(private content: ContentService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.content.getPage('moorland-suite').subscribe({
+      next: (s: any) => {
+        this.sections = s;
+        if (Array.isArray(s.havenImages) && s.havenImages.length > 0)
+          this.sliders.haven.images = s.havenImages.map((u: string) => ({ src: u, alt: '' }));
+        if (Array.isArray(s.spacesImages) && s.spacesImages.length > 0)
+          this.sliders.spaces.images = s.spacesImages.map((u: string) => ({ src: u, alt: '' }));
+        if (Array.isArray(s.bedroomImages) && s.bedroomImages.length > 0)
+          this.sliders.bedrooms.images = s.bedroomImages.map((u: string) => ({ src: u, alt: '' }));
+        if (Array.isArray(s.gardenImages) && s.gardenImages.length > 0)
+          this.sliders.gardens.images = s.gardenImages.map((u: string) => ({ src: u, alt: '' }));
+        if (Array.isArray(s.galleryImages) && s.galleryImages.length > 0)
+          this.galleryImages = s.galleryImages.map((u: string) => ({ src: u, alt: '' }));
+      },
+      error: () => this.router.navigate(['/not-found'])
+    });
+  }
+
+  sliders: Record<string, { images: {src:string,alt:string}[], current: number, timer: any }> & {
+    haven: { images: {src:string,alt:string}[], current: number, timer: any };
+    spaces: { images: {src:string,alt:string}[], current: number, timer: any };
+    bedrooms: { images: {src:string,alt:string}[], current: number, timer: any };
+    gardens: { images: {src:string,alt:string}[], current: number, timer: any };
+  } = {
     haven: {
       images: [
         { src: '/assets/images/community-spaces-lounge.png', alt: 'Life at Moorland Suite' },

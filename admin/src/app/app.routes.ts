@@ -10,6 +10,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard) },
       { path: 'pages', loadComponent: () => import('./pages/pages-editor/pages-editor').then(m => m.PagesEditor) },
+      { path: 'people', loadComponent: () => import('./pages/people-manager/people-manager').then(m => m.PeopleManager) },
       { path: 'team', loadComponent: () => import('./pages/team-manager/team-manager').then(m => m.TeamManager) },
       { path: 'careers', loadComponent: () => import('./pages/careers-manager/careers-manager').then(m => m.CareersManager) },
       { path: 'reviews', loadComponent: () => import('./pages/reviews-manager/reviews-manager').then(m => m.ReviewsManager) },

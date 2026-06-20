@@ -16,8 +16,20 @@ const DEFAULT_PAGES = [
       introText: 'Pennine Care Centre specialises in providing personalised residential care, consisting of the Pennine Suite and Moorland Suite (male only).',
       pennineTitle: 'Pennine Suite',
       pennineDescription: 'With fully secured accommodation and 24 hour support, Pennine Suite caters to a variety of needs. Our person-centred approach ensures that residents are encouraged to live a lifestyle of their choosing.',
+      pennineImages: [
+        '/assets/images/pennine-suite-exterior.png',
+        '/assets/images/pennine-care-drone.png',
+        '/assets/images/pennine-suite-lounge.png',
+        '/assets/images/pennine-suite-hero.png'
+      ],
       moorlandTitle: 'Moorland Suite',
       moorlandDescription: 'Our Moorland Suite is a male only unit catering to residents with special requirements. Supported by our caring staff, this unique unit provides dignified and quality care.',
+      moorlandImages: [
+        '/assets/images/pennine-care-entrance.png',
+        '/assets/images/community-spaces-lounge.png',
+        '/assets/images/moorland-suite-dining.png',
+        '/assets/images/moorland-suite-garden-exterior.png'
+      ],
       testimonialsSubtitle: 'Read Verified Client Feedback',
       testimonialsTitle: 'Google Reviews',
       reviewRating: '4.8/5',
@@ -25,6 +37,7 @@ const DEFAULT_PAGES = [
       peaceTitle: 'DELIVERING PEACE OF MIND',
       peaceText: 'Through our person-centred care, we aim to provide each of our residents with the highest possible quality of life, luxurious accommodation, and discreet support.',
       peaceQuote: '"To provide exceptional care, delivered by compassionate people, in the highest quality homes."',
+      peaceImage: '',
     },
   },
   {
@@ -38,16 +51,50 @@ const DEFAULT_PAGES = [
       introTitle: 'An Introduction to Tasteful Modernity',
       introText: 'Nestling in the beautiful market town of Glossop, on the edge of the Peak District National Park, Pennine Care is a newly built, purpose-designed residential care home. Our Pennine Suite offers a warm, welcoming environment where residents feel truly at home.',
       introDetailText: 'Thoughtfully designed to blend contemporary comfort with a homely atmosphere, every detail of the Pennine Suite has been crafted with our residents\' wellbeing and dignity in mind.',
+      introImages: [
+        '/assets/images/pennine-suite-intro.png',
+        '/assets/images/pennine-suite-exterior.png',
+        '/assets/images/pennine-care-drone.png'
+      ],
       communityTitle: 'Our Warm & Caring Community',
       communityText: 'At the heart of the Pennine Suite is a vibrant, caring community where residents are encouraged to live life to the full. Our spacious lounge and dining areas are designed to foster friendship, laughter, and a true sense of belonging.',
       communityQuote: '"A place where every resident is known by name, valued as an individual, and treated with the utmost kindness and respect."',
+      communityImages: [
+        '/assets/images/pennine-suite-communal-lounge.png',
+        '/assets/images/pennine-suite-quality-care.png',
+        '/assets/images/pennine-suite-dining.png',
+        '/assets/images/pennine-suite-comfort-lounge.jpg',
+        '/assets/images/pennine-suite-comfort-lounge-2.png'
+      ],
       bedroomsTitle: 'Private, Well-Appointed Bedrooms',
       bedroomsText: 'Each bedroom within the Pennine Suite is a private sanctuary — a space that truly belongs to the resident. Generously proportioned and filled with natural light, our rooms offer a calm and comfortable retreat.',
       bedroomsAmenitiesText: 'Every room features an en-suite wet room, nurse call system, flat-screen television, and individually controlled heating.',
+      bedroomImages: [
+        '/assets/images/pennine-suite-bedroom.png',
+        '/assets/images/pennine-suite-bedroom-2.png',
+        '/assets/images/pennine-suite-living-spaces.png'
+      ],
       gardensTitle: 'Tranquil Gardens & Outdoors',
       gardensText: 'Our beautifully maintained gardens offer residents the opportunity to enjoy the fresh Peak District air and the restorative power of nature.',
+      gardenImages: [
+        '/assets/images/pennine-suite-lounge.png',
+        '/assets/images/pennine-suite-gardens.png',
+        '/assets/images/pennine-suite-outdoor-pathways.png'
+      ],
       wellnessTitle: 'Coming Soon — Wellbeing Space',
       wellnessText: 'We are delighted to share that a dedicated Wellbeing Space is currently in development for our Pennine Suite residents.',
+      galleryImages: [
+        '/assets/images/pennine-suite-quality-care.png',
+        '/assets/images/pennine-suite-interior.png',
+        '/assets/images/pennine-suite-lounge.png',
+        '/assets/images/pennine-suite-garden-seating.png',
+        '/assets/images/pennine-suite-bedroom.png',
+        '/assets/images/pennine-suite-bedroom-2.png',
+        '/assets/images/pennine-suite-dining-2.png',
+        '/assets/images/pennine-suite-communal-lounge.png',
+        '/assets/images/pennine-suite-comfort-lounge-2.png',
+        '/assets/images/pennine-suite-outdoor-pathways-2.png'
+      ],
     },
   },
   {
@@ -60,19 +107,48 @@ const DEFAULT_PAGES = [
       heroTitle: 'Moorland Suite',
       havenTitle: 'An Elegant Haven for Gentlemen',
       havenText: 'The Moorland Suite at Pennine Care has been thoughtfully designed as a dedicated space for gentlemen, offering a refined and supportive environment tailored to their individual needs.',
+      havenImages: [
+        '/assets/images/community-spaces-lounge.png',
+        '/assets/images/moorland-suite-garden.png',
+        '/assets/images/pennine-care-entrance.png'
+      ],
       spacesTitle: 'Community Spaces',
       spacesText: 'The Moorland Suite\'s communal areas have been designed to encourage connection, conversation, and a real sense of camaraderie.',
+      spacesImages: [
+        '/assets/images/moorland-suite-community.png',
+        '/assets/images/moorland-suite-lounge.png',
+        '/assets/images/community-spaces-dining.png'
+      ],
       bedroomsTitle: 'Private, Tailored Bedrooms',
       bedroomsText: 'Each bedroom in the Moorland Suite is a private, well-appointed space where residents can relax, recharge, and feel completely at ease.',
       bedroomsAmenitiesText: 'Every room includes a modern en-suite wet room, flat-screen television, nurse call system, and individually controlled heating.',
+      bedroomImages: [
+        '/assets/images/moorland-suite-bedroom.png',
+        '/assets/images/moorland-suite-lounge-2.png',
+        '/assets/images/moorland-suite-corridor.png'
+      ],
       gardensTitle: 'Secure, Healing Gardens',
       gardensText: 'Our fully enclosed, secure garden spaces offer residents the freedom to enjoy the outdoors with complete peace of mind.',
+      gardenImages: [
+        '/assets/images/moorland-suite-gardens.png',
+        '/assets/images/moorland-suite-patio.png',
+        '/assets/images/moorland-suite-outdoor.png'
+      ],
       modernisationTitle: 'Coming Soon — Modernisation',
       modernisationText: 'We are excited to announce that an extensive programme of modernisation is planned for the Moorland Suite.',
       featureCost: 'No Hidden Costs',
       featureCostText: 'Our transparent, all-inclusive fee structure means families have complete clarity and peace of mind.',
       featureTeam: 'Dedicated Team',
       featureTeamText: 'Our carefully selected care team are passionate, highly trained, and committed to making every resident feel valued.',
+      galleryImages: [
+        '/assets/images/moorland-suite-lounge-2.png',
+        '/assets/images/moorland-suite-lounge.png',
+        '/assets/images/moorland-suite-corridor.png',
+        '/assets/images/moorland-suite-garden.png',
+        '/assets/images/moorland-suite-gardens-2.png',
+        '/assets/images/moorland-suite-bedroom.png',
+        '/assets/images/pennine-suite-dining.png'
+      ],
     },
   },
   {
@@ -86,15 +162,20 @@ const DEFAULT_PAGES = [
       olderPeopleTitle: 'Older People Care',
       olderPeopleText: 'Our residential and nursing care for older people is centered around promoting independence, comfort, and active engagement.',
       olderPeopleDetailText: 'Through personalised care planning, we honour each individual\'s unique life history, ensuring their emotional, physical, and social needs are fully nurtured.',
+      olderPeopleImage: '',
       dementiaTitle: 'Dementia Care',
       dementiaText: 'Our Dementia Care offers a very individualistic and person-centred approach. We do all that we can to make the suite as Dementia friendly as possible.',
       dementiaDetailText: 'We have focused activities that provide an opportunity for our residents to enjoy being part of the community as well as a space to find solace in our lounges.',
+      dementiaImage: '',
       maleUnitTitle: 'Male Only Unit',
       maleUnitText: 'Our male only unit offers all the comfort of the Moorland Suite. This suite is dedicated to only male residents with targeted support, care and activities suited for male residents.',
+      maleUnitImage: '',
       rehabilitationTitle: 'Rehabilitation',
       rehabilitationText: 'We work with a range of specialists to create an environment that enables and empowers our residents to rehabilitate to their fullest potential.',
+      rehabilitationImage: '',
       endOfLifeTitle: 'End of Life Care',
       endOfLifeText: 'Our End of Life care is committed to providing compassionate, dignified, and peaceful support during life\'s final chapters. We focus deeply on pain management, physical comfort, and emotional solace.',
+      endOfLifeImage: '',
     },
   },
   {
@@ -107,16 +188,22 @@ const DEFAULT_PAGES = [
       heroSubtitle: 'Nourishing body, mind, and soul through dedicated care and vibrant activities.',
       activitiesTitle: 'In-House Activities',
       activitiesText: 'Our dedicated activity team co-produce with residents and deliver a range of activities to nourish body, mind and soul. We incorporate music, movement, art, pet therapy, sensory play, intergenerational play, outings, and more.',
+      activitiesImage: '',
       communityTitle: 'Community Engagement',
       communityText: 'Having a sense of community and belonging is so important to our residents\' wellbeing. Here at Pennine we offer a range of community focused activities throughout the week.',
+      communityImage: '',
       nutritionTitle: 'Nutrition & Hydration',
       nutritionText: 'Creating a balanced, healthy and nutritious menu is important to us, but we also provide meals that meet individual tastes and preferences.',
+      nutritionImage: '',
       careTitle: 'Person Centred Care',
       careText: 'All staff at Pennine are trained in person-centred care. We believe that residents are individuals and should be treated as such.',
+      careImage: '',
       familyTitle: 'Family Partnerships',
       familyText: 'We actively encourage families to be involved in the life of their loved one. The Care Manager calls families monthly to gain their views and opinions.',
+      familyImage: '',
       innovativeTitle: 'Innovative Care',
       innovativeText: 'The use of assistive technology has grown over time. This enables us to deploy a range of technology to increase the level of detection and support in a less intrusive but useful way.',
+      innovativeImage: '',
     },
   },
   {
@@ -187,7 +274,12 @@ export class PagesService implements OnModuleInit {
   async onModuleInit() {
     for (const p of DEFAULT_PAGES) {
       const exists = await this.repo.findOne({ where: { pageKey: p.pageKey } });
-      if (!exists) await this.repo.save(this.repo.create(p));
+      if (!exists) {
+        await this.repo.save(this.repo.create(p));
+      } else if (!exists.sections || Object.keys(exists.sections).length === 0) {
+        await this.repo.update(exists.id, { sections: p.sections as Record<string, any> });
+      }
+      // Pages with existing sections are never touched on restart
     }
   }
 

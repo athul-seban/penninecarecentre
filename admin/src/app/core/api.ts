@@ -90,13 +90,21 @@ export class ApiService {
     return this.http.delete(`${this.BASE}/error-logs`, { headers: this.auth.getHeaders() });
   }
 
+  // Analytics
+  getAnalytics(): Observable<any> {
+    return this.http.get(`${this.BASE}/analytics`, { headers: this.auth.getHeaders() });
+  }
+
   // Media
   getMedia(): Observable<any> {
     return this.http.get(`${this.BASE}/media`, { headers: this.auth.getHeaders() });
   }
+  getLocalAssets(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.BASE}/media/local-assets`, { headers: this.auth.getHeaders() });
+  }
   uploadMedia(formData: FormData): Observable<any> {
     const token = this.auth.getToken();
-    return this.http.post(`${this.BASE}/media`, formData, {
+    return this.http.post(`${this.BASE}/media/upload`, formData, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
   }

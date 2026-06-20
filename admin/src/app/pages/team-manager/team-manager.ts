@@ -16,7 +16,7 @@ export class TeamManager implements OnInit {
   showForm = false;
   editingId: string | null = null;
   saving = false;
-  form: any = { name: '', role: '', bio: '', imageUrl: '' };
+  form: any = { name: '', role: '', bio: '', photoUrl: '' };
 
   constructor(private api: ApiService) {}
 
@@ -30,7 +30,7 @@ export class TeamManager implements OnInit {
     });
   }
 
-  openAdd() { this.form = { name: '', role: '', bio: '', imageUrl: '' }; this.editingId = null; this.showForm = true; }
+  openAdd() { this.form = { name: '', role: '', bio: '', photoUrl: '' }; this.editingId = null; this.showForm = true; }
   openEdit(m: any) { this.form = { ...m }; this.editingId = m._id || m.id; this.showForm = true; }
   cancel() { this.showForm = false; }
 

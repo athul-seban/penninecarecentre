@@ -23,6 +23,65 @@
           <a routerLink="/reviews" class="stat-link">Manage Reviews &rarr;</a>
         </div>
       </div>
+
+      @if (analytics) {
+        <div class="section-title">Page Analytics</div>
+        <div class="stats-grid analytics-grid">
+          <div class="stat-card accent-blue">
+            <div class="stat-value">{{ analytics.total | number }}</div>
+            <div class="stat-label">Total Visits</div>
+          </div>
+          <div class="stat-card accent-blue">
+            <div class="stat-value">{{ analytics.today | number }}</div>
+            <div class="stat-label">Today</div>
+          </div>
+          <div class="stat-card accent-blue">
+            <div class="stat-value">{{ analytics.thisWeek | number }}</div>
+            <div class="stat-label">This Week</div>
+          </div>
+          <div class="stat-card accent-blue">
+            <div class="stat-value">{{ analytics.thisMonth | number }}</div>
+            <div class="stat-label">This Month</div>
+          </div>
+        </div>
+
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chart-title">Top Pages</div>
+            @if (analytics.topPages.length === 0) {
+              <div class="no-data">No visits recorded yet.</div>
+            }
+            @for (page of analytics.topPages; track page.path) {
+              <div class="bar-row">
+                <div class="bar-label">{{ formatPath(page.path) }}</div>
+                <div class="bar-track">
+                  <div class="bar-fill" [style.width.%]="page.count / maxPageCount * 100"></div>
+                </div>
+                <div class="bar-count">{{ page.count }}</div>
+              </div>
+            }
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title">Last 7 Days</div>
+            @if (maxDayCount === 0) {
+              <div class="no-data">No visits recorded yet.</div>
+            }
+            <div class="sparkline">
+              @for (day of analytics.last7Days; track day.date) {
+                <div class="spark-col">
+                  <div class="spark-bar-wrap">
+                    <div class="spark-bar" [style.height.%]="maxDayCount > 0 ? (day.count / maxDayCount * 100) : 0">
+                      <span class="spark-tip">{{ day.count }}</span>
+                    </div>
+                  </div>
+                  <div class="spark-label">{{ dayLabel(day.date) }}</div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
     }
     @if (loading) {
       <div class="loading">Loading...</div>

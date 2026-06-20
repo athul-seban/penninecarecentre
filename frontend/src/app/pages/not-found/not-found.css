@@ -1,0 +1,116 @@
+.not-found-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream, #faf9f6);
+  padding: 32px 16px;
+}
+
+.not-found-card {
+  background: white;
+  border-radius: 16px;
+  padding: 56px 48px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 43, 91, 0.1);
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy, #002b5b);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 32px;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gold, #c5a059);
+  border-radius: 50%;
+}
+
+.error-code {
+  font-size: 96px;
+  font-weight: 800;
+  color: var(--gold, #c5a059);
+  line-height: 1;
+  margin-bottom: 16px;
+  letter-spacing: -4px;
+}
+
+h1 {
+  font-size: 26px;
+  color: var(--navy, #002b5b);
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+p {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+.contact-hint {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 32px;
+}
+
+.contact-hint a {
+  color: var(--navy, #002b5b);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-hint a:hover { text-decoration: underline; }
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--navy, #002b5b);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover { background: #003f85; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy, #002b5b);
+  border: 1.5px solid var(--navy, #002b5b);
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background: var(--navy, #002b5b);
+  color: white;
+}
+
+@media (max-width: 480px) {
+  .not-found-card { padding: 40px 24px; }
+  .error-code { font-size: 72px; }
+}

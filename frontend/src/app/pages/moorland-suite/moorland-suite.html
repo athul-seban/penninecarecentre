@@ -3,8 +3,8 @@
   <!-- HERO BANNER -->
   <header class="hero-sub">
     <div class="hero-content">
-      <p>An Elegant Haven for Gentlemen</p>
-      <h1>Moorland Suite</h1>
+      <p>{{ sections['heroSubtitle'] || 'An Elegant Haven for Gentlemen' }}</p>
+      <h1>{{ sections['heroTitle'] || 'Moorland Suite' }}</h1>
     </div>
   </header>
 
@@ -30,22 +30,8 @@
         </button>
       </div>
       <div class="row-text">
-        <h2>An Elegant Haven for Gentlemen</h2>
-        <p>
-          The Moorland Suite at Pennine Care has been thoughtfully designed as a dedicated space for
-          gentlemen, offering a refined and supportive environment tailored to their individual needs,
-          interests, and sense of independence.
-        </p>
-        <p>
-          Set within our beautifully designed home on the edge of the Peak District, the Moorland Suite
-          combines the very best of modern residential care with a warmth and homeliness that makes every
-          resident feel truly welcome from the moment they arrive.
-        </p>
-        <p>
-          Our experienced and compassionate team are on hand around the clock, ensuring every resident
-          receives the personalised care and attention they deserve — always delivered with dignity,
-          respect, and a genuine smile.
-        </p>
+        <h2>{{ sections['havenTitle'] || 'An Elegant Haven for Gentlemen' }}</h2>
+        <p>{{ sections['havenText'] || 'The Moorland Suite at Pennine Care has been thoughtfully designed as a dedicated space for gentlemen, offering a refined and supportive environment tailored to their individual needs, interests, and sense of independence.' }}</p>
         <a routerLink="/contact" class="btn-gold">Schedule a Visit</a>
       </div>
     </div>
@@ -69,22 +55,8 @@
         </button>
       </div>
       <div class="row-text">
-        <h2>Community Spaces</h2>
-        <p>
-          The Moorland Suite's communal areas have been designed to encourage connection, conversation,
-          and a real sense of camaraderie. Our generous lounge and dining spaces provide the perfect
-          backdrop for shared meals, lively discussions, and quiet companionship alike.
-        </p>
-        <p>
-          From morning newspapers over fresh coffee to afternoon activities, films, and special events,
-          the daily rhythm of life in the Moorland Suite is purposeful, engaging, and — above all — enjoyable.
-          Residents are always at the centre of everything we do.
-        </p>
-        <p>
-          Our activities programme is tailored to the interests and abilities of residents, ensuring
-          meaningful engagement every day, whether that means a game of cards, a talk on local history,
-          or simply enjoying good company.
-        </p>
+        <h2>{{ sections['spacesTitle'] || 'Community Spaces' }}</h2>
+        <p>{{ sections['spacesText'] || 'The Moorland Suite\'s communal areas have been designed to encourage connection, conversation, and a real sense of camaraderie. Our generous lounge and dining spaces provide the perfect backdrop for shared meals, lively discussions, and quiet companionship alike.' }}</p>
       </div>
     </div>
 
@@ -107,22 +79,9 @@
         </button>
       </div>
       <div class="row-text">
-        <h2>Private, Tailored Bedrooms</h2>
-        <p>
-          Each bedroom in the Moorland Suite is a private, well-appointed space where residents can
-          relax, recharge, and feel completely at ease. Spacious and filled with natural light, our
-          rooms are designed to feel like a genuine home from home.
-        </p>
-        <p>
-          Residents are encouraged to bring their own belongings, photographs, and personal touches to
-          make their room uniquely theirs. We believe strongly that a familiar, personal environment
-          plays a vital role in wellbeing and happiness.
-        </p>
-        <p>
-          Every room includes a modern en-suite wet room, flat-screen television, nurse call system,
-          and individually controlled heating — all the comforts needed for a relaxed, independent
-          daily life.
-        </p>
+        <h2>{{ sections['bedroomsTitle'] || 'Private, Tailored Bedrooms' }}</h2>
+        <p>{{ sections['bedroomsText'] || 'Each bedroom in the Moorland Suite is a private, well-appointed space where residents can relax, recharge, and feel completely at ease. Spacious and filled with natural light, our rooms are designed to feel like a genuine home from home.' }}</p>
+        <p>{{ sections['bedroomsAmenitiesText'] || 'Every room includes a modern en-suite wet room, flat-screen television, nurse call system, and individually controlled heating.' }}</p>
       </div>
     </div>
 
@@ -145,21 +104,8 @@
         </button>
       </div>
       <div class="row-text">
-        <h2>Secure, Healing Gardens</h2>
-        <p>
-          Our fully enclosed, secure garden spaces offer residents the freedom to enjoy the outdoors
-          with complete peace of mind. Thoughtfully landscaped with accessible pathways, raised planters,
-          and comfortable seating areas, the gardens are a true extension of the care home experience.
-        </p>
-        <p>
-          Spending time outdoors has well-documented benefits for physical and emotional health, and
-          we actively encourage residents to make use of these beautiful spaces throughout the seasons.
-          The views across the surrounding moorland are simply breathtaking.
-        </p>
-        <p>
-          For residents living with dementia, the secure outdoor environment provides a safe and
-          stimulating space for gentle exercise, sensory engagement, and the simple pleasure of fresh air.
-        </p>
+        <h2>{{ sections['gardensTitle'] || 'Secure, Healing Gardens' }}</h2>
+        <p>{{ sections['gardensText'] || 'Our fully enclosed, secure garden spaces offer residents the freedom to enjoy the outdoors with complete peace of mind. Thoughtfully landscaped with accessible pathways, raised planters, and comfortable seating areas, the gardens are a true extension of the care home experience.' }}</p>
       </div>
     </div>
 
@@ -170,21 +116,8 @@
       </div>
       <div class="row-text wellbeing-highlight">
         <span class="coming-soon-badge">Coming Soon</span>
-        <h2>Coming Soon — Modernisation</h2>
-        <p>
-          We are excited to announce that an extensive programme of modernisation is planned for the
-          Moorland Suite. Our investment in the environment reflects our unwavering commitment to
-          providing the very best residential care experience.
-        </p>
-        <p>
-          The refurbishment will bring refreshed communal areas, enhanced sensory spaces, and upgraded
-          facilities throughout — all designed with the comfort, dignity, and wellbeing of our residents
-          at the forefront.
-        </p>
-        <p>
-          We look forward to sharing further details as plans progress. Please speak with a member of
-          our team if you would like to know more about what is coming to the Moorland Suite.
-        </p>
+        <h2>{{ sections['modernisationTitle'] || 'Coming Soon — Modernisation' }}</h2>
+        <p>{{ sections['modernisationText'] || 'We are excited to announce that an extensive programme of modernisation is planned for the Moorland Suite. Our investment in the environment reflects our unwavering commitment to providing the very best residential care experience.' }}</p>
       </div>
     </div>
 
@@ -199,27 +132,18 @@
     <div class="key-features">
       <div class="feature-box">
         <i class="fas fa-pound-sign"></i>
-        <h3>No Hidden Costs</h3>
-        <p>
-          Our transparent, all-inclusive fee structure means families have complete clarity and peace
-          of mind. Everything your loved one needs is covered — no surprises, ever.
-        </p>
+        <h3>{{ sections['featureCost'] || 'No Hidden Costs' }}</h3>
+        <p>{{ sections['featureCostText'] || 'Our transparent, all-inclusive fee structure means families have complete clarity and peace of mind. Everything your loved one needs is covered — no surprises, ever.' }}</p>
       </div>
       <div class="feature-box">
         <i class="fas fa-heart"></i>
-        <h3>Dedicated Team</h3>
-        <p>
-          Our carefully selected care team are passionate, highly trained, and committed to making
-          every resident feel valued, safe, and genuinely cared for every single day.
-        </p>
+        <h3>{{ sections['featureTeam'] || 'Dedicated Team' }}</h3>
+        <p>{{ sections['featureTeamText'] || 'Our carefully selected care team are passionate, highly trained, and committed to making every resident feel valued, safe, and genuinely cared for every single day.' }}</p>
       </div>
       <div class="feature-box">
         <i class="fas fa-leaf"></i>
         <h3>Fresh Environment</h3>
-        <p>
-          As a newly built, purpose-designed home, Pennine Care offers a modern, bright, and
-          immaculately maintained environment — setting a new standard for residential care in the region.
-        </p>
+        <p>As a newly built, purpose-designed home, Pennine Care offers a modern, bright, and immaculately maintained environment — setting a new standard for residential care in the region.</p>
       </div>
     </div>
   </section>

@@ -116,6 +116,10 @@
   .hamburger { display: flex; }
   .sidebar-overlay { display: block; }
 
+  .brand {
+    padding-left: 64px;
+  }
+
   .sidebar {
     transform: translateX(-260px);
     transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);

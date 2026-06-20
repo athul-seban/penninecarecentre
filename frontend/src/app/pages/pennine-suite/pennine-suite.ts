@@ -1,6 +1,7 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { ContentService } from '../../core/content.service';
 
 @Component({
   selector: 'app-pennine-suite',
@@ -9,8 +10,36 @@ import { RouterLink } from '@angular/router';
   templateUrl: './pennine-suite.html',
   styleUrl: './pennine-suite.css'
 })
-export class PennineSuiteComponent implements AfterViewInit, OnDestroy {
-  sliders: { [key: string]: { images: {src:string,alt:string}[], current: number, timer: any } } = {
+export class PennineSuiteComponent implements OnInit, AfterViewInit, OnDestroy {
+  sections: Record<string, any> = {};
+
+  constructor(private content: ContentService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.content.getPage('pennine-suite').subscribe({
+      next: (s: any) => {
+        this.sections = s;
+        if (Array.isArray(s.introImages) && s.introImages.length > 0)
+          this.sliders.intro.images = s.introImages.map((u: string) => ({ src: u, alt: '' }));
+        if (Array.isArray(s.communityImages) && s.communityImages.length > 0)
+          this.sliders.community.images = s.communityImages.map((u: string) => ({ src: u, alt: '' }));
+        if (Array.isArray(s.bedroomImages) && s.bedroomImages.length > 0)
+          this.sliders.bedrooms.images = s.bedroomImages.map((u: string) => ({ src: u, alt: '' }));
+        if (Array.isArray(s.gardenImages) && s.gardenImages.length > 0)
+          this.sliders.gardens.images = s.gardenImages.map((u: string) => ({ src: u, alt: '' }));
+        if (Array.isArray(s.galleryImages) && s.galleryImages.length > 0)
+          this.galleryImages = s.galleryImages.map((u: string) => ({ src: u, alt: '' }));
+      },
+      error: () => this.router.navigate(['/not-found'])
+    });
+  }
+
+  sliders: Record<string, { images: {src:string,alt:string}[], current: number, timer: any }> & {
+    intro: { images: {src:string,alt:string}[], current: number, timer: any };
+    community: { images: {src:string,alt:string}[], current: number, timer: any };
+    bedrooms: { images: {src:string,alt:string}[], current: number, timer: any };
+    gardens: { images: {src:string,alt:string}[], current: number, timer: any };
+  } = {
     intro: {
       images: [
         { src: '/assets/images/pennine-suite-intro.png', alt: 'Nestling in the beautiful market town of Glossop' },

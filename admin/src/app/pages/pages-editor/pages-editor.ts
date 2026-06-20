@@ -48,6 +48,27 @@ const LABEL_MAP: Record<string, string> = {
   jobsTitle: 'Jobs Section Title', jobsIntro: 'Jobs Section Intro',
   applyTitle: 'Apply Section Title', applyIntro: 'Apply Section Intro',
   introTitle2: 'Intro Section Title 2',
+  pennineImages: 'Pennine Suite Preview Images',
+  moorlandImages: 'Moorland Suite Preview Images',
+  introImages: 'Intro Section Images',
+  communityImages: 'Community Section Images',
+  bedroomImages: 'Bedroom Section Images',
+  gardenImages: 'Garden & Outdoor Images',
+  galleryImages: 'Photo Gallery Images',
+  havenImages: 'Haven Section Images',
+  spacesImages: 'Community Spaces Images',
+  peaceImage: 'Peace Section Image (URL)',
+  olderPeopleImage: 'Older People Care Image (URL)',
+  dementiaImage: 'Dementia Care Image (URL)',
+  maleUnitImage: 'Male Only Unit Image (URL)',
+  rehabilitationImage: 'Rehabilitation Image (URL)',
+  endOfLifeImage: 'End of Life Care Image (URL)',
+  activitiesImage: 'Activities Image (URL)',
+  communityImage: 'Community Engagement Image (URL)',
+  nutritionImage: 'Nutrition & Hydration Image (URL)',
+  careImage: 'Person Centred Care Image (URL)',
+  familyImage: 'Family Partnerships Image (URL)',
+  innovativeImage: 'Innovative Care Image (URL)',
 };
 
 @Component({
@@ -61,9 +82,20 @@ export class PagesEditor implements OnInit {
   loading = true;
   selectedPage: any = null;
   editableMeta: any = {};
-  editableSections: { key: string; label: string; value: string }[] = [];
+  editableSections: { key: string; label: string; value: string; isArray: boolean; images: string[]; pendingUrl: string }[] = [];
   saving = false;
   saved = false;
+
+  // Asset picker state
+  showAssetPicker = false;
+  assetPickerMode: 'single' | 'array-add' | 'array-replace' = 'single';
+  assetPickerTarget: any = null;
+  assetPickerIndex = -1;
+  localAssets: string[] = [];
+  assetsLoading = false;
+  assetSearch = '';
+
+  private readonly FRONTEND_BASE = 'http://localhost:4200';
 
   constructor(private api: ApiService) {}
 
@@ -72,9 +104,7 @@ export class PagesEditor implements OnInit {
   load() {
     this.api.getPages().subscribe({
       next: (d: any) => {
-        this.pages = Array.isArray(d)
-          ? d
-          : Object.entries(d).map(([key, val]: any) => ({ key, ...val }));
+        this.pages = Array.isArray(d) ? d : Object.entries(d).map(([key, val]: any) => ({ key, ...val }));
         this.loading = false;
       },
       error: () => { this.loading = false; }
@@ -84,43 +114,110 @@ export class PagesEditor implements OnInit {
   selectPage(p: any) {
     this.selectedPage = p;
     this.saved = false;
-    this.editableMeta = {
-      title: p.title || '',
-      metaTitle: p.metaTitle || '',
-      metaDescription: p.metaDescription || '',
-    };
+    this.editableMeta = { title: p.title || '', metaTitle: p.metaTitle || '', metaDescription: p.metaDescription || '' };
     const sections = p.sections || {};
     this.editableSections = Object.entries(sections).map(([key, value]) => ({
       key,
       label: LABEL_MAP[key] || this.titleCase(key),
-      value: String(value || ''),
+      isArray: Array.isArray(value),
+      images: Array.isArray(value) ? [...(value as string[])] : [],
+      value: Array.isArray(value) ? '' : String(value || ''),
+      pendingUrl: '',
     }));
-  }
-
-  titleCase(s: string): string {
-    return s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
-  }
-
-  pageDisplayName(p: any): string {
-    return p.title || p.pageKey || p.key || '(unnamed)';
   }
 
   save() {
     if (!this.selectedPage) return;
     this.saving = true;
-    const sections: Record<string, string> = {};
-    this.editableSections.forEach(s => { sections[s.key] = s.value; });
+    const sections: Record<string, any> = {};
+    this.editableSections.forEach(s => { sections[s.key] = s.isArray ? s.images : s.value; });
     const payload = { ...this.editableMeta, sections };
     const key = this.selectedPage.pageKey || this.selectedPage.key || this.selectedPage.id;
     this.api.updatePage(key, payload).subscribe({
       next: () => {
-        this.saving = false;
-        this.saved = true;
+        this.saving = false; this.saved = true;
         setTimeout(() => this.saved = false, 2500);
         const idx = this.pages.findIndex(p => (p.pageKey || p.key) === key);
         if (idx > -1) this.pages[idx] = { ...this.pages[idx], ...payload };
       },
       error: () => { this.saving = false; }
     });
+  }
+
+  addImage(s: { images: string[]; pendingUrl: string }) {
+    const url = s.pendingUrl.trim();
+    if (url) { s.images.push(url); s.pendingUrl = ''; }
+  }
+
+  removeImage(s: { images: string[] }, idx: number) { s.images.splice(idx, 1); }
+
+  moveImageUp(s: { images: string[] }, idx: number) {
+    if (idx > 0) { [s.images[idx - 1], s.images[idx]] = [s.images[idx], s.images[idx - 1]]; }
+  }
+
+  moveImageDown(s: { images: string[] }, idx: number) {
+    if (idx < s.images.length - 1) { [s.images[idx + 1], s.images[idx]] = [s.images[idx], s.images[idx + 1]]; }
+  }
+
+  titleCase(s: string): string {
+    return s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
+  }
+
+  isImageField(key: string): boolean {
+    return (key.endsWith('Image') || key.endsWith('Url') || key.endsWith('Src')) && !key.endsWith('Images');
+  }
+
+  pageDisplayName(p: any): string {
+    return p.title || p.pageKey || p.key || '(unnamed)';
+  }
+
+  isPageActive(p: any): boolean {
+    return (this.selectedPage?.pageKey || this.selectedPage?.key) === (p.pageKey || p.key);
+  }
+
+  // Returns a URL that works for preview in the admin panel.
+  // Local asset paths (/assets/...) are prefixed with the frontend dev server base.
+  previewUrl(imgPath: string): string {
+    if (!imgPath) return '';
+    if (imgPath.startsWith('/assets/')) return this.FRONTEND_BASE + imgPath;
+    return imgPath;
+  }
+
+  openAssetPicker(section: any, mode: 'single' | 'array-add' | 'array-replace', index = -1) {
+    this.assetPickerTarget = section;
+    this.assetPickerMode = mode;
+    this.assetPickerIndex = index;
+    this.assetSearch = '';
+    this.showAssetPicker = true;
+    if (!this.localAssets.length) {
+      this.assetsLoading = true;
+      this.api.getLocalAssets().subscribe({
+        next: (assets) => { this.localAssets = assets; this.assetsLoading = false; },
+        error: () => { this.assetsLoading = false; },
+      });
+    }
+  }
+
+  closeAssetPicker() { this.showAssetPicker = false; }
+
+  selectAsset(assetPath: string) {
+    if (this.assetPickerMode === 'single') {
+      this.assetPickerTarget.value = assetPath;
+    } else if (this.assetPickerMode === 'array-replace') {
+      this.assetPickerTarget.images[this.assetPickerIndex] = assetPath;
+    } else {
+      this.assetPickerTarget.images.push(assetPath);
+    }
+    this.showAssetPicker = false;
+  }
+
+  get filteredAssets(): string[] {
+    if (!this.assetSearch.trim()) return this.localAssets;
+    const q = this.assetSearch.toLowerCase();
+    return this.localAssets.filter(a => a.toLowerCase().includes(q));
+  }
+
+  assetFilename(assetPath: string): string {
+    return assetPath.split('/').pop() || assetPath;
   }
 }

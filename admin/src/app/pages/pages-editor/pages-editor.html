@@ -2,35 +2,44 @@
   <app-sidebar></app-sidebar>
   <div class="content">
     <div class="page-header">
-      <h1>Pages</h1>
-      <p>Edit page text content and meta information for every page of the website</p>
+      <h1>Content Manager</h1>
+      <p>Edit page text and images for every page of the website</p>
     </div>
-    @if (loading) {
-      <div class="loading">Loading...</div>
-    }
-    @if (!loading) {
-      <div class="pages-layout">
-        <div class="pages-list">
+
+    <div class="cms-layout">
+      <!-- ── LEFT PANEL ── -->
+      <div class="cms-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Website Pages</div>
+          @if (loading) {
+            <div class="nav-loading">Loading…</div>
+          }
           @for (p of pages; track p.pageKey || p.key || p.id) {
-            <div
-              class="page-item"
-              [class.active]="(selectedPage?.pageKey || selectedPage?.key) === (p.pageKey || p.key)"
-              (click)="selectPage(p)">
+            <div class="nav-item" [class.active]="isPageActive(p)" (click)="selectPage(p)">
               {{ pageDisplayName(p) }}
             </div>
           }
-          @if (pages.length === 0) {
-            <div class="empty-hint">No pages found</div>
+          @if (!loading && pages.length === 0) {
+            <div class="nav-empty">No pages found</div>
           }
         </div>
+      </div>
+
+      <!-- ── RIGHT PANEL ── -->
+      <div class="cms-editor">
+
+        @if (!selectedPage) {
+          <div class="empty-state">
+            <p>Select a page from the left panel to start editing</p>
+          </div>
+        }
 
         @if (selectedPage) {
-          <div class="page-edit">
+          <div class="editor-card">
             <h2>{{ pageDisplayName(selectedPage) }}</h2>
 
-            <!-- Meta fields -->
             <div class="section-group">
-              <div class="section-group-title">SEO & Meta</div>
+              <div class="section-group-title">SEO &amp; Meta</div>
               <div class="form-group">
                 <label>Page Title</label>
                 <textarea [(ngModel)]="editableMeta.title" name="title" rows="1"></textarea>
@@ -45,36 +54,122 @@
               </div>
             </div>
 
-            <!-- Section content fields -->
             @if (editableSections.length > 0) {
               <div class="section-group">
                 <div class="section-group-title">Page Content</div>
                 @for (s of editableSections; track s.key) {
                   <div class="form-group">
                     <label>{{ s.label }}</label>
-                    <textarea [(ngModel)]="s.value" [name]="s.key" [rows]="s.value.length > 120 ? 4 : 2"></textarea>
+                    @if (s.isArray) {
+                      <div class="image-array-editor">
+                        <div class="image-array-grid">
+                          @for (img of s.images; track img + $index) {
+                            <div class="img-card">
+                              <div class="img-card-thumb">
+                                @if (img) {
+                                  <img [src]="previewUrl(img)" alt="Image {{$index + 1}}"
+                                    (error)="$any($event.target).style.display='none'"
+                                    (load)="$any($event.target).style.display='block'" />
+                                } @else {
+                                  <div class="img-placeholder">No image</div>
+                                }
+                              </div>
+                              <div class="img-card-url">
+                                <input type="text" [(ngModel)]="s.images[$index]" [name]="s.key + '_' + $index" placeholder="/assets/images/…" />
+                              </div>
+                              <div class="img-card-actions">
+                                <button type="button" class="img-btn-move" (click)="moveImageUp(s, $index)" [disabled]="$index === 0" title="Move up">↑</button>
+                                <button type="button" class="img-btn-move" (click)="moveImageDown(s, $index)" [disabled]="$index === s.images.length - 1" title="Move down">↓</button>
+                                <button type="button" class="img-btn-browse" (click)="openAssetPicker(s, 'array-replace', $index)" title="Browse assets">⊞</button>
+                                <button type="button" class="img-btn-remove" (click)="removeImage(s, $index)" title="Remove">✕</button>
+                              </div>
+                            </div>
+                          }
+                        </div>
+                        <div class="image-array-add">
+                          <input type="text" [(ngModel)]="s.pendingUrl" [name]="s.key + '_new'" placeholder="Paste path or URL to add…" class="image-url-input" />
+                          <button type="button" class="btn-browse-assets" (click)="openAssetPicker(s, 'array-add')">Browse Assets</button>
+                          <button type="button" class="btn-add-img" (click)="addImage(s)">+ Add</button>
+                        </div>
+                        @if (s.images.length === 0) {
+                          <div class="img-array-empty">No images yet. Browse or paste a path above and click Add.</div>
+                        }
+                      </div>
+                    } @else if (isImageField(s.key)) {
+                      <div class="image-field-wrapper">
+                        <div class="image-input-row">
+                          <input type="text" [(ngModel)]="s.value" [name]="s.key" placeholder="/assets/images/… or paste URL" class="image-url-input" />
+                          <button type="button" class="btn-browse-assets" (click)="openAssetPicker(s, 'single')">Browse Assets</button>
+                        </div>
+                        @if (s.value) {
+                          <img [src]="previewUrl(s.value)" class="img-preview" alt="Preview"
+                            (error)="$any($event.target).style.display='none'"
+                            (load)="$any($event.target).style.display='block'" />
+                        }
+                      </div>
+                    } @else {
+                      <textarea [(ngModel)]="s.value" [name]="s.key" [rows]="s.value.length > 120 ? 4 : 2"></textarea>
+                    }
                   </div>
                 }
               </div>
             }
 
+            @if (editableSections.length === 0) {
+              <div class="no-sections-hint">
+                No content fields found for this page. Restart the backend server to populate default content.
+              </div>
+            }
+
             <div class="form-actions">
-              @if (saved) {
-                <span class="saved-msg">✓ Changes saved!</span>
-              }
+              @if (saved) { <span class="saved-msg">✓ Saved!</span> }
               <button class="btn-primary" (click)="save()" [disabled]="saving">
-                {{ saving ? 'Saving...' : 'Save Changes' }}
+                {{ saving ? 'Saving…' : 'Save Changes' }}
               </button>
             </div>
           </div>
         }
 
-        @if (!selectedPage) {
-          <div class="page-edit empty-state">
-            <p>Select a page from the list to edit its content</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ASSET PICKER MODAL ── -->
+@if (showAssetPicker) {
+  <div class="asset-picker-overlay" (click)="closeAssetPicker()">
+    <div class="asset-picker-modal" (click)="$event.stopPropagation()">
+      <div class="asset-picker-header">
+        <div class="asset-picker-title">
+          <span>Browse Frontend Assets</span>
+          <span class="asset-picker-hint">{{ localAssets.length }} images in /assets/images/</span>
+        </div>
+        <button class="asset-picker-close" (click)="closeAssetPicker()">✕</button>
+      </div>
+      <div class="asset-picker-search">
+        <input type="text" [(ngModel)]="assetSearch" placeholder="Search by filename…" class="asset-search-input" />
+      </div>
+      <div class="asset-picker-body">
+        @if (assetsLoading) {
+          <div class="asset-picker-loading">Loading assets…</div>
+        } @else if (filteredAssets.length === 0) {
+          <div class="asset-picker-empty">No assets found.</div>
+        } @else {
+          <div class="asset-picker-grid">
+            @for (asset of filteredAssets; track asset) {
+              <div class="asset-picker-item" (click)="selectAsset(asset)" [title]="assetFilename(asset)">
+                <div class="asset-picker-thumb">
+                  <img [src]="previewUrl(asset)" [alt]="assetFilename(asset)"
+                    (error)="$any($event.target).style.display='none'"
+                    (load)="$any($event.target).style.display='block'; $any($event.target).nextElementSibling.style.display='none'" />
+                  <div class="asset-picker-no-preview">🖼</div>
+                </div>
+                <div class="asset-picker-name">{{ assetFilename(asset) }}</div>
+              </div>
+            }
           </div>
         }
       </div>
-    }
+    </div>
   </div>
-</div>
+}

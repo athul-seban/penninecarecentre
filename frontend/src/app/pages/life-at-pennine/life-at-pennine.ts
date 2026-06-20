@@ -1,5 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { ContentService } from '../../core/content.service';
 
 @Component({
   selector: 'app-life-at-pennine',
@@ -8,7 +9,18 @@ import { RouterLink } from '@angular/router';
   templateUrl: './life-at-pennine.html',
   styleUrl: './life-at-pennine.css'
 })
-export class LifeAtPennineComponent implements AfterViewInit {
+export class LifeAtPennineComponent implements OnInit, AfterViewInit {
+  sections: Record<string, string> = {};
+
+  constructor(private content: ContentService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.content.getPage('life-at-pennine').subscribe({
+      next: s => { this.sections = s; },
+      error: () => this.router.navigate(['/not-found'])
+    });
+  }
+
   ngAfterViewInit(): void {
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {

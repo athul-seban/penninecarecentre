@@ -1,5 +1,7 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { ContentService } from '../../core/content.service';
 
 @Component({
   selector: 'app-team',
@@ -8,7 +10,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './team.html',
   styleUrl: './team.css'
 })
-export class TeamComponent implements AfterViewInit {
+export class TeamComponent implements OnInit, AfterViewInit {
+  sections: Record<string, string> = {};
+
+  constructor(private content: ContentService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.content.getPage('team').subscribe({
+      next: s => { this.sections = s; },
+      error: () => this.router.navigate(['/not-found'])
+    });
+  }
+
   ngAfterViewInit(): void {
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {

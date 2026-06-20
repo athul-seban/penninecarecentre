@@ -677,9 +677,7 @@
    ============================================================ */
 .hero-eyebrow {
   display: inline-block;
-  animation: eyebrowReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: 0.4s;
-  opacity: 0;
+  animation: eyebrowReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 @keyframes eyebrowReveal {
   from { opacity: 0; letter-spacing: 8px; }

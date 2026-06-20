@@ -4,7 +4,7 @@
     <div class="page-header">
       <div>
         <h1>Media Library</h1>
-        <p>Upload and manage images and files</p>
+        <p>Upload images here, then copy the URL and paste it into <a routerLink="/pages" style="color:#002b5b;font-weight:600">Pages → image fields</a></p>
       </div>
       <label class="btn-upload" [class.uploading]="uploading">
         {{ uploading ? 'Uploading...' : '+ Upload Files' }}
@@ -32,8 +32,13 @@
               }
             </div>
             <div class="media-info">
-              <span class="filename">{{ getFilename(f) }}</span>
-              <button class="btn-delete-sm" (click)="delete(f._id || f.id)">Delete</button>
+              <span class="filename" [title]="getFilename(f)">{{ getFilename(f) }}</span>
+              <div class="media-actions">
+                <button class="btn-copy-sm" (click)="copyUrl(f)" [class.copied]="copiedId === (f._id || f.id)">
+                  {{ copiedId === (f._id || f.id) ? '✓ Copied' : 'Copy URL' }}
+                </button>
+                <button class="btn-delete-sm" (click)="delete(f._id || f.id)">Delete</button>
+              </div>
             </div>
           </div>
         }

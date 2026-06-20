@@ -1,7 +1,9 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ContentService } from '../../core/content.service';
 
 @Component({
   selector: 'app-contact',
@@ -10,13 +12,21 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './contact.html',
   styleUrl: './contact.css'
 })
-export class ContactComponent implements AfterViewInit {
+export class ContactComponent implements OnInit, AfterViewInit {
+  sections: Record<string, string> = {};
   contactForm = { name: '', email: '', phone: '', subject: '', message: '' };
   submitting = false;
   submitted = false;
   submitError = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private content: ContentService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.content.getPage('contact').subscribe({
+      next: s => { this.sections = s; },
+      error: () => this.router.navigate(['/not-found'])
+    });
+  }
 
   ngAfterViewInit(): void {
     const observer = new IntersectionObserver((entries, obs) => {

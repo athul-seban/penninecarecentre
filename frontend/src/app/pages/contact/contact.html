@@ -1,28 +1,28 @@
 <div id="top">
 <header class="hero-sub">
   <div class="hero-content">
-    <p>We'd love to hear from you</p>
-    <h1>Stay Connected</h1>
+    <p>{{ sections['heroPretext'] || "We'd love to hear from you" }}</p>
+    <h1>{{ sections['heroTitle'] || 'Stay Connected' }}</h1>
   </div>
 </header>
 
 <section class="contact-container reveal-element">
   <div class="contact-info">
-    <h2 class="section-title-line">Reach us through</h2>
+    <h2 class="section-title-line">{{ sections['contactInfoTitle'] || 'Reach us through' }}</h2>
 
     <div class="info-item">
       <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-      <p>Pennine Care Centre<br />Turnlee Road, Glossop, Derbyshire, SK13 6JW</p>
+      <p>{{ sections['address'] || 'Pennine Care Centre, Turnlee Road, Glossop, Derbyshire, SK13 6JW' }}</p>
     </div>
 
     <div class="info-item">
       <i class="fas fa-phone" aria-hidden="true"></i>
-      <p>01457 862466 <span style="opacity: 0.75; font-size: 0.95rem">(General Enquiries)</span></p>
+      <p>{{ sections['phone'] || '01457 862466' }} <span style="opacity: 0.75; font-size: 0.95rem">(General Enquiries)</span></p>
     </div>
 
     <div class="info-item">
       <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
-      <p>Admin&#64;nyms-services.com</p>
+      <p>{{ sections['email'] || 'Admin@nyms-services.com' }}</p>
     </div>
 
     <div class="map-wrapper">
@@ -35,13 +35,13 @@
   </div>
 
   <div class="contact-form-wrapper">
-    <h3>Send us a Message</h3>
+    <h3>{{ sections['formTitle'] || 'Send us a Message' }}</h3>
 
     @if (submitted) {
       <div class="form-success">
         <div class="success-icon">✓</div>
-        <h4>Message Received!</h4>
-        <p>Thank you for getting in touch. A member of our team will respond within 24 hours.</p>
+        <h4>{{ sections['successHeading'] || 'Message Received!' }}</h4>
+        <p>{{ sections['successMessage'] || 'Thank you for getting in touch. A member of our team will respond within 24 hours.' }}</p>
         <button class="btn-reset" (click)="submitted = false">Send Another Message</button>
       </div>
     } @else {

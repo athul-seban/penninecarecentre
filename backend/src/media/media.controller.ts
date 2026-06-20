@@ -7,6 +7,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { MediaService } from './media.service';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @ApiTags('media')
 @UseGuards(JwtAuthGuard)
@@ -24,6 +26,21 @@ export class MediaController {
     @Body('folder') folder?: string,
     @Body('altText') altText?: string,
   ) { return this.media.upload(file, folder, altText); }
+
+  @Get('local-assets')
+  @ApiOperation({ summary: 'List image files from frontend/src/assets/images' })
+  listLocalAssets(): string[] {
+    const assetsDir = path.join(process.cwd(), '..', 'frontend', 'src', 'assets', 'images');
+    const imageExts = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg']);
+    try {
+      return fs.readdirSync(assetsDir)
+        .filter(f => imageExts.has(path.extname(f).toLowerCase()))
+        .sort()
+        .map(f => `/assets/images/${f}`);
+    } catch {
+      return [];
+    }
+  }
 
   @Get()
   @ApiOperation({ summary: 'List all uploaded media files' })

@@ -1,32 +1,32 @@
 <div id="top">
 <header class="hero-sub">
   <div class="hero-content">
-    <p>Build a rewarding, purposeful career</p>
-    <h1>Join Our Family</h1>
+    <p>{{ sections['heroSubtitle'] || 'Build a rewarding, purposeful career' }}</p>
+    <h1>{{ sections['heroTitle'] || 'Join Our Family' }}</h1>
   </div>
 </header>
 
 <!-- Benefits Section -->
 <section class="section-padding reveal-element">
   <div class="centered-header">
-    <h2 class="section-title-line">Why Work with Pennine?</h2>
-    <p>At Pennine Care Centre, we treat our employees as extended family. We know that top-tier care starts with supported, happy, and fully-empowered team members.</p>
+    <h2 class="section-title-line">{{ sections['benefitTitle'] || 'Why Work with Pennine?' }}</h2>
+    <p>{{ sections['benefitIntro'] || 'At Pennine Care Centre, we treat our employees as extended family. We know that top-tier care starts with supported, happy, and fully-empowered team members.' }}</p>
   </div>
   <div class="benefits-grid">
     <div class="benefit-card">
       <i class="fas fa-graduation-cap"></i>
-      <h3>Career Growth</h3>
-      <p>We fund and support NVQ qualifications, continuous clinical development courses, and offer clear pathways into leadership positions.</p>
+      <h3>{{ sections['benefitGrowth'] || 'Career Growth' }}</h3>
+      <p>{{ sections['benefitGrowthText'] || 'We fund and support NVQ qualifications, continuous clinical development courses, and offer clear pathways into leadership positions.' }}</p>
     </div>
     <div class="benefit-card">
       <i class="fas fa-heartbeat"></i>
-      <h3>Staff Wellbeing</h3>
-      <p>Mental well-being programs, regular physical assessments, free premium staff meals, and a dedicated cozy break lounge room.</p>
+      <h3>{{ sections['benefitWellbeing'] || 'Staff Wellbeing' }}</h3>
+      <p>{{ sections['benefitWellbeingText'] || 'Mental well-being programs, regular physical assessments, free premium staff meals, and a dedicated cozy break lounge room.' }}</p>
     </div>
     <div class="benefit-card">
       <i class="fas fa-coins"></i>
-      <h3>Competitive Pay</h3>
-      <p>Highly competitive hourly rates, weekend enhancements, pension match, childcare benefits, and longevity bonus structures.</p>
+      <h3>{{ sections['benefitPay'] || 'Competitive Pay' }}</h3>
+      <p>{{ sections['benefitPayText'] || 'Highly competitive hourly rates, weekend enhancements, pension match, childcare benefits, and longevity bonus structures.' }}</p>
     </div>
   </div>
 </section>
@@ -34,53 +34,34 @@
 <!-- Current Openings -->
 <section class="section-padding reveal-element" style="background-color: var(--white); border-top: 1px solid rgba(0,43,91,0.05); border-bottom: 1px solid rgba(0,43,91,0.05)">
   <div class="centered-header">
-    <h2 class="section-title-line">Current Openings</h2>
-    <p>Browse our live opportunities in Glossop. Help us deliver dignified care in the Peak District.</p>
+    <h2 class="section-title-line">{{ sections['jobsTitle'] || 'Current Openings' }}</h2>
+    <p>{{ sections['jobsIntro'] || 'Browse our live opportunities in Glossop. Help us deliver dignified care in the Peak District.' }}</p>
   </div>
   <div class="job-listings-container">
-    <div class="job-card">
-      <div class="job-details">
-        <div class="job-meta">
-          <span><i class="fas fa-clock"></i> Full-Time</span>
-          <span><i class="fas fa-map-marker-alt"></i> Glossop, Derbyshire</span>
+    @for (job of jobs; track job.id) {
+      <div class="job-card">
+        <div class="job-details">
+          <div class="job-meta">
+            <span><i class="fas fa-clock"></i> {{ job.type || 'Full-Time' }}</span>
+            <span><i class="fas fa-map-marker-alt"></i> {{ job.location || 'Glossop, Derbyshire' }}</span>
+          </div>
+          <h3>{{ job.title }}</h3>
+          <p class="job-desc">{{ job.description }}</p>
         </div>
-        <h3>Senior Care Assistant</h3>
-        <p class="job-desc">Lead shift groups of care workers, assist in personal care, manage records, and coordinate with nurses to maintain our person-centred care framework.</p>
+        <div><button class="btn-gold" (click)="scrollToForm(job.title)">Apply Now</button></div>
       </div>
-      <div><button class="btn-gold" (click)="scrollToForm('Senior Care Assistant')">Apply Now</button></div>
-    </div>
-
-    <div class="job-card">
-      <div class="job-details">
-        <div class="job-meta">
-          <span><i class="fas fa-clock"></i> Full / Part-Time</span>
-          <span><i class="fas fa-map-marker-alt"></i> Glossop, Derbyshire</span>
-        </div>
-        <h3>Registered Nurse (RGN / RMN)</h3>
-        <p class="job-desc">Administer clinical medications, plan clinical pathways, manage risk assessments, and lead specialized dementia/rehabilitation sessions.</p>
-      </div>
-      <div><button class="btn-gold" (click)="scrollToForm('Registered Nurse')">Apply Now</button></div>
-    </div>
-
-    <div class="job-card">
-      <div class="job-details">
-        <div class="job-meta">
-          <span><i class="fas fa-clock"></i> Full-Time</span>
-          <span><i class="fas fa-map-marker-alt"></i> Glossop, Derbyshire</span>
-        </div>
-        <h3>Activities Coordinator</h3>
-        <p class="job-desc">Develop, schedule, and oversee communal intergenerational play, pet therapies, arts, crafts, and localized Peak District trips for residents.</p>
-      </div>
-      <div><button class="btn-gold" (click)="scrollToForm('Activities Coordinator')">Apply Now</button></div>
-    </div>
+    }
+    @if (jobs.length === 0) {
+      <p style="text-align:center; color: #777; padding: 32px 0;">No openings at this time. Please check back soon.</p>
+    }
   </div>
 </section>
 
 <!-- Application Form -->
 <section id="applyForm" class="section-padding apply-form-section reveal-element">
   <div class="centered-header">
-    <h2 class="section-title-line">Quick Application</h2>
-    <p>Complete the secure form below to start your application process with Pennine Care Centre.</p>
+    <h2 class="section-title-line">{{ sections['applyTitle'] || 'Quick Application' }}</h2>
+    <p>{{ sections['applyIntro'] || 'Complete the secure form below to start your application process with Pennine Care Centre.' }}</p>
   </div>
   <div class="apply-form-wrapper">
     <h3>Submit Application</h3>
@@ -104,10 +85,9 @@
           <label for="position">Position Applied For *</label>
           <select id="position" name="position" [(ngModel)]="applicationForm.position" required>
             <option value="">-- Please Select --</option>
-            <option value="Senior Care Assistant">Senior Care Assistant</option>
-            <option value="Registered Nurse">Registered Nurse (RGN / RMN)</option>
-            <option value="Activities Coordinator">Activities Coordinator</option>
-            <option value="Chef / Kitchen Assistant">Chef / Kitchen Assistant</option>
+            @for (job of jobs; track job.id) {
+              <option [value]="job.title">{{ job.title }}</option>
+            }
             <option value="Other">Other Care Role</option>
           </select>
         </div>

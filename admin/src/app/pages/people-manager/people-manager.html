@@ -1,0 +1,245 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <h1>People</h1>
+      <p>Manage team members, job listings, and reviews</p>
+    </div>
+
+    <div class="cms-layout">
+      <!-- ── LEFT PANEL ── -->
+      <div class="cms-nav">
+
+        <!-- Team Members -->
+        <div class="nav-section">
+          <div class="nav-section-title">
+            Team Members
+            <button class="btn-add-inline" (click)="addTeamMember()" title="Add team member">+</button>
+          </div>
+          @if (loadingTeam) { <div class="nav-loading">Loading…</div> }
+          @if (activeType === 'team' && isNewTeam) {
+            <div class="nav-item active">+ New Member</div>
+          }
+          @for (m of teamMembers; track m._id || m.id) {
+            <div class="nav-item" [class.active]="isTeamActive(m)" (click)="selectTeam(m)">
+              <span class="nav-item-main">{{ m.name }}</span>
+              <span class="nav-item-sub">{{ m.role }}</span>
+            </div>
+          }
+          @if (!loadingTeam && teamMembers.length === 0) {
+            <div class="nav-empty">No members yet</div>
+          }
+        </div>
+
+        <!-- Job Listings -->
+        <div class="nav-section">
+          <div class="nav-section-title">
+            Job Listings
+            <button class="btn-add-inline" (click)="addJob()" title="Add job listing">+</button>
+          </div>
+          @if (loadingJobs) { <div class="nav-loading">Loading…</div> }
+          @if (activeType === 'career' && isNewJob) {
+            <div class="nav-item active">+ New Job</div>
+          }
+          @for (j of jobs; track j._id || j.id) {
+            <div class="nav-item" [class.active]="isJobActive(j)" (click)="selectJob(j)">
+              <span class="nav-item-main">{{ j.title }}</span>
+              <span class="nav-badge" [class.open]="j.isOpen" [class.closed]="!j.isOpen">
+                {{ j.isOpen ? 'Open' : 'Closed' }}
+              </span>
+            </div>
+          }
+          @if (!loadingJobs && jobs.length === 0) {
+            <div class="nav-empty">No jobs yet</div>
+          }
+        </div>
+
+        <!-- Reviews -->
+        <div class="nav-section">
+          <div class="nav-section-title">
+            Reviews
+            <button class="btn-add-inline" (click)="addReview()" title="Add review">+</button>
+          </div>
+          @if (loadingReviews) { <div class="nav-loading">Loading…</div> }
+          @if (activeType === 'review' && isNewReview) {
+            <div class="nav-item active">+ New Review</div>
+          }
+          @for (r of reviews; track r._id || r.id) {
+            <div class="nav-item" [class.active]="isReviewActive(r)" (click)="selectReview(r)">
+              <span class="nav-item-main">{{ r.authorName }}</span>
+              <span class="nav-item-sub">{{ stars(r.rating) }} {{ r.isVisible ? '' : '(hidden)' }}</span>
+            </div>
+          }
+          @if (!loadingReviews && reviews.length === 0) {
+            <div class="nav-empty">No reviews yet</div>
+          }
+        </div>
+
+      </div>
+
+      <!-- ── RIGHT PANEL ── -->
+      <div class="cms-editor">
+
+        @if (!activeType) {
+          <div class="empty-state">
+            <p>Select an item from the left panel to start editing</p>
+          </div>
+        }
+
+        <!-- TEAM EDITOR -->
+        @if (activeType === 'team' && (selectedTeam || isNewTeam)) {
+          <div class="editor-card">
+            <div class="editor-header-row">
+              <h2>{{ isNewTeam ? 'Add Team Member' : 'Edit Team Member' }}</h2>
+              @if (!isNewTeam) {
+                <button class="btn-danger-sm" (click)="deleteTeam(selectedTeam?._id || selectedTeam?.id)">Delete</button>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" [(ngModel)]="teamForm.name" name="name" />
+            </div>
+            <div class="form-group">
+              <label>Role / Job Title</label>
+              <input type="text" [(ngModel)]="teamForm.role" name="role" />
+            </div>
+            <div class="form-group">
+              <label>Bio</label>
+              <textarea [(ngModel)]="teamForm.bio" name="bio" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Photo URL</label>
+              <div class="image-input-row">
+                <input type="text" [(ngModel)]="teamForm.photoUrl" name="photoUrl" placeholder="Paste image URL from Media Library…" class="image-url-input" />
+                <a routerLink="/media" class="btn-browse-media">Browse Media</a>
+              </div>
+              @if (teamForm.photoUrl) {
+                <img [src]="teamForm.photoUrl" class="img-preview" alt="Preview"
+                  (error)="$any($event.target).style.display='none'"
+                  (load)="$any($event.target).style.display='block'" />
+              }
+            </div>
+            <div class="toggle-row">
+              <label class="toggle-label">
+                <input type="checkbox" [(ngModel)]="teamForm.isActive" name="isActive" />
+                <span>Active (visible on website)</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              @if (savedTeam) { <span class="saved-msg">✓ Saved!</span> }
+              <button class="btn-primary" (click)="saveTeam()" [disabled]="savingTeam">
+                {{ savingTeam ? 'Saving…' : (isNewTeam ? 'Add Member' : 'Save Changes') }}
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- CAREER EDITOR -->
+        @if (activeType === 'career' && (selectedJob || isNewJob)) {
+          <div class="editor-card">
+            <div class="editor-header-row">
+              <h2>{{ isNewJob ? 'Add Job Listing' : 'Edit Job Listing' }}</h2>
+              @if (!isNewJob) {
+                <button class="btn-danger-sm" (click)="deleteJob(selectedJob?._id || selectedJob?.id)">Delete</button>
+              }
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label>Job Title</label>
+                <input type="text" [(ngModel)]="jobForm.title" name="title" />
+              </div>
+              <div class="form-group">
+                <label>Department</label>
+                <input type="text" [(ngModel)]="jobForm.department" name="department" />
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label>Location</label>
+                <input type="text" [(ngModel)]="jobForm.location" name="location" />
+              </div>
+              <div class="form-group">
+                <label>Employment Type</label>
+                <select [(ngModel)]="jobForm.type" name="type">
+                  <option>Full-time</option>
+                  <option>Part-time</option>
+                  <option>Bank</option>
+                  <option>Zero-hours</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea [(ngModel)]="jobForm.description" name="description" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Requirements</label>
+              <textarea [(ngModel)]="jobForm.requirements" name="requirements" rows="4"></textarea>
+            </div>
+            <div class="toggle-row">
+              <label class="toggle-label">
+                <input type="checkbox" [(ngModel)]="jobForm.isOpen" name="isOpen" />
+                <span>Position is Open</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              @if (savedJob) { <span class="saved-msg">✓ Saved!</span> }
+              <button class="btn-primary" (click)="saveJob()" [disabled]="savingJob">
+                {{ savingJob ? 'Saving…' : (isNewJob ? 'Post Job' : 'Save Changes') }}
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- REVIEW EDITOR -->
+        @if (activeType === 'review' && (selectedReview || isNewReview)) {
+          <div class="editor-card">
+            <div class="editor-header-row">
+              <h2>{{ isNewReview ? 'Add Review' : 'Edit Review' }}</h2>
+              @if (!isNewReview) {
+                <button class="btn-danger-sm" (click)="deleteReview(selectedReview?._id || selectedReview?.id)">Delete</button>
+              }
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label>Author Name</label>
+                <input type="text" [(ngModel)]="reviewForm.authorName" name="authorName" />
+              </div>
+              <div class="form-group">
+                <label>Source (e.g. Google)</label>
+                <input type="text" [(ngModel)]="reviewForm.source" name="source" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Rating (1–5)</label>
+              <input type="number" [(ngModel)]="reviewForm.rating" name="rating" min="1" max="5" />
+            </div>
+            <div class="form-group">
+              <label>Review Text</label>
+              <textarea [(ngModel)]="reviewForm.text" name="text" rows="5"></textarea>
+            </div>
+            <div class="toggle-row">
+              <label class="toggle-label">
+                <input type="checkbox" [(ngModel)]="reviewForm.isVisible" name="isVisible" />
+                <span>Visible on website</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              @if (savedReview) { <span class="saved-msg">✓ Saved!</span> }
+              <button class="btn-primary" (click)="saveReview()" [disabled]="savingReview">
+                {{ savingReview ? 'Saving…' : (isNewReview ? 'Add Review' : 'Save Changes') }}
+              </button>
+            </div>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>

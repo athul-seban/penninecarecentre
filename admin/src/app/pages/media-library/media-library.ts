@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-media-library',
-  imports: [CommonModule, Sidebar],
+  imports: [CommonModule, RouterLink, Sidebar],
   templateUrl: './media-library.html',
   styleUrl: './media-library.css'
 })
@@ -40,6 +41,16 @@ export class MediaLibrary implements OnInit {
   delete(id: string) {
     if (!confirm('Delete this file?')) return;
     this.api.deleteMedia(id).subscribe(() => this.load());
+  }
+
+  copiedId: string | null = null;
+
+  copyUrl(file: any) {
+    const url = this.getUrl(file);
+    navigator.clipboard.writeText(url).then(() => {
+      this.copiedId = file._id || file.id;
+      setTimeout(() => { this.copiedId = null; }, 2000);
+    });
   }
 
   isImage(file: any): boolean {

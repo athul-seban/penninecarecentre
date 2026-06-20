@@ -1,24 +1,40 @@
 <div id="top">
-
   <!-- Hero Showcase Section -->
   <header class="hero">
-    <video #heroVideo autoplay muted loop playsinline class="hero-img" poster="/assets/images/pennine-suite-hero.png">
+    <video
+      #heroVideo
+      autoplay
+      muted
+      loop
+      playsinline
+      class="hero-img"
+      poster="/assets/images/pennine-suite-hero.png"
+    >
       <source src="/assets/images/pennine-care-tour.mp4" type="video/mp4" />
       <source src="/assets/images/pennine-care-tour.webm" type="video/webm" />
     </video>
     <div class="hero-overlay"></div>
     <div class="video-controls">
-      <button class="mute-btn" (click)="toggleAudio()" [title]="isMuted ? 'Unmute video' : 'Mute video'" [attr.aria-label]="isMuted ? 'Unmute video' : 'Mute video'">
+      <button
+        class="mute-btn"
+        (click)="toggleAudio()"
+        [title]="isMuted ? 'Unmute video' : 'Mute video'"
+        [attr.aria-label]="isMuted ? 'Unmute video' : 'Mute video'"
+      >
         <i [class]="isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up'"></i>
       </button>
-      <span class="mute-label">{{ isMuted ? 'Sound Off' : 'Sound On' }}</span>
     </div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Experience Excellence</p>
-      <h1>Caring is what we do best</h1>
-      <a routerLink="/contact" class="btn-gold">Book a Visit</a>
+      <p class="hero-eyebrow">{{ sections['heroEyebrow'] || 'Experience Excellence' }}</p>
+      <h1>{{ sections['heroHeadline'] || 'Caring is what we do best' }}</h1>
+      <a routerLink="/contact" class="btn-gold">{{ sections['heroCta'] || 'Book a Visit' }}</a>
     </div>
-    <button class="hero-scroll-cue" (click)="scrollToSuites()" [class.hidden]="!scrollCueVisible" aria-label="Scroll to suites">
+    <button
+      class="hero-scroll-cue"
+      (click)="scrollToSuites()"
+      [class.hidden]="!scrollCueVisible"
+      aria-label="Scroll to suites"
+    >
       <span class="mouse-icon"><span class="mouse-wheel"></span></span>
       <span class="scroll-label">Scroll</span>
     </button>
@@ -26,10 +42,7 @@
 
   <!-- General Introduction Banner -->
   <section class="intro-box reveal-fade-up">
-    <p>
-      Pennine Care centre specialises in providing personalised residential;
-      consisting of Pennine Suite and Moorland Suite (male only)
-    </p>
+    <p>{{ sections['introText'] || 'Pennine Care Centre specialises in providing personalised residential care, consisting of the Pennine Suite and Moorland Suite (male only).' }}</p>
   </section>
 
   <!-- Section: Pennine Suite Preview -->
@@ -55,13 +68,8 @@
           </div>
         </div>
         <div class="suite-content">
-          <h2>Pennine Suite</h2>
-          <p>
-            With fully secured accommodation and 24 hour support, Pennine
-            suite caters to a variety of needs. Our person-centred approach
-            ensures that residents are encouraged to live a lifestyle of their
-            choosing.
-          </p>
+          <h2>{{ sections['pennineTitle'] || 'Pennine Suite' }}</h2>
+          <p>{{ sections['pennineDescription'] || 'With fully secured accommodation and 24 hour support, Pennine Suite caters to a variety of needs. Our person-centred approach ensures that residents are encouraged to live a lifestyle of their choosing.' }}</p>
           <a routerLink="/pennine-suite" class="btn-gold">Explore Suite</a>
         </div>
       </div>
@@ -91,12 +99,8 @@
           </div>
         </div>
         <div class="suite-content">
-          <h2>Moorland Suite</h2>
-          <p>
-            Our Moorland Suite is a male only unit catering to residents with
-            special requirements. Supported by our caring staff this unique
-            unit provides dignified and quality care.
-          </p>
+          <h2>{{ sections['moorlandTitle'] || 'Moorland Suite' }}</h2>
+          <p>{{ sections['moorlandDescription'] || 'Our Moorland Suite is a male only unit catering to residents with special requirements. Supported by our caring staff, this unique unit provides dignified and quality care.' }}</p>
           <a routerLink="/moorland-suite" class="btn-gold">Explore Suite</a>
         </div>
       </div>
@@ -111,7 +115,10 @@
         <img
           src="/assets/images/service-dementia-care.png"
           alt="Dementia Care Specialist Support"
-          (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Dementia+Care'"
+          (error)="
+            $any($event.target).src =
+              'https://placehold.co/400x300/002b5b/ffffff?text=Dementia+Care'
+          "
         />
         <h4>Dementia Care</h4>
       </div>
@@ -119,7 +126,10 @@
         <img
           src="/assets/images/service-male-only.png"
           alt="Dedicated Male Only Care Unit"
-          (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Male+only+Unit'"
+          (error)="
+            $any($event.target).src =
+              'https://placehold.co/400x300/002b5b/ffffff?text=Male+only+Unit'
+          "
         />
         <h4>Male only Unit</h4>
       </div>
@@ -127,7 +137,10 @@
         <img
           src="/assets/images/service-younger-people.png"
           alt="Younger People Care Community"
-          (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Younger+People+Community'"
+          (error)="
+            $any($event.target).src =
+              'https://placehold.co/400x300/002b5b/ffffff?text=Younger+People+Community'
+          "
         />
         <h4>Younger people - community</h4>
       </div>
@@ -135,7 +148,10 @@
         <img
           src="/assets/images/service-emotional-physical.png"
           alt="Comprehensive Emotional and Physical Care"
-          (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Emotional+and+Physical'"
+          (error)="
+            $any($event.target).src =
+              'https://placehold.co/400x300/002b5b/ffffff?text=Emotional+and+Physical'
+          "
         />
         <h4>Emotional and physical needs</h4>
       </div>
@@ -144,15 +160,16 @@
 
   <!-- Section: Life at Pennine Grid -->
   <section id="life" class="grid-section reveal-fade-up" style="background: var(--navy)">
-    <h2 style="color: var(--gold)" class="section-title-line">
-      Life at Pennine Care Centre
-    </h2>
+    <h2 style="color: var(--gold)" class="section-title-line">Life at Pennine Care Centre</h2>
     <div class="custom-grid stagger-container">
       <div class="feature-card life-card reveal-child">
         <img
           src="/assets/images/life-pennine-gallery.png"
           alt="Life at Pennine Care Centre"
-          (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Life+at+Pennine'"
+          (error)="
+            $any($event.target).src =
+              'https://placehold.co/400x300/c5a059/ffffff?text=Life+at+Pennine'
+          "
         />
         <h4>Life at Pennine</h4>
       </div>
@@ -160,7 +177,10 @@
         <img
           src="/assets/images/life-person-centered-care.png"
           alt="Person Centered Care Framework"
-          (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Person+Centered'"
+          (error)="
+            $any($event.target).src =
+              'https://placehold.co/400x300/c5a059/ffffff?text=Person+Centered'
+          "
         />
         <h4>Person Centered Care</h4>
       </div>
@@ -168,7 +188,9 @@
         <img
           src="/assets/images/life-activities.png"
           alt="Recreational Activities Setup"
-          (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Activities'"
+          (error)="
+            $any($event.target).src = 'https://placehold.co/400x300/c5a059/ffffff?text=Activities'
+          "
         />
         <h4>Activities</h4>
       </div>
@@ -176,7 +198,10 @@
         <img
           src="/assets/images/life-nutrition-dining.png"
           alt="Nutrition and Dining Programs"
-          (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Nutrition+and+Dining'"
+          (error)="
+            $any($event.target).src =
+              'https://placehold.co/400x300/c5a059/ffffff?text=Nutrition+and+Dining'
+          "
         />
         <h4>Nutrition and dining</h4>
       </div>
@@ -186,18 +211,21 @@
   <!-- Testimonials Section -->
   <section id="testimonials" class="testimonials-section reveal-fade-up">
     <div class="testimonials-container">
-      <p class="section-subtitle">Read Verified Client Feedback</p>
-      <h2 class="section-title-line" style="margin-bottom: 20px;">Google Reviews</h2>
+      <p class="section-subtitle">{{ sections['testimonialsSubtitle'] || 'Read Verified Client Feedback' }}</p>
+      <h2 class="section-title-line" style="margin-bottom: 20px">{{ sections['testimonialsTitle'] || 'Google Reviews' }}</h2>
 
       <!-- Google live badge dynamic aggregator header -->
       <div class="google-reviews-header">
         <div class="google-logo-box">
           <svg viewBox="0 0 24 24" width="100" height="30" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.113-5.136 4.113-3.41 0-6.19-2.78-6.19-6.19 0-3.41 2.78-6.19 6.19-6.19 1.542 0 2.954.568 4.053 1.503l3.056-3.056C19.145 2.651 15.914 1.5 12.24 1.5 6.435 1.5 1.714 6.22 1.714 12s4.72 10.5 10.526 10.5c5.736 0 10.74-3.9 10.74-10.5 0-.713-.08-1.25-.214-1.715H12.24z" fill="#4285F4"/>
+            <path
+              d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.113-5.136 4.113-3.41 0-6.19-2.78-6.19-6.19 0-3.41 2.78-6.19 6.19-6.19 1.542 0 2.954.568 4.053 1.503l3.056-3.056C19.145 2.651 15.914 1.5 12.24 1.5 6.435 1.5 1.714 6.22 1.714 12s4.72 10.5 10.526 10.5c5.736 0 10.74-3.9 10.74-10.5 0-.713-.08-1.25-.214-1.715H12.24z"
+              fill="#4285F4"
+            />
           </svg>
           <div class="google-reviews-count">PENNINE CARE CENTRE</div>
         </div>
-        <div class="google-rating-number">4.8/5</div>
+        <div class="google-rating-number">{{ sections['reviewRating'] || '4.8/5' }}</div>
         <div class="google-stars-meta">
           <div class="google-stars">
             <i class="fas fa-star"></i>
@@ -206,48 +234,57 @@
             <i class="fas fa-star"></i>
             <i class="fas fa-star-half-alt"></i>
           </div>
-          <div class="google-reviews-count">Based on 48 Google Reviews</div>
+          <div class="google-reviews-count">{{ sections['reviewCount'] || 'Based on 48 Google Reviews' }}</div>
         </div>
-        <a href="https://www.carehome.co.uk/carehome.cfm/searchazref/10003005PENB?rcsid=1003" target="_blank" class="btn-google-write">
-          <i class="fab fa-google" style="margin-right: 6px;"></i>Write a Review
+        <a
+          href="https://www.carehome.co.uk/carehome.cfm/searchazref/10003005PENB?rcsid=1003"
+          target="_blank"
+          class="btn-google-write"
+        >
+          <i class="fab fa-google" style="margin-right: 6px"></i>Write a Review
         </a>
       </div>
 
       <div class="testimonials-slider">
         <div class="testimonial-track-container">
-          <div class="testimonial-track" [style.transform]="'translateX(-' + testimonialIndex * 100 + '%)'">
+          <div
+            class="testimonial-track"
+            [style.transform]="'translateX(-' + testimonialIndex * 100 + '%)'"
+          >
             @for (t of testimonials; track t.name; let i = $index) {
-            <div
-              class="testimonial-slide"
-              [class.active]="i === testimonialIndex"
-            >
-              <div class="testimonial-quote-icon">
-                <i class="fas fa-quote-left"></i>
-              </div>
-              <div class="reviewer-profile">
-                <div class="reviewer-avatar" [style.background-color]="t.color">{{ t.initial }}</div>
-                <div class="reviewer-meta">
-                  <div class="reviewer-name-row">
-                    <span class="reviewer-name">{{ t.name }}</span>
-                    <i class="fab fa-google google-logo-badge"></i>
-                  </div>
-                  <div class="reviewer-subtitle">{{ t.subtitle }}</div>
+              <div class="testimonial-slide" [class.active]="i === testimonialIndex">
+                <div class="testimonial-quote-icon">
+                  <i class="fas fa-quote-left"></i>
                 </div>
+                <div class="reviewer-profile">
+                  <div class="reviewer-avatar" [style.background-color]="t.color">
+                    {{ t.initial }}
+                  </div>
+                  <div class="reviewer-meta">
+                    <div class="reviewer-name-row">
+                      <span class="reviewer-name">{{ t.name }}</span>
+                      <i class="fab fa-google google-logo-badge"></i>
+                    </div>
+                    <div class="reviewer-subtitle">{{ t.subtitle }}</div>
+                  </div>
+                </div>
+                <div class="verified-badge">
+                  <i class="fas fa-check-circle"></i> Google Verified Review
+                </div>
+                <div class="testimonial-rating">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">{{ t.text }}</p>
+                <div class="testimonial-divider"></div>
+                <strong class="testimonial-author"
+                  >Reviewed on Google Maps
+                  <span class="author-relation">• {{ t.date }}</span></strong
+                >
               </div>
-              <div class="verified-badge">
-                <i class="fas fa-check-circle"></i> Google Verified Review
-              </div>
-              <div class="testimonial-rating">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <p class="testimonial-text">{{ t.text }}</p>
-              <div class="testimonial-divider"></div>
-              <strong class="testimonial-author">Reviewed on Google Maps <span class="author-relation">• {{ t.date }}</span></strong>
-            </div>
             }
           </div>
         </div>
@@ -270,17 +307,10 @@
   <section class="peace-section reveal-fade-up">
     <div class="peace-wrapper">
       <div class="peace-text">
-        <h2>DELIVERING PEACE OF MIND</h2>
+        <h2>{{ sections['peaceTitle'] || 'DELIVERING PEACE OF MIND' }}</h2>
+        <p>{{ sections['peaceText'] || 'Through our person-centred care, we aim to provide each of our residents with the highest possible quality of life, luxurious accommodation, and discreet support.' }}</p>
         <p>
-          Through our person-centred care, we aim to provide each of our
-          residents with the highest possible quality of life, luxurious
-          accommodation, and discreet support.
-        </p>
-        <p>
-          <em class="peace-quote"
-            >"To provide exceptional care, delivered by compassionate people,
-            in the highest quality homes."</em
-          >
+          <em class="peace-quote">{{ sections['peaceQuote'] || '"To provide exceptional care, delivered by compassionate people, in the highest quality homes."' }}</em>
         </p>
         <div class="peace-btn-group">
           <a routerLink="/contact" class="btn-gold">Request Brochure</a>
@@ -289,9 +319,9 @@
       </div>
       <div class="peace-img">
         <img
-          src="/assets/images/pennine-suite-quality-care.png"
+          [src]="sections['peaceImage'] || '/assets/images/pennine-suite-quality-care.png'"
           alt="Quality Compassionate Care Specialists"
-          (error)="$any($event.target).src='https://placehold.co/800x600/c5a059/002b5b?text=Quality+Care'"
+          (error)="$any($event.target).src = 'https://placehold.co/800x600/c5a059/002b5b?text=Quality+Care'"
         />
       </div>
     </div>
@@ -302,22 +332,22 @@
     <img
       src="/assets/images/award-care-association.jpg"
       alt="Industry Association Award 1"
-      (error)="$any($event.target).src='https://placehold.co/150x120/ffffff/002b5b?text=Award+1'"
+      (error)="$any($event.target).src = 'https://placehold.co/150x120/ffffff/002b5b?text=Award+1'"
     />
     <img
       src="/assets/images/award-care-standards.jpg"
       alt="Care Standards Award 2"
-      (error)="$any($event.target).src='https://placehold.co/150x120/ffffff/002b5b?text=Award+2'"
+      (error)="$any($event.target).src = 'https://placehold.co/150x120/ffffff/002b5b?text=Award+2'"
     />
     <img
       src="/assets/images/award-healthcare-excellence.jpg"
       alt="Health Care Excellence Award 3"
-      (error)="$any($event.target).src='https://placehold.co/150x120/ffffff/002b5b?text=Award+3'"
+      (error)="$any($event.target).src = 'https://placehold.co/150x120/ffffff/002b5b?text=Award+3'"
     />
     <img
       src="/assets/images/award-cqc-good.jpg"
       alt="Pennine CQC Good Quality Standard Award 4"
-      (error)="$any($event.target).src='https://placehold.co/150x120/ffffff/002b5b?text=Award+4'"
+      (error)="$any($event.target).src = 'https://placehold.co/150x120/ffffff/002b5b?text=Award+4'"
     />
   </div>
 
@@ -329,5 +359,4 @@
       title="Pennine Care Centre Map Location"
     ></iframe>
   </div>
-
 </div>

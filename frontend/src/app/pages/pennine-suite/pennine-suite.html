@@ -3,8 +3,8 @@
   <!-- HERO BANNER -->
   <header class="hero-sub">
     <div class="hero-content">
-      <p>A Welcoming, Supportive Environment</p>
-      <h1>Pennine Suite</h1>
+      <p>{{ sections['heroSubtitle'] || 'A Welcoming, Supportive Environment' }}</p>
+      <h1>{{ sections['heroTitle'] || 'Pennine Suite' }}</h1>
     </div>
   </header>
 
@@ -30,23 +30,9 @@
         </button>
       </div>
       <div class="row-text">
-        <h2>An Introduction to Tasteful Modernity</h2>
-        <p>
-          Nestling in the beautiful market town of Glossop, on the edge of the Peak District National Park,
-          Pennine Care is a newly built, purpose-designed residential care home. Our Pennine Suite offers
-          a warm, welcoming environment where residents feel truly at home.
-        </p>
-        <p>
-          Thoughtfully designed to blend contemporary comfort with a homely atmosphere, every detail of
-          the Pennine Suite has been crafted with our residents' wellbeing and dignity in mind. From the
-          light-filled communal spaces to the carefully appointed private bedrooms, quality is present
-          at every turn.
-        </p>
-        <p>
-          We believe that moving into residential care should feel like a positive new chapter — one filled
-          with warmth, connection, and the very best of care. Our dedicated team is on hand around the
-          clock to ensure every resident feels supported, valued, and at ease.
-        </p>
+        <h2>{{ sections['introTitle'] || 'An Introduction to Tasteful Modernity' }}</h2>
+        <p>{{ sections['introText'] || 'Nestling in the beautiful market town of Glossop, on the edge of the Peak District National Park, Pennine Care is a newly built, purpose-designed residential care home. Our Pennine Suite offers a warm, welcoming environment where residents feel truly at home.' }}</p>
+        <p>{{ sections['introDetailText'] || 'Thoughtfully designed to blend contemporary comfort with a homely atmosphere, every detail of the Pennine Suite has been crafted with our residents\' wellbeing and dignity in mind.' }}</p>
         <a routerLink="/contact" class="btn-gold">Schedule a Visit</a>
       </div>
     </div>
@@ -70,25 +56,9 @@
         </button>
       </div>
       <div class="row-text">
-        <h2>Our Warm &amp; Caring Community</h2>
-        <p>
-          At the heart of the Pennine Suite is a vibrant, caring community where residents are encouraged
-          to live life to the full. Our spacious lounge and dining areas are designed to foster friendship,
-          laughter, and a true sense of belonging.
-        </p>
-        <p>
-          From shared mealtimes prepared with fresh, seasonal ingredients to a rich programme of activities
-          tailored to individual interests, we ensure every day offers something meaningful. Whether it is a
-          quiet morning with a newspaper or an afternoon of music and reminiscence, life here is enriching.
-        </p>
-        <p>
-          Our compassionate care team takes the time to truly know each resident — their history, preferences,
-          and what brings them joy — so that care is always personal, respectful, and dignified.
-        </p>
-        <em>
-          "A place where every resident is known by name, valued as an individual, and treated with
-          the utmost kindness and respect."
-        </em>
+        <h2>{{ sections['communityTitle'] || 'Our Warm &amp; Caring Community' }}</h2>
+        <p>{{ sections['communityText'] || 'At the heart of the Pennine Suite is a vibrant, caring community where residents are encouraged to live life to the full. Our spacious lounge and dining areas are designed to foster friendship, laughter, and a true sense of belonging.' }}</p>
+        <em>{{ sections['communityQuote'] || '"A place where every resident is known by name, valued as an individual, and treated with the utmost kindness and respect."' }}</em>
       </div>
     </div>
 
@@ -111,21 +81,9 @@
         </button>
       </div>
       <div class="row-text">
-        <h2>Private, Well-Appointed Bedrooms</h2>
-        <p>
-          Each bedroom within the Pennine Suite is a private sanctuary — a space that truly belongs to
-          the resident. Generously proportioned and filled with natural light, our rooms offer a calm
-          and comfortable retreat at any hour of the day.
-        </p>
-        <p>
-          Residents are warmly encouraged to personalise their rooms with cherished possessions, family
-          photographs, and favourite furnishings, creating a space that reflects their personality and
-          feels unmistakably like home.
-        </p>
-        <p>
-          Every room features an en-suite wet room, nurse call system, flat-screen television, and
-          individually controlled heating, ensuring comfort, privacy, and independence at every moment.
-        </p>
+        <h2>{{ sections['bedroomsTitle'] || 'Private, Well-Appointed Bedrooms' }}</h2>
+        <p>{{ sections['bedroomsText'] || 'Each bedroom within the Pennine Suite is a private sanctuary — a space that truly belongs to the resident. Generously proportioned and filled with natural light, our rooms offer a calm and comfortable retreat.' }}</p>
+        <p>{{ sections['bedroomsAmenitiesText'] || 'Every room features an en-suite wet room, nurse call system, flat-screen television, and individually controlled heating, ensuring comfort, privacy, and independence at every moment.' }}</p>
       </div>
     </div>
 
@@ -148,21 +106,8 @@
         </button>
       </div>
       <div class="row-text">
-        <h2>Tranquil Gardens &amp; Outdoors</h2>
-        <p>
-          Our beautifully maintained gardens offer residents the opportunity to enjoy the fresh Peak
-          District air and the restorative power of nature. With accessible pathways, sheltered seating
-          areas, and seasonal planting, the outdoors feels welcoming all year round.
-        </p>
-        <p>
-          The gardens have been thoughtfully designed for residents of all mobility levels, with level
-          paving, raised planters, and carefully considered landscaping that invites exploration and
-          quiet contemplation in equal measure.
-        </p>
-        <p>
-          With sweeping views across the Pennine hills, time spent outdoors at Pennine Care is
-          genuinely uplifting — a natural extension of the warmth and care found within.
-        </p>
+        <h2>{{ sections['gardensTitle'] || 'Tranquil Gardens &amp; Outdoors' }}</h2>
+        <p>{{ sections['gardensText'] || 'Our beautifully maintained gardens offer residents the opportunity to enjoy the fresh Peak District air and the restorative power of nature. With accessible pathways, sheltered seating areas, and seasonal planting, the outdoors feels welcoming all year round.' }}</p>
       </div>
     </div>
 
@@ -173,21 +118,8 @@
       </div>
       <div class="row-text wellbeing-highlight">
         <span class="coming-soon-badge">Watch the Space</span>
-        <h2>Coming Soon — Wellbeing Space</h2>
-        <p>
-          We are delighted to share that a dedicated Wellbeing Space is currently in development for
-          our Pennine Suite residents. This thoughtfully designed environment will offer a sanctuary
-          for relaxation, gentle therapies, and mindful activities.
-        </p>
-        <p>
-          From sensory experiences and aromatherapy to gentle movement sessions and creative pursuits,
-          the new Wellbeing Space will enrich daily life and provide meaningful moments of calm,
-          joy, and connection.
-        </p>
-        <p>
-          We look forward to sharing more details soon. In the meantime, please do not hesitate to
-          speak with our team if you would like to learn more about life at Pennine Care.
-        </p>
+        <h2>{{ sections['wellnessTitle'] || 'Coming Soon — Wellbeing Space' }}</h2>
+        <p>{{ sections['wellnessText'] || 'We are delighted to share that a dedicated Wellbeing Space is currently in development for our Pennine Suite residents. This thoughtfully designed environment will offer a sanctuary for relaxation, gentle therapies, and mindful activities.' }}</p>
       </div>
     </div>
 

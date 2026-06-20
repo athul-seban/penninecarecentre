@@ -1,6 +1,9 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ContentService } from '../../core/content.service';
 
 @Component({
   selector: 'app-careers',
@@ -9,7 +12,10 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './careers.html',
   styleUrl: './careers.css'
 })
-export class CareersComponent implements AfterViewInit {
+export class CareersComponent implements OnInit, AfterViewInit {
+  sections: Record<string, string> = {};
+  jobs: any[] = [];
+
   applicationForm = {
     fullName: '',
     email: '',
@@ -18,6 +24,19 @@ export class CareersComponent implements AfterViewInit {
     coverLetter: '',
     cvFileName: ''
   };
+
+  constructor(private http: HttpClient, private content: ContentService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.content.getPage('careers').subscribe({
+      next: s => { this.sections = s; },
+      error: () => this.router.navigate(['/not-found'])
+    });
+    this.http.get<any[]>('http://localhost:3000/api/careers').subscribe({
+      next: (jobs) => { this.jobs = jobs.filter(j => j.isOpen); },
+      error: () => {}
+    });
+  }
 
   ngAfterViewInit(): void {
     const observer = new IntersectionObserver((entries, obs) => {
@@ -46,6 +65,5 @@ export class CareersComponent implements AfterViewInit {
 
   onSubmit(): void {
     console.log('Application submitted:', this.applicationForm);
-    // Backend integration pending
   }
 }
