@@ -13,8 +13,8 @@
       name="img-url-field"
     />
     <label class="btn-upload-img" [class.uploading]="uploading">
-      @if (uploading) { Uploading… } @else { ⬆ Upload Image }
-      <input type="file" accept="image/*" style="display:none"
+      @if (uploading) { Uploading… } @else { ⬆ Upload }
+      <input type="file" [accept]="accept" style="display:none"
         (change)="onFileSelected($event)" [disabled]="uploading" />
     </label>
   </div>
@@ -22,12 +22,22 @@
   @if (value) {
     <div class="img-thumb-row">
       <div class="img-thumb" (click)="openFullscreen()" title="Click to preview full size">
-        <img
-          [src]="previewUrl(value)"
-          alt="Preview"
-          (error)="$any($event.target).style.display='none'"
-          (load)="$any($event.target).style.display='block'"
-        />
+        @if (isVideo(value)) {
+          <video
+            [src]="previewUrl(value)"
+            class="video-thumb-preview"
+            muted
+            preload="metadata"
+          ></video>
+          <span class="video-play-icon">▶</span>
+        } @else {
+          <img
+            [src]="previewUrl(value)"
+            alt="Preview"
+            (error)="$any($event.target).style.display='none'"
+            (load)="$any($event.target).style.display='block'"
+          />
+        }
         <span class="img-thumb-zoom">&#x26F6;</span>
       </div>
       <button type="button" class="btn-remove-img" (click)="remove()">✕ Remove</button>
@@ -38,6 +48,16 @@
 @if (fullscreenImage) {
   <div class="fullscreen-overlay" (click)="closeFullscreen()">
     <button class="fullscreen-close" (click)="closeFullscreen()">✕</button>
-    <img [src]="previewUrl(fullscreenImage)" alt="Full preview" (click)="$event.stopPropagation()" />
+    @if (isVideo(fullscreenImage)) {
+      <video
+        [src]="previewUrl(fullscreenImage)"
+        controls
+        autoplay
+        class="fullscreen-video"
+        (click)="$event.stopPropagation()"
+      ></video>
+    } @else {
+      <img [src]="previewUrl(fullscreenImage)" alt="Full preview" (click)="$event.stopPropagation()" />
+    }
   </div>
 }

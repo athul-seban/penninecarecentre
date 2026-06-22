@@ -34,6 +34,22 @@ const DEFAULT_PAGES = [
       testimonialsTitle: 'Google Reviews',
       reviewRating: '4.8/5',
       reviewCount: 'Based on 48 Google Reviews',
+      heroVideoUrl: '/assets/images/pennine-care-tour.mp4',
+      heroVideoPoster: '/assets/images/pennine-suite-hero.png',
+      careDementiaImage: '/assets/images/service-dementia-care.png',
+      careMaleOnlyImage: '/assets/images/service-male-only.png',
+      careYoungerPeopleImage: '/assets/images/service-younger-people.png',
+      careEmotionalPhysicalImage: '/assets/images/service-emotional-physical.png',
+      lifeGalleryImage: '/assets/images/life-pennine-gallery.png',
+      lifePersonCenteredImage: '/assets/images/life-person-centered-care.png',
+      lifeActivitiesImage: '/assets/images/life-activities.png',
+      lifeNutritionImage: '/assets/images/life-nutrition-dining.png',
+      awardImages: [
+        '/assets/images/award-care-association.jpg',
+        '/assets/images/award-care-standards.jpg',
+        '/assets/images/award-healthcare-excellence.jpg',
+        '/assets/images/award-cqc-good.jpg',
+      ],
       peaceTitle: 'DELIVERING PEACE OF MIND',
       peaceText: 'Through our person-centred care, we aim to provide each of our residents with the highest possible quality of life, luxurious accommodation, and discreet support.',
       peaceQuote: '"To provide exceptional care, delivered by compassionate people, in the highest quality homes."',
@@ -276,10 +292,11 @@ export class PagesService implements OnModuleInit {
       const exists = await this.repo.findOne({ where: { pageKey: p.pageKey } });
       if (!exists) {
         await this.repo.save(this.repo.create(p));
-      } else if (!exists.sections || Object.keys(exists.sections).length === 0) {
-        await this.repo.update(exists.id, { sections: p.sections as Record<string, any> });
+      } else {
+        // Merge any missing keys from defaults without overwriting existing values
+        const merged = { ...p.sections, ...exists.sections };
+        await this.repo.update(exists.id, { sections: merged as Record<string, any> });
       }
-      // Pages with existing sections are never touched on restart
     }
   }
 

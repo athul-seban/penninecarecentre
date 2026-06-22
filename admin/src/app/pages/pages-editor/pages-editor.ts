@@ -71,6 +71,18 @@ const LABEL_MAP: Record<string, string> = {
   careImage: 'Person Centred Care Image',
   familyImage: 'Family Partnerships Image',
   innovativeImage: 'Innovative Care Image',
+  // Home page media
+  heroVideoUrl: 'Hero Video',
+  heroVideoPoster: 'Hero Video Poster Image',
+  careDementiaImage: 'Care Grid: Dementia Care Image',
+  careMaleOnlyImage: 'Care Grid: Male Only Unit Image',
+  careYoungerPeopleImage: 'Care Grid: Younger People Image',
+  careEmotionalPhysicalImage: 'Care Grid: Emotional & Physical Care Image',
+  lifeGalleryImage: 'Life Grid: Gallery Image',
+  lifePersonCenteredImage: 'Life Grid: Person Centered Care Image',
+  lifeActivitiesImage: 'Life Grid: Activities Image',
+  lifeNutritionImage: 'Life Grid: Nutrition & Dining Image',
+  awardImages: 'Awards & Affiliations Images',
 };
 
 @Component({
@@ -134,7 +146,12 @@ export class PagesEditor implements OnInit {
     });
   }
 
+  isVideoField(key: string): boolean {
+    return key === 'heroVideoUrl' || key.toLowerCase().includes('video');
+  }
+
   isImageField(key: string): boolean {
+    if (this.isVideoField(key)) return false;
     return (key.endsWith('Image') || key.endsWith('Url') || key.endsWith('Src')) && !key.endsWith('Images');
   }
 

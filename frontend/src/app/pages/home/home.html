@@ -8,10 +8,9 @@
       loop
       playsinline
       class="hero-img"
-      poster="/assets/images/pennine-suite-hero.png"
+      [attr.poster]="heroVideoPoster"
     >
-      <source src="/assets/images/pennine-care-tour.mp4" type="video/mp4" />
-      <source src="/assets/images/pennine-care-tour.webm" type="video/webm" />
+      <source [src]="heroVideoUrl" type="video/mp4" />
     </video>
     <div class="hero-overlay"></div>
     <div class="video-controls">
@@ -113,45 +112,33 @@
     <div class="custom-grid stagger-container">
       <div class="feature-card reveal-child">
         <img
-          src="/assets/images/service-dementia-care.png"
+          [src]="careDementiaImage"
           alt="Dementia Care Specialist Support"
-          (error)="
-            $any($event.target).src =
-              'https://placehold.co/400x300/002b5b/ffffff?text=Dementia+Care'
-          "
+          (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Dementia+Care'"
         />
         <h4>Dementia Care</h4>
       </div>
       <div class="feature-card reveal-child">
         <img
-          src="/assets/images/service-male-only.png"
+          [src]="careMaleOnlyImage"
           alt="Dedicated Male Only Care Unit"
-          (error)="
-            $any($event.target).src =
-              'https://placehold.co/400x300/002b5b/ffffff?text=Male+only+Unit'
-          "
+          (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Male+only+Unit'"
         />
         <h4>Male only Unit</h4>
       </div>
       <div class="feature-card reveal-child">
         <img
-          src="/assets/images/service-younger-people.png"
+          [src]="careYoungerPeopleImage"
           alt="Younger People Care Community"
-          (error)="
-            $any($event.target).src =
-              'https://placehold.co/400x300/002b5b/ffffff?text=Younger+People+Community'
-          "
+          (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Younger+People+Community'"
         />
         <h4>Younger people - community</h4>
       </div>
       <div class="feature-card reveal-child">
         <img
-          src="/assets/images/service-emotional-physical.png"
+          [src]="careEmotionalPhysicalImage"
           alt="Comprehensive Emotional and Physical Care"
-          (error)="
-            $any($event.target).src =
-              'https://placehold.co/400x300/002b5b/ffffff?text=Emotional+and+Physical'
-          "
+          (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Emotional+and+Physical'"
         />
         <h4>Emotional and physical needs</h4>
       </div>
@@ -164,44 +151,33 @@
     <div class="custom-grid stagger-container">
       <div class="feature-card life-card reveal-child">
         <img
-          src="/assets/images/life-pennine-gallery.png"
+          [src]="lifeGalleryImage"
           alt="Life at Pennine Care Centre"
-          (error)="
-            $any($event.target).src =
-              'https://placehold.co/400x300/c5a059/ffffff?text=Life+at+Pennine'
-          "
+          (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Life+at+Pennine'"
         />
         <h4>Life at Pennine</h4>
       </div>
       <div class="feature-card life-card reveal-child">
         <img
-          src="/assets/images/life-person-centered-care.png"
+          [src]="lifePersonCenteredImage"
           alt="Person Centered Care Framework"
-          (error)="
-            $any($event.target).src =
-              'https://placehold.co/400x300/c5a059/ffffff?text=Person+Centered'
-          "
+          (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Person+Centered'"
         />
         <h4>Person Centered Care</h4>
       </div>
       <div class="feature-card life-card reveal-child">
         <img
-          src="/assets/images/life-activities.png"
+          [src]="lifeActivitiesImage"
           alt="Recreational Activities Setup"
-          (error)="
-            $any($event.target).src = 'https://placehold.co/400x300/c5a059/ffffff?text=Activities'
-          "
+          (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Activities'"
         />
         <h4>Activities</h4>
       </div>
       <div class="feature-card life-card reveal-child">
         <img
-          src="/assets/images/life-nutrition-dining.png"
+          [src]="lifeNutritionImage"
           alt="Nutrition and Dining Programs"
-          (error)="
-            $any($event.target).src =
-              'https://placehold.co/400x300/c5a059/ffffff?text=Nutrition+and+Dining'
-          "
+          (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Nutrition+and+Dining'"
         />
         <h4>Nutrition and dining</h4>
       </div>
@@ -329,26 +305,13 @@
 
   <!-- Awards & Affiliations Banner -->
   <div class="awards-strip reveal-fade-up">
-    <img
-      src="/assets/images/award-care-association.jpg"
-      alt="Industry Association Award 1"
-      (error)="$any($event.target).src = 'https://placehold.co/150x120/ffffff/002b5b?text=Award+1'"
-    />
-    <img
-      src="/assets/images/award-care-standards.jpg"
-      alt="Care Standards Award 2"
-      (error)="$any($event.target).src = 'https://placehold.co/150x120/ffffff/002b5b?text=Award+2'"
-    />
-    <img
-      src="/assets/images/award-healthcare-excellence.jpg"
-      alt="Health Care Excellence Award 3"
-      (error)="$any($event.target).src = 'https://placehold.co/150x120/ffffff/002b5b?text=Award+3'"
-    />
-    <img
-      src="/assets/images/award-cqc-good.jpg"
-      alt="Pennine CQC Good Quality Standard Award 4"
-      (error)="$any($event.target).src = 'https://placehold.co/150x120/ffffff/002b5b?text=Award+4'"
-    />
+    @for (award of awardImages; track award; let i = $index) {
+      <img
+        [src]="award"
+        [alt]="'Award ' + (i + 1)"
+        (error)="$any($event.target).src='https://placehold.co/150x120/ffffff/002b5b?text=Award+' + (i + 1)"
+      />
+    }
   </div>
 
   <!-- Contact & Map Integration -->

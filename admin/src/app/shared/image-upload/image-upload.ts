@@ -13,6 +13,7 @@ export class ImageUpload {
   @Input() value = '';
   @Output() valueChange = new EventEmitter<string>();
   @Input() placeholder = 'Paste image URL…';
+  @Input() accept = 'image/*';
 
   uploading = false;
   error = '';
@@ -52,6 +53,12 @@ export class ImageUpload {
   remove() {
     this.value = '';
     this.valueChange.emit('');
+  }
+
+  isVideo(url: string): boolean {
+    if (!url) return false;
+    const clean = url.split('?')[0].toLowerCase();
+    return clean.endsWith('.mp4') || clean.endsWith('.webm') || clean.endsWith('.ogg') || clean.endsWith('.mov');
   }
 
   previewUrl(path: string): string {

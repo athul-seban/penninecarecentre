@@ -39,6 +39,26 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private moorlandTimer: any;
   private testimonialTimer: any;
 
+  heroVideoUrl = '/assets/images/pennine-care-tour.mp4';
+  heroVideoPoster = '/assets/images/pennine-suite-hero.png';
+
+  careDementiaImage = '/assets/images/service-dementia-care.png';
+  careMaleOnlyImage = '/assets/images/service-male-only.png';
+  careYoungerPeopleImage = '/assets/images/service-younger-people.png';
+  careEmotionalPhysicalImage = '/assets/images/service-emotional-physical.png';
+
+  lifeGalleryImage = '/assets/images/life-pennine-gallery.png';
+  lifePersonCenteredImage = '/assets/images/life-person-centered-care.png';
+  lifeActivitiesImage = '/assets/images/life-activities.png';
+  lifeNutritionImage = '/assets/images/life-nutrition-dining.png';
+
+  awardImages: string[] = [
+    '/assets/images/award-care-association.jpg',
+    '/assets/images/award-care-standards.jpg',
+    '/assets/images/award-healthcare-excellence.jpg',
+    '/assets/images/award-cqc-good.jpg',
+  ];
+
   pennineImages = [
     { src: '/assets/images/pennine-suite-exterior.png', alt: 'Pennine Suite Exterior' },
     { src: '/assets/images/pennine-care-drone.png', alt: 'Pennine Suite Interior' },
@@ -59,6 +79,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.content.getPage('home').subscribe({
       next: (s: any) => {
         this.sections = s;
+        if (s.heroVideoUrl) this.heroVideoUrl = s.heroVideoUrl;
+        if (s.heroVideoPoster) this.heroVideoPoster = s.heroVideoPoster;
+        if (s.careDementiaImage) this.careDementiaImage = s.careDementiaImage;
+        if (s.careMaleOnlyImage) this.careMaleOnlyImage = s.careMaleOnlyImage;
+        if (s.careYoungerPeopleImage) this.careYoungerPeopleImage = s.careYoungerPeopleImage;
+        if (s.careEmotionalPhysicalImage) this.careEmotionalPhysicalImage = s.careEmotionalPhysicalImage;
+        if (s.lifeGalleryImage) this.lifeGalleryImage = s.lifeGalleryImage;
+        if (s.lifePersonCenteredImage) this.lifePersonCenteredImage = s.lifePersonCenteredImage;
+        if (s.lifeActivitiesImage) this.lifeActivitiesImage = s.lifeActivitiesImage;
+        if (s.lifeNutritionImage) this.lifeNutritionImage = s.lifeNutritionImage;
+        if (Array.isArray(s.awardImages) && s.awardImages.length > 0) this.awardImages = s.awardImages;
         if (Array.isArray(s.pennineImages) && s.pennineImages.length > 0) {
           this.pennineImages = s.pennineImages.map((url: string) => ({ src: url, alt: '' }));
         }
