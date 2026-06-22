@@ -18,7 +18,7 @@ export class MediaController {
   constructor(private media: MediaService) {}
 
   @Post('upload')
-  @ApiOperation({ summary: 'Upload a file to Cloudinary' })
+  @ApiOperation({ summary: 'Upload a file to frontend/src/assets/images' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
   upload(
@@ -55,6 +55,6 @@ export class MediaController {
   updateAltText(@Param('id') id: string, @Body('altText') altText: string) { return this.media.updateAltText(id, altText); }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a media file from Cloudinary and database' })
+  @ApiOperation({ summary: 'Delete a media file from disk and database' })
   remove(@Param('id') id: string) { return this.media.remove(id); }
 }
