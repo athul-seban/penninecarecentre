@@ -109,13 +109,20 @@
               <textarea [(ngModel)]="teamForm.bio" name="bio" rows="4"></textarea>
             </div>
             <div class="form-group">
-              <label>Photo URL</label>
+              <label>Photo</label>
+              @if (uploadPhotoError) {
+                <div class="upload-error">{{ uploadPhotoError }}</div>
+              }
               <div class="image-input-row">
-                <input type="text" [(ngModel)]="teamForm.photoUrl" name="photoUrl" placeholder="Paste image URL from Media Library…" class="image-url-input" />
-                <a routerLink="/media" class="btn-browse-media">Browse Media</a>
+                <input type="text" [(ngModel)]="teamForm.photoUrl" name="photoUrl" placeholder="Paste image URL…" class="image-url-input" />
+                <label class="btn-upload-img" [class.uploading]="uploadingPhoto">
+                  @if (uploadingPhoto) { Uploading… } @else { ⬆ Upload Image }
+                  <input type="file" accept="image/*" style="display:none"
+                    (change)="onPhotoSelected($event)" [disabled]="uploadingPhoto" />
+                </label>
               </div>
               @if (teamForm.photoUrl) {
-                <img [src]="teamForm.photoUrl" class="img-preview" alt="Preview"
+                <img [src]="previewUrl(teamForm.photoUrl)" class="img-preview" alt="Preview"
                   (error)="$any($event.target).style.display='none'"
                   (load)="$any($event.target).style.display='block'" />
               }

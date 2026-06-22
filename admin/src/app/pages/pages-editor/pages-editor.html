@@ -6,6 +6,10 @@
       <p>Edit page text and images for every page of the website</p>
     </div>
 
+    @if (uploadError) {
+      <div class="upload-error-banner">{{ uploadError }}</div>
+    }
+
     <div class="cms-layout">
       <!-- ── LEFT PANEL ── -->
       <div class="cms-nav">
@@ -74,7 +78,15 @@
                                 <div class="img-card-no-img">No image</div>
                                 <div class="img-card-overlay">
                                   <div class="img-card-overlay-top">
-                                    <button type="button" class="img-overlay-btn img-overlay-swap" (click)="$event.stopPropagation(); openAssetPicker(s, 'array-replace', $index)" title="Replace image">&#x21BA;</button>
+                                    <label class="img-overlay-btn img-overlay-upload" title="Replace image" (click)="$event.stopPropagation()">
+                                      @if (uploadingKey === s.key + '_replace_' + $index) {
+                                        <span class="mini-spin">…</span>
+                                      } @else {
+                                        &#x21BA;
+                                      }
+                                      <input type="file" accept="image/*" style="display:none"
+                                        (change)="onFileSelected($event, s, 'array-replace', $index)" />
+                                    </label>
                                     <button type="button" class="img-overlay-btn img-overlay-remove" (click)="$event.stopPropagation(); removeImage(s, $index)" title="Remove">✕</button>
                                   </div>
                                   <div class="img-card-overlay-bottom">
@@ -88,19 +100,27 @@
                           }
                         </div>
                         <div class="image-array-add">
-                          <input type="text" [(ngModel)]="s.pendingUrl" [name]="s.key + '_new'" placeholder="Paste path or URL to add…" class="image-url-input" />
-                          <button type="button" class="btn-browse-assets" (click)="openAssetPicker(s, 'array-add')">Browse Assets</button>
-                          <button type="button" class="btn-add-img" (click)="addImage(s)">+ Add</button>
+                          <input type="text" [(ngModel)]="s.pendingUrl" [name]="s.key + '_new'" placeholder="Or paste a URL to add…" class="image-url-input" />
+                          <button type="button" class="btn-add-img" (click)="addImage(s)">+ Add URL</button>
+                          <label class="btn-upload-img" [class.uploading]="uploadingKey === s.key + '_add'">
+                            @if (uploadingKey === s.key + '_add') { Uploading… } @else { ⬆ Upload Image }
+                            <input type="file" accept="image/*" style="display:none"
+                              (change)="onFileSelected($event, s, 'array-add')" />
+                          </label>
                         </div>
                         @if (s.images.length === 0) {
-                          <div class="img-array-empty">No images yet. Browse or paste a path above and click Add.</div>
+                          <div class="img-array-empty">No images yet. Upload or paste a URL above.</div>
                         }
                       </div>
                     } @else if (isImageField(s.key)) {
                       <div class="image-field-wrapper">
                         <div class="image-input-row">
-                          <input type="text" [(ngModel)]="s.value" [name]="s.key" placeholder="/assets/images/… or paste URL" class="image-url-input" />
-                          <button type="button" class="btn-browse-assets" (click)="openAssetPicker(s, 'single')">Browse Assets</button>
+                          <input type="text" [(ngModel)]="s.value" [name]="s.key" placeholder="Paste image URL or upload below" class="image-url-input" />
+                          <label class="btn-upload-img" [class.uploading]="uploadingKey === s.key">
+                            @if (uploadingKey === s.key) { Uploading… } @else { ⬆ Upload }
+                            <input type="file" accept="image/*" style="display:none"
+                              (change)="onFileSelected($event, s, 'single')" />
+                          </label>
                         </div>
                         @if (s.value) {
                           <div class="single-img-thumb-row">
@@ -147,44 +167,5 @@
   <div class="fullscreen-overlay" (click)="closeFullscreen()">
     <button class="fullscreen-close" (click)="closeFullscreen()">✕</button>
     <img [src]="previewUrl(fullscreenImage)" alt="Full preview" (click)="$event.stopPropagation()" />
-  </div>
-}
-
-<!-- ── ASSET PICKER MODAL ── -->
-@if (showAssetPicker) {
-  <div class="asset-picker-overlay" (click)="closeAssetPicker()">
-    <div class="asset-picker-modal" (click)="$event.stopPropagation()">
-      <div class="asset-picker-header">
-        <div class="asset-picker-title">
-          <span>Browse Frontend Assets</span>
-          <span class="asset-picker-hint">{{ localAssets.length }} images in /assets/images/</span>
-        </div>
-        <button class="asset-picker-close" (click)="closeAssetPicker()">✕</button>
-      </div>
-      <div class="asset-picker-search">
-        <input type="text" [(ngModel)]="assetSearch" placeholder="Search by filename…" class="asset-search-input" />
-      </div>
-      <div class="asset-picker-body">
-        @if (assetsLoading) {
-          <div class="asset-picker-loading">Loading assets…</div>
-        } @else if (filteredAssets.length === 0) {
-          <div class="asset-picker-empty">No assets found.</div>
-        } @else {
-          <div class="asset-picker-grid">
-            @for (asset of filteredAssets; track asset) {
-              <div class="asset-picker-item" (click)="selectAsset(asset)" [title]="assetFilename(asset)">
-                <div class="asset-picker-thumb">
-                  <img [src]="previewUrl(asset)" [alt]="assetFilename(asset)"
-                    (error)="$any($event.target).style.display='none'"
-                    (load)="$any($event.target).style.display='block'; $any($event.target).nextElementSibling.style.display='none'" />
-                  <div class="asset-picker-no-preview">🖼</div>
-                </div>
-                <div class="asset-picker-name">{{ assetFilename(asset) }}</div>
-              </div>
-            }
-          </div>
-        }
-      </div>
-    </div>
   </div>
 }

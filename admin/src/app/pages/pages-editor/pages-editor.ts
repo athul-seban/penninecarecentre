@@ -86,14 +86,9 @@ export class PagesEditor implements OnInit {
   saving = false;
   saved = false;
 
-  // Asset picker state
-  showAssetPicker = false;
-  assetPickerMode: 'single' | 'array-add' | 'array-replace' = 'single';
-  assetPickerTarget: any = null;
-  assetPickerIndex = -1;
-  localAssets: string[] = [];
-  assetsLoading = false;
-  assetSearch = '';
+  uploadingKey = '';
+  uploadError = '';
+  fullscreenImage = '';
 
   private readonly FRONTEND_BASE = 'http://localhost:4200';
 
@@ -114,6 +109,7 @@ export class PagesEditor implements OnInit {
   selectPage(p: any) {
     this.selectedPage = p;
     this.saved = false;
+    this.uploadError = '';
     this.editableMeta = { title: p.title || '', metaTitle: p.metaTitle || '', metaDescription: p.metaDescription || '' };
     const sections = p.sections || {};
     this.editableSections = Object.entries(sections).map(([key, value]) => ({
@@ -159,6 +155,30 @@ export class PagesEditor implements OnInit {
     if (idx < s.images.length - 1) { [s.images[idx + 1], s.images[idx]] = [s.images[idx], s.images[idx + 1]]; }
   }
 
+  onFileSelected(event: Event, section: any, mode: 'single' | 'array-add' | 'array-replace', index = -1) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const key = section.key + (mode === 'array-replace' ? '_replace_' + index : mode === 'array-add' ? '_add' : '');
+    this.uploadingKey = key;
+    this.uploadError = '';
+    const fd = new FormData();
+    fd.append('file', file);
+    this.api.uploadMedia(fd).subscribe({
+      next: (res: any) => {
+        const url = res.url || res.secure_url;
+        if (mode === 'single') section.value = url;
+        else if (mode === 'array-replace') section.images[index] = url;
+        else section.images.push(url);
+        this.uploadingKey = '';
+        (event.target as HTMLInputElement).value = '';
+      },
+      error: () => {
+        this.uploadingKey = '';
+        this.uploadError = 'Upload failed. Please try again.';
+      }
+    });
+  }
+
   titleCase(s: string): string {
     return s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
   }
@@ -175,53 +195,16 @@ export class PagesEditor implements OnInit {
     return (this.selectedPage?.pageKey || this.selectedPage?.key) === (p.pageKey || p.key);
   }
 
-  // Returns a URL that works for preview in the admin panel.
-  // Local asset paths (/assets/...) are prefixed with the frontend dev server base.
   previewUrl(imgPath: string): string {
     if (!imgPath) return '';
     if (imgPath.startsWith('/assets/')) return this.FRONTEND_BASE + imgPath;
     return imgPath;
   }
 
-  openAssetPicker(section: any, mode: 'single' | 'array-add' | 'array-replace', index = -1) {
-    this.assetPickerTarget = section;
-    this.assetPickerMode = mode;
-    this.assetPickerIndex = index;
-    this.assetSearch = '';
-    this.showAssetPicker = true;
-    if (!this.localAssets.length) {
-      this.assetsLoading = true;
-      this.api.getLocalAssets().subscribe({
-        next: (assets) => { this.localAssets = assets; this.assetsLoading = false; },
-        error: () => { this.assetsLoading = false; },
-      });
-    }
-  }
-
-  closeAssetPicker() { this.showAssetPicker = false; }
-
-  selectAsset(assetPath: string) {
-    if (this.assetPickerMode === 'single') {
-      this.assetPickerTarget.value = assetPath;
-    } else if (this.assetPickerMode === 'array-replace') {
-      this.assetPickerTarget.images[this.assetPickerIndex] = assetPath;
-    } else {
-      this.assetPickerTarget.images.push(assetPath);
-    }
-    this.showAssetPicker = false;
-  }
-
-  get filteredAssets(): string[] {
-    if (!this.assetSearch.trim()) return this.localAssets;
-    const q = this.assetSearch.toLowerCase();
-    return this.localAssets.filter(a => a.toLowerCase().includes(q));
-  }
-
   assetFilename(assetPath: string): string {
     return assetPath.split('/').pop() || assetPath;
   }
 
-  fullscreenImage = '';
   openFullscreen(path: string) { this.fullscreenImage = path; }
   closeFullscreen() { this.fullscreenImage = ''; }
 }

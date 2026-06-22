@@ -18,10 +18,8 @@ export class TeamManager implements OnInit {
   saving = false;
   form: any = { name: '', role: '', bio: '', photoUrl: '' };
 
-  showAssetPicker = false;
-  localAssets: string[] = [];
-  assetsLoading = false;
-  assetSearch = '';
+  uploadingPhoto = false;
+  uploadError = '';
   fullscreenImage = '';
 
   private readonly FRONTEND_BASE = 'http://localhost:4200';
@@ -38,8 +36,20 @@ export class TeamManager implements OnInit {
     });
   }
 
-  openAdd() { this.form = { name: '', role: '', bio: '', photoUrl: '' }; this.editingId = null; this.showForm = true; }
-  openEdit(m: any) { this.form = { ...m }; this.editingId = m._id || m.id; this.showForm = true; }
+  openAdd() {
+    this.form = { name: '', role: '', bio: '', photoUrl: '' };
+    this.editingId = null;
+    this.uploadError = '';
+    this.showForm = true;
+  }
+
+  openEdit(m: any) {
+    this.form = { ...m };
+    this.editingId = m._id || m.id;
+    this.uploadError = '';
+    this.showForm = true;
+  }
+
   cancel() { this.showForm = false; }
 
   save() {
@@ -58,39 +68,30 @@ export class TeamManager implements OnInit {
     this.api.deleteTeamMember(id).subscribe(() => this.load());
   }
 
+  onPhotoSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    this.uploadingPhoto = true;
+    this.uploadError = '';
+    const fd = new FormData();
+    fd.append('file', file);
+    this.api.uploadMedia(fd).subscribe({
+      next: (res: any) => {
+        this.form.photoUrl = res.url || res.secure_url;
+        this.uploadingPhoto = false;
+        (event.target as HTMLInputElement).value = '';
+      },
+      error: () => {
+        this.uploadingPhoto = false;
+        this.uploadError = 'Upload failed. Please try again.';
+      }
+    });
+  }
+
   previewUrl(path: string): string {
     if (!path) return '';
     if (path.startsWith('/assets/')) return this.FRONTEND_BASE + path;
     return path;
-  }
-
-  openAssetPicker() {
-    this.assetSearch = '';
-    this.showAssetPicker = true;
-    if (!this.localAssets.length) {
-      this.assetsLoading = true;
-      this.api.getLocalAssets().subscribe({
-        next: (assets) => { this.localAssets = assets; this.assetsLoading = false; },
-        error: () => { this.assetsLoading = false; },
-      });
-    }
-  }
-
-  selectAsset(path: string) {
-    this.form.photoUrl = path;
-    this.showAssetPicker = false;
-  }
-
-  closeAssetPicker() { this.showAssetPicker = false; }
-
-  get filteredAssets(): string[] {
-    if (!this.assetSearch.trim()) return this.localAssets;
-    const q = this.assetSearch.toLowerCase();
-    return this.localAssets.filter(a => a.toLowerCase().includes(q));
-  }
-
-  assetFilename(path: string): string {
-    return path.split('/').pop() || path;
   }
 
   openFullscreen(path: string) { this.fullscreenImage = path; }

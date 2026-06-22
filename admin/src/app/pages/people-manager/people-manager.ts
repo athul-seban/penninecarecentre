@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 
@@ -9,7 +8,7 @@ type ActiveType = 'team' | 'career' | 'review' | null;
 
 @Component({
   selector: 'app-people-manager',
-  imports: [CommonModule, FormsModule, RouterLink, Sidebar],
+  imports: [CommonModule, FormsModule, Sidebar],
   templateUrl: './people-manager.html',
   styleUrl: './people-manager.css'
 })
@@ -24,6 +23,8 @@ export class PeopleManager implements OnInit {
   savingTeam = false;
   savedTeam = false;
   teamForm: any = {};
+  uploadingPhoto = false;
+  uploadPhotoError = '';
 
   // Careers
   jobs: any[] = [];
@@ -42,6 +43,8 @@ export class PeopleManager implements OnInit {
   savingReview = false;
   savedReview = false;
   reviewForm: any = {};
+
+  private readonly FRONTEND_BASE = 'http://localhost:4200';
 
   constructor(private api: ApiService) {}
 
@@ -65,6 +68,7 @@ export class PeopleManager implements OnInit {
     this.activeType = 'team';
     this.isNewTeam = true;
     this.selectedTeam = null;
+    this.uploadPhotoError = '';
     this.teamForm = { name: '', role: '', bio: '', photoUrl: '', isActive: true };
   }
 
@@ -73,6 +77,7 @@ export class PeopleManager implements OnInit {
     this.isNewTeam = false;
     this.selectedTeam = m;
     this.savedTeam = false;
+    this.uploadPhotoError = '';
     this.teamForm = { name: m.name || '', role: m.role || '', bio: m.bio || '', photoUrl: m.photoUrl || '', isActive: m.isActive !== false };
   }
 
@@ -102,6 +107,32 @@ export class PeopleManager implements OnInit {
   isTeamActive(m: any): boolean {
     if (this.activeType !== 'team' || this.isNewTeam) return false;
     return (this.selectedTeam?._id || this.selectedTeam?.id) === (m._id || m.id);
+  }
+
+  onPhotoSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    this.uploadingPhoto = true;
+    this.uploadPhotoError = '';
+    const fd = new FormData();
+    fd.append('file', file);
+    this.api.uploadMedia(fd).subscribe({
+      next: (res: any) => {
+        this.teamForm.photoUrl = res.url || res.secure_url;
+        this.uploadingPhoto = false;
+        (event.target as HTMLInputElement).value = '';
+      },
+      error: () => {
+        this.uploadingPhoto = false;
+        this.uploadPhotoError = 'Upload failed. Please try again.';
+      }
+    });
+  }
+
+  previewUrl(path: string): string {
+    if (!path) return '';
+    if (path.startsWith('/assets/')) return this.FRONTEND_BASE + path;
+    return path;
   }
 
   // ── Careers ──

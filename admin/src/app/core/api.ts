@@ -96,19 +96,10 @@ export class ApiService {
   }
 
   // Media
-  getMedia(): Observable<any> {
-    return this.http.get(`${this.BASE}/media`, { headers: this.auth.getHeaders() });
-  }
-  getLocalAssets(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.BASE}/media/local-assets`, { headers: this.auth.getHeaders() });
-  }
   uploadMedia(formData: FormData): Observable<any> {
     const token = this.auth.getToken();
     return this.http.post(`${this.BASE}/media/upload`, formData, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-  }
-  deleteMedia(id: string): Observable<any> {
-    return this.http.delete(`${this.BASE}/media/${id}`, { headers: this.auth.getHeaders() });
   }
 }
