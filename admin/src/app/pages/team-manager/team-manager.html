@@ -26,10 +26,29 @@
               <label>Bio</label>
               <textarea [(ngModel)]="form.bio" name="bio" rows="3"></textarea>
             </div>
+
+            <!-- Photo field with thumbnail + browse -->
             <div class="form-group">
-              <label>Image URL</label>
-              <input type="text" [(ngModel)]="form.photoUrl" name="photoUrl" />
+              <label>Photo</label>
+              <div class="photo-field">
+                <div class="photo-input-row">
+                  <input type="text" [(ngModel)]="form.photoUrl" name="photoUrl" placeholder="/assets/images/… or paste URL" class="photo-url-input" />
+                  <button type="button" class="btn-browse-assets" (click)="openAssetPicker()">Browse Assets</button>
+                </div>
+                @if (form.photoUrl) {
+                  <div class="photo-thumb-row">
+                    <div class="photo-thumb" (click)="openFullscreen(form.photoUrl)" title="Click to preview">
+                      <img [src]="previewUrl(form.photoUrl)" alt="Photo preview"
+                        (error)="$any($event.target).style.display='none'"
+                        (load)="$any($event.target).style.display='block'" />
+                      <span class="photo-thumb-zoom">&#x26F6;</span>
+                    </div>
+                    <button type="button" class="btn-remove-photo" (click)="form.photoUrl = ''">✕ Remove</button>
+                  </div>
+                }
+              </div>
             </div>
+
             <div class="form-actions">
               <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
               <button type="submit" class="btn-primary" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button>
@@ -47,6 +66,7 @@
         <table>
           <thead>
             <tr>
+              <th>Photo</th>
               <th>Name</th>
               <th>Role</th>
               <th>Actions</th>
@@ -55,6 +75,15 @@
           <tbody>
             @for (m of members; track m._id || m.id) {
               <tr>
+                <td>
+                  @if (m.photoUrl) {
+                    <img [src]="previewUrl(m.photoUrl)" class="member-thumb" alt="{{ m.name }}"
+                      (error)="$any($event.target).style.display='none'"
+                      (load)="$any($event.target).style.display='block'" />
+                  } @else {
+                    <div class="member-thumb-placeholder">?</div>
+                  }
+                </td>
                 <td>{{ m.name }}</td>
                 <td>{{ m.role }}</td>
                 <td class="actions">
@@ -64,7 +93,7 @@
               </tr>
             }
             @if (members.length === 0) {
-              <tr><td colspan="3" class="empty">No team members found</td></tr>
+              <tr><td colspan="4" class="empty">No team members found</td></tr>
             }
           </tbody>
         </table>
@@ -72,3 +101,50 @@
     }
   </div>
 </div>
+
+<!-- ── FULLSCREEN PREVIEW ── -->
+@if (fullscreenImage) {
+  <div class="fullscreen-overlay" (click)="closeFullscreen()">
+    <button class="fullscreen-close" (click)="closeFullscreen()">✕</button>
+    <img [src]="previewUrl(fullscreenImage)" alt="Full preview" (click)="$event.stopPropagation()" />
+  </div>
+}
+
+<!-- ── ASSET PICKER MODAL ── -->
+@if (showAssetPicker) {
+  <div class="asset-picker-overlay" (click)="closeAssetPicker()">
+    <div class="asset-picker-modal" (click)="$event.stopPropagation()">
+      <div class="asset-picker-header">
+        <div class="asset-picker-title">
+          <span>Browse Frontend Assets</span>
+          <span class="asset-picker-hint">{{ localAssets.length }} images in /assets/images/</span>
+        </div>
+        <button class="asset-picker-close" (click)="closeAssetPicker()">✕</button>
+      </div>
+      <div class="asset-picker-search">
+        <input type="text" [(ngModel)]="assetSearch" name="assetSearch" placeholder="Search by filename…" class="asset-search-input" />
+      </div>
+      <div class="asset-picker-body">
+        @if (assetsLoading) {
+          <div class="asset-picker-loading">Loading assets…</div>
+        } @else if (filteredAssets.length === 0) {
+          <div class="asset-picker-empty">No assets found.</div>
+        } @else {
+          <div class="asset-picker-grid">
+            @for (asset of filteredAssets; track asset) {
+              <div class="asset-picker-item" (click)="selectAsset(asset)" [title]="assetFilename(asset)">
+                <div class="asset-picker-thumb">
+                  <img [src]="previewUrl(asset)" [alt]="assetFilename(asset)"
+                    (error)="$any($event.target).style.display='none'"
+                    (load)="$any($event.target).style.display='block'; $any($event.target).nextElementSibling.style.display='none'" />
+                  <div class="asset-picker-no-preview">🖼</div>
+                </div>
+                <div class="asset-picker-name">{{ assetFilename(asset) }}</div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

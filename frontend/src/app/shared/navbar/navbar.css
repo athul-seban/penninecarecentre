@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--gold), #e8c97a, var(--gold));
+  background: linear-gradient(90deg, var(--gold), var(--gold-light, var(--gold)), var(--gold));
   background-size: 200% 100%;
   z-index: 1100;
   transition: width 0.1s linear;
@@ -19,7 +19,7 @@
 
 /* PREMIUM ANNOUNCEMENT BANNER */
 .announcement-banner {
-  background: linear-gradient(135deg, var(--gold) 0%, #d4b26f 100%);
+  background: linear-gradient(135deg, var(--gold-light, var(--gold)) 0%, var(--gold) 100%);
   color: var(--navy);
   text-align: center;
   padding: 10px 10% 10px 5%;
@@ -72,7 +72,7 @@
 
 /* DYNAMIC HEADER MOTION */
 nav {
-  background-color: rgba(0, 43, 91, 0.94);
+  background-color: var(--nav-bg);
   padding: 1.2rem 5%;
   display: flex;
   justify-content: space-between;
@@ -92,7 +92,7 @@ nav {
 }
 nav.scrolled {
   padding: 0.6rem 5%;
-  background-color: rgba(0, 43, 91, 0.99);
+  background-color: var(--nav-bg-solid, var(--nav-bg));
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
 }
 .logo {
@@ -186,7 +186,7 @@ nav.scrolled {
   right: -100%;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 43, 91, 0.99);
+  background-color: var(--nav-bg-solid, var(--nav-bg));
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   z-index: 1050;

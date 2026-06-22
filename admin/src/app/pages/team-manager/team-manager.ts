@@ -18,6 +18,14 @@ export class TeamManager implements OnInit {
   saving = false;
   form: any = { name: '', role: '', bio: '', photoUrl: '' };
 
+  showAssetPicker = false;
+  localAssets: string[] = [];
+  assetsLoading = false;
+  assetSearch = '';
+  fullscreenImage = '';
+
+  private readonly FRONTEND_BASE = 'http://localhost:4200';
+
   constructor(private api: ApiService) {}
 
   ngOnInit() { this.load(); }
@@ -49,4 +57,42 @@ export class TeamManager implements OnInit {
     if (!confirm('Delete this team member?')) return;
     this.api.deleteTeamMember(id).subscribe(() => this.load());
   }
+
+  previewUrl(path: string): string {
+    if (!path) return '';
+    if (path.startsWith('/assets/')) return this.FRONTEND_BASE + path;
+    return path;
+  }
+
+  openAssetPicker() {
+    this.assetSearch = '';
+    this.showAssetPicker = true;
+    if (!this.localAssets.length) {
+      this.assetsLoading = true;
+      this.api.getLocalAssets().subscribe({
+        next: (assets) => { this.localAssets = assets; this.assetsLoading = false; },
+        error: () => { this.assetsLoading = false; },
+      });
+    }
+  }
+
+  selectAsset(path: string) {
+    this.form.photoUrl = path;
+    this.showAssetPicker = false;
+  }
+
+  closeAssetPicker() { this.showAssetPicker = false; }
+
+  get filteredAssets(): string[] {
+    if (!this.assetSearch.trim()) return this.localAssets;
+    const q = this.assetSearch.toLowerCase();
+    return this.localAssets.filter(a => a.toLowerCase().includes(q));
+  }
+
+  assetFilename(path: string): string {
+    return path.split('/').pop() || path;
+  }
+
+  openFullscreen(path: string) { this.fullscreenImage = path; }
+  closeFullscreen() { this.fullscreenImage = ''; }
 }
