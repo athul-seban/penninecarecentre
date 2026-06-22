@@ -1,0 +1,100 @@
+:host { display: block; }
+
+.image-array-editor { display: flex; flex-direction: column; gap: 12px; }
+
+.array-upload-error { background: #fce8e6; border: 1px solid #f5c6c2; color: #c0392b; padding: 7px 12px; border-radius: 6px; font-size: 13px; }
+
+.image-array-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.img-card { flex-shrink: 0; }
+
+.img-card-thumb {
+  width: 140px; height: 140px; border-radius: 10px; overflow: hidden;
+  position: relative; cursor: pointer; background: #eef0f5;
+  border: 2px solid transparent; transition: border-color 0.15s, box-shadow 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.img-card-thumb:hover { border-color: #002b5b; box-shadow: 0 4px 14px rgba(0,43,91,0.18); }
+.img-card-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+.img-card-no-img { font-size: 11px; color: #ccc; z-index: 1; }
+
+/* Hover overlay */
+.img-card-overlay {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  justify-content: space-between; padding: 7px;
+  background: rgba(0,0,0,0); opacity: 0;
+  transition: opacity 0.15s, background 0.15s; z-index: 3;
+}
+.img-card-thumb:hover .img-card-overlay { opacity: 1; background: rgba(0,0,0,0.32); }
+.img-card-overlay-top { display: flex; justify-content: flex-end; gap: 5px; }
+.img-overlay-btn {
+  width: 26px; height: 26px; border-radius: 6px; border: none; cursor: pointer;
+  font-size: 13px; display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+}
+.img-overlay-upload { background: rgba(255,255,255,0.88); color: #002b5b; }
+.img-overlay-upload:hover { background: white; }
+.img-overlay-remove { background: rgba(192,57,43,0.88); color: white; }
+.img-overlay-remove:hover { background: #c0392b; }
+.img-card-overlay-bottom { display: flex; gap: 5px; }
+.img-overlay-move {
+  flex: 1; background: rgba(255,255,255,0.75); border: none; border-radius: 5px;
+  cursor: pointer; font-size: 18px; line-height: 1; color: #333;
+  padding: 2px 0; transition: background 0.12s;
+}
+.img-overlay-move:hover:not(:disabled) { background: rgba(255,255,255,0.95); }
+.img-overlay-move:disabled { opacity: 0.25; cursor: not-allowed; }
+
+/* Filename gradient label */
+.img-card-label {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+  background: linear-gradient(transparent, rgba(0,0,0,0.62));
+  color: white; font-size: 10px; font-weight: 500;
+  padding: 18px 7px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  pointer-events: none; border-radius: 0 0 8px 8px;
+}
+
+.mini-spin { font-size: 11px; animation: spin 0.8s linear infinite; display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Add row */
+.image-array-add { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.image-url-input {
+  flex: 1; min-width: 160px; padding: 10px 12px; border: 1.5px solid #ddd; border-radius: 7px;
+  font-size: 14px; box-sizing: border-box; font-family: inherit; color: #333; background: white;
+}
+.image-url-input:focus { outline: none; border-color: #c5a059; }
+.btn-add-img {
+  white-space: nowrap; padding: 10px 16px; background: #002b5b; color: white;
+  border: none; border-radius: 7px; cursor: pointer; font-size: 13px;
+  font-weight: 600; transition: background 0.15s;
+}
+.btn-add-img:hover { background: #003f85; }
+
+.btn-upload-img {
+  display: inline-flex; align-items: center; justify-content: center;
+  white-space: nowrap; padding: 10px 14px;
+  background: #f0f3f8; border: 1.5px solid #ddd; border-radius: 7px;
+  color: #002b5b; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; user-select: none;
+}
+.btn-upload-img:hover { background: #002b5b; color: white; border-color: #002b5b; }
+.btn-upload-img.uploading { background: #e8ecf4; color: #7a93b8; cursor: not-allowed; border-color: #c8d4e8; }
+
+.img-array-empty { color: #bbb; font-size: 13px; font-style: italic; padding: 8px 0; }
+
+/* Fullscreen */
+.fullscreen-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px; box-sizing: border-box; cursor: pointer;
+}
+.fullscreen-overlay img { max-width: 100%; max-height: 88vh; object-fit: contain; border-radius: 6px; cursor: default; box-shadow: 0 12px 48px rgba(0,0,0,0.5); }
+.fullscreen-close {
+  position: absolute; top: 16px; right: 20px;
+  background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.2);
+  color: white; font-size: 18px; cursor: pointer;
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+}
+.fullscreen-close:hover { background: rgba(255,255,255,0.25); }

@@ -13,9 +13,6 @@
       <div class="modal-overlay">
         <div class="modal">
           <h2>{{ editingId ? 'Edit Member' : 'Add Member' }}</h2>
-          @if (uploadError) {
-            <div class="upload-error">{{ uploadError }}</div>
-          }
           <form (ngSubmit)="save()">
             <div class="form-group">
               <label>Name</label>
@@ -29,36 +26,13 @@
               <label>Bio</label>
               <textarea [(ngModel)]="form.bio" name="bio" rows="3"></textarea>
             </div>
-
-            <!-- Photo field -->
             <div class="form-group">
               <label>Photo</label>
-              <div class="photo-field">
-                <div class="photo-input-row">
-                  <input type="text" [(ngModel)]="form.photoUrl" name="photoUrl" placeholder="Paste image URL…" class="photo-url-input" />
-                  <label class="btn-upload-photo" [class.uploading]="uploadingPhoto">
-                    @if (uploadingPhoto) { Uploading… } @else { ⬆ Upload Image }
-                    <input type="file" accept="image/*" style="display:none"
-                      (change)="onPhotoSelected($event)" [disabled]="uploadingPhoto" />
-                  </label>
-                </div>
-                @if (form.photoUrl) {
-                  <div class="photo-thumb-row">
-                    <div class="photo-thumb" (click)="openFullscreen(form.photoUrl)" title="Click to preview">
-                      <img [src]="previewUrl(form.photoUrl)" alt="Photo preview"
-                        (error)="$any($event.target).style.display='none'"
-                        (load)="$any($event.target).style.display='block'" />
-                      <span class="photo-thumb-zoom">&#x26F6;</span>
-                    </div>
-                    <button type="button" class="btn-remove-photo" (click)="form.photoUrl = ''">✕ Remove</button>
-                  </div>
-                }
-              </div>
+              <app-image-upload [(value)]="form.photoUrl" placeholder="Paste photo URL…"></app-image-upload>
             </div>
-
             <div class="form-actions">
               <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
-              <button type="submit" class="btn-primary" [disabled]="saving || uploadingPhoto">{{ saving ? 'Saving...' : 'Save' }}</button>
+              <button type="submit" class="btn-primary" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button>
             </div>
           </form>
         </div>
@@ -108,11 +82,3 @@
     }
   </div>
 </div>
-
-<!-- ── FULLSCREEN PREVIEW ── -->
-@if (fullscreenImage) {
-  <div class="fullscreen-overlay" (click)="closeFullscreen()">
-    <button class="fullscreen-close" (click)="closeFullscreen()">✕</button>
-    <img [src]="previewUrl(fullscreenImage)" alt="Full preview" (click)="$event.stopPropagation()" />
-  </div>
-}

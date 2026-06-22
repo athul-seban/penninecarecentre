@@ -1,0 +1,100 @@
+<div class="image-array-editor">
+  @if (error) {
+    <div class="array-upload-error">{{ error }}</div>
+  }
+
+  <div class="image-array-grid">
+    @for (img of images; track img + $index) {
+      <div class="img-card">
+        <div class="img-card-thumb" (click)="img && openFullscreen(img)">
+          @if (img) {
+            <img
+              [src]="previewUrl(img)"
+              alt="Image {{ $index + 1 }}"
+              (error)="$any($event.target).style.display='none'"
+              (load)="$any($event.target).style.display='block'"
+            />
+          }
+          <div class="img-card-no-img">No image</div>
+
+          <div class="img-card-overlay">
+            <div class="img-card-overlay-top">
+              <label
+                class="img-overlay-btn img-overlay-upload"
+                title="Replace image"
+                (click)="$event.stopPropagation()"
+              >
+                @if (uploadingKey === 'replace_' + $index) {
+                  <span class="mini-spin">…</span>
+                } @else {
+                  &#x21BA;
+                }
+                <input
+                  type="file"
+                  accept="image/*"
+                  style="display:none"
+                  (change)="onFileSelected($event, 'replace', $index)"
+                />
+              </label>
+              <button
+                type="button"
+                class="img-overlay-btn img-overlay-remove"
+                (click)="$event.stopPropagation(); remove($index)"
+                title="Remove"
+              >✕</button>
+            </div>
+            <div class="img-card-overlay-bottom">
+              <button
+                type="button"
+                class="img-overlay-move"
+                (click)="$event.stopPropagation(); moveUp($index)"
+                [disabled]="$index === 0"
+                title="Move left"
+              >&#8249;</button>
+              <button
+                type="button"
+                class="img-overlay-move"
+                (click)="$event.stopPropagation(); moveDown($index)"
+                [disabled]="$index === images.length - 1"
+                title="Move right"
+              >&#8250;</button>
+            </div>
+          </div>
+
+          <div class="img-card-label">{{ filename(img) || 'No image' }}</div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="image-array-add">
+    <input
+      type="text"
+      [(ngModel)]="pendingUrl"
+      name="pending-url"
+      placeholder="Or paste a URL to add…"
+      class="image-url-input"
+    />
+    <button type="button" class="btn-add-img" (click)="addUrl()">+ Add URL</button>
+    <label class="btn-upload-img" [class.uploading]="uploadingKey === 'add'">
+      @if (uploadingKey === 'add') { Uploading… } @else { ⬆ Upload Image }
+      <input
+        type="file"
+        accept="image/*"
+        style="display:none"
+        (change)="onFileSelected($event, 'add')"
+      />
+    </label>
+  </div>
+
+  @if (images.length === 0) {
+    <div class="img-array-empty">No images yet. Upload or paste a URL above.</div>
+  }
+</div>
+
+@if (fullscreenImage) {
+  <div class="fullscreen-overlay" (click)="closeFullscreen()">
+    <button class="fullscreen-close" (click)="closeFullscreen()">✕</button>
+    <img [src]="previewUrl(fullscreenImage)" alt="Full preview" (click)="$event.stopPropagation()" />
+  </div>
+}

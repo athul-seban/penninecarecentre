@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
+import { ImageUpload } from '../../shared/image-upload/image-upload';
+import { ImageArrayUpload } from '../../shared/image-array-upload/image-array-upload';
 
 const LABEL_MAP: Record<string, string> = {
   heroEyebrow: 'Hero Eyebrow Text', heroHeadline: 'Hero Headline', heroCta: 'Hero Button Text',
@@ -57,23 +59,23 @@ const LABEL_MAP: Record<string, string> = {
   galleryImages: 'Photo Gallery Images',
   havenImages: 'Haven Section Images',
   spacesImages: 'Community Spaces Images',
-  peaceImage: 'Peace Section Image (URL)',
-  olderPeopleImage: 'Older People Care Image (URL)',
-  dementiaImage: 'Dementia Care Image (URL)',
-  maleUnitImage: 'Male Only Unit Image (URL)',
-  rehabilitationImage: 'Rehabilitation Image (URL)',
-  endOfLifeImage: 'End of Life Care Image (URL)',
-  activitiesImage: 'Activities Image (URL)',
-  communityImage: 'Community Engagement Image (URL)',
-  nutritionImage: 'Nutrition & Hydration Image (URL)',
-  careImage: 'Person Centred Care Image (URL)',
-  familyImage: 'Family Partnerships Image (URL)',
-  innovativeImage: 'Innovative Care Image (URL)',
+  peaceImage: 'Peace Section Image',
+  olderPeopleImage: 'Older People Care Image',
+  dementiaImage: 'Dementia Care Image',
+  maleUnitImage: 'Male Only Unit Image',
+  rehabilitationImage: 'Rehabilitation Image',
+  endOfLifeImage: 'End of Life Care Image',
+  activitiesImage: 'Activities Image',
+  communityImage: 'Community Engagement Image',
+  nutritionImage: 'Nutrition & Hydration Image',
+  careImage: 'Person Centred Care Image',
+  familyImage: 'Family Partnerships Image',
+  innovativeImage: 'Innovative Care Image',
 };
 
 @Component({
   selector: 'app-pages-editor',
-  imports: [CommonModule, FormsModule, Sidebar],
+  imports: [CommonModule, FormsModule, Sidebar, ImageUpload, ImageArrayUpload],
   templateUrl: './pages-editor.html',
   styleUrl: './pages-editor.css'
 })
@@ -82,15 +84,9 @@ export class PagesEditor implements OnInit {
   loading = true;
   selectedPage: any = null;
   editableMeta: any = {};
-  editableSections: { key: string; label: string; value: string; isArray: boolean; images: string[]; pendingUrl: string }[] = [];
+  editableSections: { key: string; label: string; value: string; isArray: boolean; images: string[] }[] = [];
   saving = false;
   saved = false;
-
-  uploadingKey = '';
-  uploadError = '';
-  fullscreenImage = '';
-
-  private readonly FRONTEND_BASE = 'http://localhost:4200';
 
   constructor(private api: ApiService) {}
 
@@ -109,7 +105,6 @@ export class PagesEditor implements OnInit {
   selectPage(p: any) {
     this.selectedPage = p;
     this.saved = false;
-    this.uploadError = '';
     this.editableMeta = { title: p.title || '', metaTitle: p.metaTitle || '', metaDescription: p.metaDescription || '' };
     const sections = p.sections || {};
     this.editableSections = Object.entries(sections).map(([key, value]) => ({
@@ -118,7 +113,6 @@ export class PagesEditor implements OnInit {
       isArray: Array.isArray(value),
       images: Array.isArray(value) ? [...(value as string[])] : [],
       value: Array.isArray(value) ? '' : String(value || ''),
-      pendingUrl: '',
     }));
   }
 
@@ -140,49 +134,6 @@ export class PagesEditor implements OnInit {
     });
   }
 
-  addImage(s: { images: string[]; pendingUrl: string }) {
-    const url = s.pendingUrl.trim();
-    if (url) { s.images.push(url); s.pendingUrl = ''; }
-  }
-
-  removeImage(s: { images: string[] }, idx: number) { s.images.splice(idx, 1); }
-
-  moveImageUp(s: { images: string[] }, idx: number) {
-    if (idx > 0) { [s.images[idx - 1], s.images[idx]] = [s.images[idx], s.images[idx - 1]]; }
-  }
-
-  moveImageDown(s: { images: string[] }, idx: number) {
-    if (idx < s.images.length - 1) { [s.images[idx + 1], s.images[idx]] = [s.images[idx], s.images[idx + 1]]; }
-  }
-
-  onFileSelected(event: Event, section: any, mode: 'single' | 'array-add' | 'array-replace', index = -1) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    const key = section.key + (mode === 'array-replace' ? '_replace_' + index : mode === 'array-add' ? '_add' : '');
-    this.uploadingKey = key;
-    this.uploadError = '';
-    const fd = new FormData();
-    fd.append('file', file);
-    this.api.uploadMedia(fd).subscribe({
-      next: (res: any) => {
-        const url = res.url || res.secure_url;
-        if (mode === 'single') section.value = url;
-        else if (mode === 'array-replace') section.images[index] = url;
-        else section.images.push(url);
-        this.uploadingKey = '';
-        (event.target as HTMLInputElement).value = '';
-      },
-      error: () => {
-        this.uploadingKey = '';
-        this.uploadError = 'Upload failed. Please try again.';
-      }
-    });
-  }
-
-  titleCase(s: string): string {
-    return s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
-  }
-
   isImageField(key: string): boolean {
     return (key.endsWith('Image') || key.endsWith('Url') || key.endsWith('Src')) && !key.endsWith('Images');
   }
@@ -195,16 +146,7 @@ export class PagesEditor implements OnInit {
     return (this.selectedPage?.pageKey || this.selectedPage?.key) === (p.pageKey || p.key);
   }
 
-  previewUrl(imgPath: string): string {
-    if (!imgPath) return '';
-    if (imgPath.startsWith('/assets/')) return this.FRONTEND_BASE + imgPath;
-    return imgPath;
+  titleCase(s: string): string {
+    return s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
   }
-
-  assetFilename(assetPath: string): string {
-    return assetPath.split('/').pop() || assetPath;
-  }
-
-  openFullscreen(path: string) { this.fullscreenImage = path; }
-  closeFullscreen() { this.fullscreenImage = ''; }
 }

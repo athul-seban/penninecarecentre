@@ -1,0 +1,43 @@
+<div class="image-upload-wrapper">
+  @if (error) {
+    <div class="upload-error">{{ error }}</div>
+  }
+
+  <div class="image-input-row">
+    <input
+      type="text"
+      [ngModel]="value"
+      (ngModelChange)="onUrlInput($event)"
+      [placeholder]="placeholder"
+      class="image-url-input"
+      name="img-url-field"
+    />
+    <label class="btn-upload-img" [class.uploading]="uploading">
+      @if (uploading) { Uploading… } @else { ⬆ Upload Image }
+      <input type="file" accept="image/*" style="display:none"
+        (change)="onFileSelected($event)" [disabled]="uploading" />
+    </label>
+  </div>
+
+  @if (value) {
+    <div class="img-thumb-row">
+      <div class="img-thumb" (click)="openFullscreen()" title="Click to preview full size">
+        <img
+          [src]="previewUrl(value)"
+          alt="Preview"
+          (error)="$any($event.target).style.display='none'"
+          (load)="$any($event.target).style.display='block'"
+        />
+        <span class="img-thumb-zoom">&#x26F6;</span>
+      </div>
+      <button type="button" class="btn-remove-img" (click)="remove()">✕ Remove</button>
+    </div>
+  }
+</div>
+
+@if (fullscreenImage) {
+  <div class="fullscreen-overlay" (click)="closeFullscreen()">
+    <button class="fullscreen-close" (click)="closeFullscreen()">✕</button>
+    <img [src]="previewUrl(fullscreenImage)" alt="Full preview" (click)="$event.stopPropagation()" />
+  </div>
+}
