@@ -71,6 +71,8 @@ const LABEL_MAP: Record<string, string> = {
   careImage: 'Person Centred Care Image',
   familyImage: 'Family Partnerships Image',
   innovativeImage: 'Innovative Care Image',
+  wellnessImage: 'Wellbeing Space Image (Coming Soon)',
+  modernisationImage: 'Modernisation Image (Coming Soon)',
   // Home page media
   heroVideoUrl: 'Hero Video',
   heroVideoPoster: 'Hero Video Poster Image',

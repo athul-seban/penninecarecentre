@@ -99,6 +99,7 @@ const DEFAULT_PAGES = [
       ],
       wellnessTitle: 'Coming Soon — Wellbeing Space',
       wellnessText: 'We are delighted to share that a dedicated Wellbeing Space is currently in development for our Pennine Suite residents.',
+      wellnessImage: '',
       galleryImages: [
         '/assets/images/pennine-suite-quality-care.png',
         '/assets/images/pennine-suite-interior.png',
@@ -152,6 +153,7 @@ const DEFAULT_PAGES = [
       ],
       modernisationTitle: 'Coming Soon — Modernisation',
       modernisationText: 'We are excited to announce that an extensive programme of modernisation is planned for the Moorland Suite.',
+      modernisationImage: '',
       featureCost: 'No Hidden Costs',
       featureCostText: 'Our transparent, all-inclusive fee structure means families have complete clarity and peace of mind.',
       featureTeam: 'Dedicated Team',
