@@ -22,6 +22,31 @@
   </div>
 </section>
 
+@if (teamMembers.length > 0) {
+<section class="section-padding reveal-element">
+  <div class="centered-header">
+    <h2 class="section-title-line">Meet the Team</h2>
+    <p>The people behind the care we provide at Pennine Care Centre.</p>
+  </div>
+  <div class="team-grid">
+    @for (member of teamMembers; track member.id) {
+      <div class="team-card">
+        <img
+          class="team-photo"
+          [src]="member.photoUrl || 'https://placehold.co/300x300/002b5b/ffffff?text=' + member.name.charAt(0)"
+          [alt]="member.name"
+        />
+        <h3>{{ member.name }}</h3>
+        <p class="team-role">{{ member.role }}</p>
+        @if (member.bio) {
+          <p class="team-bio">{{ member.bio }}</p>
+        }
+      </div>
+    }
+  </div>
+</section>
+}
+
 <section class="section-padding reveal-element" style="background-color: var(--navy); border-top: 1px solid rgba(255,255,255,0.1)">
   <div class="centered-header">
     <h2 style="color: var(--gold)" class="section-title-line">{{ sections['valuesTitle'] || 'Our Core Values' }}</h2>

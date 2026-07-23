@@ -1,0 +1,125 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+<div class="page-wrap">
+  <div class="page-header">
+    <div>
+      <h1>Job Applications</h1>
+      <p class="sub">Submissions from the careers application form</p>
+    </div>
+    <div class="header-stats">
+      <span class="stat-chip new">{{ countByStatus('new') }} New</span>
+      <span class="stat-chip shortlisted">{{ countByStatus('shortlisted') }} Shortlisted</span>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    @for (f of [['all','All'],['new','New'],['reviewing','Reviewing'],['shortlisted','Shortlisted'],['rejected','Rejected'],['archived','Archived']]; track f[0]) {
+      <button class="filter-btn" [class.active]="filterStatus === f[0]" (click)="setFilter(f[0])">
+        {{ f[1] }}
+        @if (f[0] !== 'all') {
+          <span class="filter-count">{{ countByStatus(f[0]) }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  @if (loading) {
+    <div class="loading-state">Loading applications...</div>
+  } @else if (filtered.length === 0) {
+    <div class="empty-state">
+      <i class="icon">📋</i>
+      <p>No {{ filterStatus === 'all' ? '' : filterStatus }} applications yet</p>
+    </div>
+  } @else {
+    <div class="submissions-layout" [class.has-detail]="selected">
+
+      <!-- List -->
+      <div class="submissions-list">
+        @for (app of filtered; track app.id) {
+          <div class="submission-card" [class.selected]="selected?.id === app.id" [class.is-new]="app.status === 'new'" (click)="open(app)">
+            <div class="card-top">
+              <div class="avatar">{{ app.fullName[0] }}</div>
+              <div class="card-meta">
+                <span class="card-name">{{ app.fullName }}</span>
+                <span class="card-email">{{ app.email }}</span>
+              </div>
+              <span class="badge" [class]="badgeClass(app.status)">{{ app.status }}</span>
+            </div>
+            <div class="card-position">{{ app.position }}</div>
+            <div class="card-preview">{{ app.coverLetter | slice:0:100 }}{{ app.coverLetter.length > 100 ? '…' : '' }}</div>
+            <div class="card-date">{{ formatDate(app.createdAt) }}</div>
+          </div>
+        }
+      </div>
+
+      <!-- Detail Panel -->
+      @if (selected) {
+        <div class="detail-panel">
+          <div class="detail-header">
+            <div class="detail-info">
+              <h2>{{ selected.fullName }}</h2>
+              <a [href]="'mailto:' + selected.email" class="detail-email">{{ selected.email }}</a>
+              @if (selected.phone) {
+                <span class="detail-phone">📞 {{ selected.phone }}</span>
+              }
+            </div>
+            <button class="close-btn" (click)="close()" title="Close">✕</button>
+          </div>
+
+          <div class="detail-position">
+            <span class="position-label">Applying for:</span> {{ selected.position }}
+          </div>
+
+          <div class="detail-date">Received {{ formatDate(selected.createdAt) }}</div>
+
+          <div class="detail-section-label">Cover Letter</div>
+          <div class="detail-message">{{ selected.coverLetter }}</div>
+
+          @if (selected.cvUrl) {
+            <div class="cv-row">
+              <span class="cv-label">📄 CV</span>
+              <a [href]="selected.cvUrl" target="_blank" class="cv-link">
+                {{ selected.cvOriginalName || 'Download CV' }}
+              </a>
+            </div>
+          } @else {
+            <div class="cv-row cv-none">No CV uploaded</div>
+          }
+
+          <!-- Status Selector -->
+          <div class="status-row">
+            <label>Status</label>
+            <div class="status-buttons">
+              @for (s of ['new','reviewing','shortlisted','rejected','archived']; track s) {
+                <button class="status-btn" [class.active]="selected.status === s" (click)="setStatus(selected, $any(s))">
+                  {{ s | titlecase }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="notes-section">
+            <label for="notes">Internal Notes</label>
+            <textarea id="notes" [(ngModel)]="notesDraft" rows="4" placeholder="Add private notes about this applicant…"></textarea>
+          </div>
+
+          <!-- Actions -->
+          <div class="action-row">
+            <button class="btn-reply" (click)="mailto(selected)">✉ Email Applicant</button>
+            <button class="btn-save" (click)="save()" [disabled]="saving">{{ saving ? 'Saving…' : 'Save Notes' }}</button>
+            <button class="btn-delete" (click)="delete(selected)">🗑 Delete</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (toast) {
+    <div class="toast">{{ toast }}</div>
+  }
+</div>
+  </div>
+</div>

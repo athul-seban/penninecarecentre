@@ -25,6 +25,11 @@ export class CareersComponent implements OnInit, AfterViewInit {
     cvFileName: ''
   };
 
+  cvFile: File | null = null;
+  submitting = false;
+  submitted = false;
+  submitError = '';
+
   constructor(private http: HttpClient, private content: ContentService, private router: Router) {}
 
   ngOnInit(): void {
@@ -53,6 +58,7 @@ export class CareersComponent implements OnInit, AfterViewInit {
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
+      this.cvFile = input.files[0];
       this.applicationForm.cvFileName = input.files[0].name;
     }
   }
@@ -64,6 +70,30 @@ export class CareersComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    console.log('Application submitted:', this.applicationForm);
+    this.submitting = true;
+    this.submitError = '';
+
+    const fd = new FormData();
+    fd.append('fullName', this.applicationForm.fullName);
+    fd.append('email', this.applicationForm.email);
+    fd.append('phone', this.applicationForm.phone);
+    fd.append('position', this.applicationForm.position);
+    fd.append('coverLetter', this.applicationForm.coverLetter);
+    if (this.cvFile) {
+      fd.append('cvFile', this.cvFile, this.cvFile.name);
+    }
+
+    this.http.post('http://localhost:3000/api/applications', fd).subscribe({
+      next: () => {
+        this.submitting = false;
+        this.submitted = true;
+        this.applicationForm = { fullName: '', email: '', phone: '', position: '', coverLetter: '', cvFileName: '' };
+        this.cvFile = null;
+      },
+      error: () => {
+        this.submitting = false;
+        this.submitError = 'Something went wrong. Please try again or call us directly.';
+      }
+    });
   }
 }

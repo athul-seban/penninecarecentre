@@ -41,7 +41,7 @@
 
   <!-- General Introduction Banner -->
   <section class="intro-box reveal-fade-up">
-    <p>{{ sections['introText'] || 'Pennine Care Centre specialises in providing personalised residential care, consisting of the Pennine Suite and Moorland Suite (male only).' }}</p>
+    <p>{{ sections['introText'] || 'Pennine Care Centre provides personalised residential care across two welcoming environments: the mixed-gender Pennine Suite and the male-only Moorland Suite.' }}</p>
   </section>
 
   <!-- Section: Pennine Suite Preview -->
@@ -99,7 +99,7 @@
         </div>
         <div class="suite-content">
           <h2>{{ sections['moorlandTitle'] || 'Moorland Suite' }}</h2>
-          <p>{{ sections['moorlandDescription'] || 'Our Moorland Suite is a male only unit catering to residents with special requirements. Supported by our caring staff, this unique unit provides dignified and quality care.' }}</p>
+          <p>{{ sections['moorlandDescription'] || 'Our Moorland Suite is a male-only unit catering to residents with special requirements. Supported by our caring staff, this unique unit provides dignified and quality care.' }}</p>
           <a routerLink="/moorland-suite" class="btn-gold">Explore Suite</a>
         </div>
       </div>
@@ -124,7 +124,7 @@
           alt="Dedicated Male Only Care Unit"
           (error)="$any($event.target).src='https://placehold.co/400x300/002b5b/ffffff?text=Male+only+Unit'"
         />
-        <h4>Male only Unit</h4>
+        <h4>Male Only Unit</h4>
       </div>
       <div class="feature-card reveal-child">
         <img
@@ -176,7 +176,7 @@
       <div class="feature-card life-card reveal-child">
         <img
           [src]="lifeNutritionImage"
-          alt="Nutrition and Dining Programs"
+          alt="Nutrition and Dining Programmes"
           (error)="$any($event.target).src='https://placehold.co/400x300/c5a059/ffffff?text=Nutrition+and+Dining'"
         />
         <h4>Nutrition and dining</h4>
@@ -188,36 +188,24 @@
   <section id="testimonials" class="testimonials-section reveal-fade-up">
     <div class="testimonials-container">
       <p class="section-subtitle">{{ sections['testimonialsSubtitle'] || 'Read Verified Client Feedback' }}</p>
-      <h2 class="section-title-line" style="margin-bottom: 20px">{{ sections['testimonialsTitle'] || 'Google Reviews' }}</h2>
+      <h2 class="section-title-line" style="margin-bottom: 20px">{{ sections['testimonialsTitle'] || 'What Families Say' }}</h2>
 
-      <!-- Google live badge dynamic aggregator header -->
+      <!-- Verified review aggregator header -->
       <div class="google-reviews-header">
         <div class="google-logo-box">
-          <svg viewBox="0 0 24 24" width="100" height="30" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.113-5.136 4.113-3.41 0-6.19-2.78-6.19-6.19 0-3.41 2.78-6.19 6.19-6.19 1.542 0 2.954.568 4.053 1.503l3.056-3.056C19.145 2.651 15.914 1.5 12.24 1.5 6.435 1.5 1.714 6.22 1.714 12s4.72 10.5 10.526 10.5c5.736 0 10.74-3.9 10.74-10.5 0-.713-.08-1.25-.214-1.715H12.24z"
-              fill="#4285F4"
-            />
-          </svg>
+          <i class="fas fa-check-circle" style="font-size: 26px; color: var(--gold); margin-bottom: 4px;"></i>
           <div class="google-reviews-count">PENNINE CARE CENTRE</div>
         </div>
-        <div class="google-rating-number">{{ sections['reviewRating'] || '4.8/5' }}</div>
+        <div class="google-rating-number">{{ sections['reviewRating'] || 'Trusted By Families' }}</div>
         <div class="google-stars-meta">
-          <div class="google-stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-          </div>
-          <div class="google-reviews-count">{{ sections['reviewCount'] || 'Based on 48 Google Reviews' }}</div>
+          <div class="google-reviews-count">{{ sections['reviewCount'] || "Read verified reviews from residents' families" }}</div>
         </div>
         <a
           href="https://www.carehome.co.uk/carehome.cfm/searchazref/10003005PENB?rcsid=1003"
           target="_blank"
           class="btn-google-write"
         >
-          <i class="fab fa-google" style="margin-right: 6px"></i>Write a Review
+          <i class="fas fa-comment-dots" style="margin-right: 6px"></i>Read More Reviews
         </a>
       </div>
 
@@ -239,13 +227,12 @@
                   <div class="reviewer-meta">
                     <div class="reviewer-name-row">
                       <span class="reviewer-name">{{ t.name }}</span>
-                      <i class="fab fa-google google-logo-badge"></i>
                     </div>
                     <div class="reviewer-subtitle">{{ t.subtitle }}</div>
                   </div>
                 </div>
                 <div class="verified-badge">
-                  <i class="fas fa-check-circle"></i> Google Verified Review
+                  <i class="fas fa-check-circle"></i> Verified Review
                 </div>
                 <div class="testimonial-rating">
                   <i class="fas fa-star"></i>
@@ -257,7 +244,7 @@
                 <p class="testimonial-text">{{ t.text }}</p>
                 <div class="testimonial-divider"></div>
                 <strong class="testimonial-author"
-                  >Reviewed on Google Maps
+                  >Verified Family Review
                   <span class="author-relation">• {{ t.date }}</span></strong
                 >
               </div>

@@ -1,7 +1,16 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../core/content.service';
+
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  photoUrl: string;
+}
 
 @Component({
   selector: 'app-team',
@@ -12,13 +21,18 @@ import { ContentService } from '../../core/content.service';
 })
 export class TeamComponent implements OnInit, AfterViewInit {
   sections: Record<string, string> = {};
+  teamMembers: TeamMember[] = [];
 
-  constructor(private content: ContentService, private router: Router) {}
+  constructor(private content: ContentService, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.content.getPage('team').subscribe({
       next: s => { this.sections = s; },
       error: () => this.router.navigate(['/not-found'])
+    });
+    this.http.get<TeamMember[]>('http://localhost:3000/api/team?active=true').subscribe({
+      next: members => { this.teamMembers = members; },
+      error: () => { this.teamMembers = []; }
     });
   }
 

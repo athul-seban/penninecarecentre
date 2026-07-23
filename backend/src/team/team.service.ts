@@ -19,8 +19,10 @@ export class TeamService implements OnModuleInit {
   async onModuleInit() {
     const count = await this.repo.count();
     if (count === 0) {
+      // Seeded as inactive placeholders — replace with real staff details (with photo consent)
+      // and activate via Admin → Team before they appear on the public site.
       for (const m of SEED_TEAM) {
-        await this.repo.save(this.repo.create({ ...m, isActive: true }));
+        await this.repo.save(this.repo.create({ ...m, isActive: false }));
       }
     }
   }

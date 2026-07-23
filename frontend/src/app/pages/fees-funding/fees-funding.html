@@ -1,0 +1,53 @@
+<div id="top">
+<header class="hero-sub">
+  <div class="hero-content">
+    <h1>{{ sections['heroTitle'] || 'Fees & Funding' }}</h1>
+    <p>{{ sections['heroSubtitle'] || 'Understanding how care at Pennine Care Centre is funded.' }}</p>
+  </div>
+</header>
+
+<section class="section-padding reveal-element">
+  <div class="centered-header">
+    <p>{{ sections['introText'] || 'Every resident\'s care needs are different, so fees are based on an individual assessment rather than a single fixed rate. This page explains the main ways care can be funded — please contact us for a personalised quote and full breakdown of costs.' }}</p>
+  </div>
+
+  <div class="funding-grid">
+    <div class="funding-card">
+      <i class="fas fa-wallet"></i>
+      <h3>{{ sections['privateTitle'] || 'Private (Self-Funded) Care' }}</h3>
+      <p>{{ sections['privateText'] || 'Residents who fund their own care pay fees directly, agreed in advance based on their individual care plan.' }}</p>
+    </div>
+    <div class="funding-card">
+      <i class="fas fa-landmark"></i>
+      <h3>{{ sections['localAuthorityTitle'] || 'Local Authority Funding' }}</h3>
+      <p>{{ sections['localAuthorityText'] || 'Derbyshire County Council may contribute to care costs following a financial and needs assessment. We work with local authority teams throughout this process.' }}</p>
+    </div>
+    <div class="funding-card">
+      <i class="fas fa-notes-medical"></i>
+      <h3>{{ sections['nhsChcTitle'] || 'NHS Continuing Healthcare (CHC)' }}</h3>
+      <p>{{ sections['nhsChcText'] || 'Where an individual has a primary health need, NHS Continuing Healthcare may fund some or all of their care. Eligibility is assessed by the NHS, and our team can support families through this process.' }}</p>
+    </div>
+    <div class="funding-card">
+      <i class="fas fa-hand-holding-heart"></i>
+      <h3>{{ sections['topUpTitle'] || 'Third-Party Top-Ups' }}</h3>
+      <p>{{ sections['topUpText'] || 'Where local authority funding does not cover the full cost of a chosen room or service, a family member or third party may be able to pay a top-up fee, subject to local authority agreement.' }}</p>
+    </div>
+  </div>
+
+  <div class="included-grid">
+    <div class="included-card">
+      <h3>{{ sections['includedTitle'] || "What's Typically Included" }}</h3>
+      <p>{{ sections['includedText'] || 'Our standard fees typically include accommodation, meals, personal care, activities, and laundry. We set out exactly what is included in your personalised quote.' }}</p>
+    </div>
+    <div class="included-card">
+      <h3>{{ sections['additionalTitle'] || 'Services That May Carry an Additional Charge' }}</h3>
+      <p>{{ sections['additionalText'] || "Certain services — such as hairdressing, chiropody, or particular outings — may carry an additional charge. We'll always be clear about any additional costs before they're incurred." }}</p>
+    </div>
+  </div>
+
+  <div class="fees-cta">
+    <p>For a personalised quote based on individual care needs, please get in touch.</p>
+    <a routerLink="/contact" class="btn-gold">Contact Us</a>
+  </div>
+</section>
+</div>

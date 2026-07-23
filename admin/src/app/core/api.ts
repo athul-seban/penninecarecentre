@@ -82,6 +82,17 @@ export class ApiService {
     return this.http.delete(`${this.BASE}/contact/${id}`, { headers: this.auth.getHeaders() });
   }
 
+  // Job Applications
+  getApplications(): Observable<any> {
+    return this.http.get(`${this.BASE}/applications`, { headers: this.auth.getHeaders() });
+  }
+  updateApplication(id: string, data: { status: string; notes?: string }): Observable<any> {
+    return this.http.patch(`${this.BASE}/applications/${id}`, data, { headers: this.auth.getHeaders() });
+  }
+  deleteApplication(id: string): Observable<any> {
+    return this.http.delete(`${this.BASE}/applications/${id}`, { headers: this.auth.getHeaders() });
+  }
+
   // Error Logs
   getErrorLogs(limit = 100): Observable<any> {
     return this.http.get(`${this.BASE}/error-logs?limit=${limit}`, { headers: this.auth.getHeaders() });

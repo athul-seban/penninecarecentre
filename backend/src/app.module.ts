@@ -10,6 +10,7 @@ import { CareersModule } from './careers/careers.module';
 import { TeamModule } from './team/team.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ContactModule } from './contact/contact.module';
+import { ApplicationsModule } from './applications/applications.module';
 import { ErrorLogModule } from './error-log/error-log.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 
@@ -39,6 +40,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
     TeamModule,
     ReviewsModule,
     ContactModule,
+    ApplicationsModule,
     ErrorLogModule,
     AnalyticsModule,
   ],

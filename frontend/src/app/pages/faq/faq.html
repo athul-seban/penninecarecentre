@@ -1,0 +1,29 @@
+<div id="top">
+<header class="hero-sub">
+  <div class="hero-content">
+    <h1>{{ sections['heroTitle'] || 'Frequently Asked Questions' }}</h1>
+    <p>{{ sections['heroSubtitle'] || 'Answers to the questions families ask us most often.' }}</p>
+  </div>
+</header>
+
+<section class="section-padding reveal-element">
+  <div class="faq-list">
+    @for (item of faqItems; track item.key; let i = $index) {
+      <div class="faq-item" [class.open]="openIndex === i">
+        <button class="faq-question" (click)="toggle(i)" [attr.aria-expanded]="openIndex === i">
+          <span>{{ item.question }}</span>
+          <i class="fas" [class.fa-plus]="openIndex !== i" [class.fa-minus]="openIndex === i"></i>
+        </button>
+        @if (openIndex === i) {
+          <p class="faq-answer">{{ item.answer }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="faq-cta">
+    <p>Can't find the answer you're looking for?</p>
+    <a routerLink="/contact" class="btn-gold">Contact Us</a>
+  </div>
+</section>
+</div>

@@ -8,6 +8,9 @@ import { TeamComponent } from './pages/team/team';
 import { ContactComponent } from './pages/contact/contact';
 import { CareersComponent } from './pages/careers/careers';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy';
+import { FaqComponent } from './pages/faq/faq';
+import { AdmissionsComponent } from './pages/admissions/admissions';
+import { FeesFundingComponent } from './pages/fees-funding/fees-funding';
 import { NotFoundComponent } from './pages/not-found/not-found';
 
 export const routes: Routes = [
@@ -20,6 +23,9 @@ export const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'careers', component: CareersComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'faq', component: FaqComponent },
+  { path: 'admissions', component: AdmissionsComponent },
+  { path: 'fees-funding', component: FeesFundingComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', component: NotFoundComponent }
 ];

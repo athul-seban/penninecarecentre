@@ -5,8 +5,11 @@
 
   <div class="image-array-grid">
     @for (img of images; track img + $index) {
-      <div class="img-card">
+      <div class="img-card" [class.img-card-primary]="$index === 0">
         <div class="img-card-thumb" (click)="img && openFullscreen(img)">
+          @if ($index === 0) {
+            <div class="img-card-cover-badge">Cover</div>
+          }
           @if (img) {
             <img
               [src]="previewUrl(img)"

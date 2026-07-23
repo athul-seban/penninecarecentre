@@ -113,7 +113,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       error: () => {
         this.testimonials = [
-          { initial: 'K', color: '#4285f4', name: 'Kate T.', subtitle: 'Daughter of Resident • Google Local Guide', date: '2 months ago', text: '"Mum was very resistant to giving up her independence, and the staff have bent over backwards to make this as smooth a transition as possible."' },
+          { initial: 'K', color: '#4285f4', name: 'Kate T.', subtitle: 'Daughter of Resident', date: '2 months ago', text: '"Mum was very resistant to giving up her independence, and the staff have bent over backwards to make this as smooth a transition as possible."' },
         ];
         this.startTestimonialSlider();
       }

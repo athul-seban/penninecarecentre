@@ -1,0 +1,73 @@
+<div id="top">
+<header class="hero-sub">
+  <div class="hero-content">
+    <h1>{{ sections['heroTitle'] || 'Admissions & Referrals' }}</h1>
+    <p>{{ sections['heroSubtitle'] || 'A clear, supportive path from first enquiry to moving in.' }}</p>
+  </div>
+</header>
+
+<section class="section-padding reveal-element">
+  <div class="centered-header">
+    <p>{{ sections['introText'] || 'Moving into residential care is a significant decision. We aim to make the process as clear and reassuring as possible, guiding every family and referring professional through each step.' }}</p>
+  </div>
+
+  <div class="steps-timeline">
+    <div class="step-item">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>{{ sections['step1Title'] || '1. Initial Enquiry' }}</h3>
+        <p>{{ sections['step1Text'] || 'Contact us by phone, email, or through our website. We\'ll listen to your situation and answer any initial questions about the Pennine Suite or Moorland Suite.' }}</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>{{ sections['step2Title'] || '2. Discussion with the Family or Professional' }}</h3>
+        <p>{{ sections['step2Text'] || 'We\'ll arrange a conversation with you, your family, or the referring professional (such as a social worker or discharge team) to understand care needs in more detail.' }}</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>{{ sections['step3Title'] || '3. Pre-Admission Assessment' }}</h3>
+        <p>{{ sections['step3Text'] || 'Our care team carries out a pre-admission assessment to confirm we can safely and appropriately meet the individual\'s needs, in person wherever possible.' }}</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <h3>{{ sections['step4Title'] || '4. Funding & Fee Confirmation' }}</h3>
+        <p>
+          {{ sections['step4Text'] || 'We confirm the funding route — private, local authority, NHS Continuing Healthcare, or a combination — and provide a clear breakdown of fees. See our Fees & Funding page for more information.' }}
+          <a routerLink="/fees-funding">Fees &amp; Funding →</a>
+        </p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <h3>{{ sections['step5Title'] || '5. Visit to the Home' }}</h3>
+        <p>{{ sections['step5Text'] || 'We warmly encourage prospective residents and their families to visit Pennine Care Centre, meet the team, and see the Pennine Suite or Moorland Suite in person before deciding.' }}</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">6</div>
+      <div class="step-content">
+        <h3>{{ sections['step6Title'] || '6. Admission Planning' }}</h3>
+        <p>{{ sections['step6Text'] || 'Once a place is confirmed, we agree a moving-in date and work with you on practical arrangements, including personalising the bedroom and transferring care and medical information.' }}</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">7</div>
+      <div class="step-content">
+        <h3>{{ sections['step7Title'] || '7. Review Following Admission' }}</h3>
+        <p>{{ sections['step7Text'] || 'We review the care plan shortly after admission, and regularly thereafter, to make sure it continues to reflect the resident\'s changing needs and preferences.' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="admissions-cta">
+    <a routerLink="/contact" class="btn-gold">Start Your Enquiry</a>
+  </div>
+</section>
+</div>

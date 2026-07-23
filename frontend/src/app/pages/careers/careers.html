@@ -21,7 +21,7 @@
     <div class="benefit-card">
       <i class="fas fa-heartbeat"></i>
       <h3>{{ sections['benefitWellbeing'] || 'Staff Wellbeing' }}</h3>
-      <p>{{ sections['benefitWellbeingText'] || 'Mental well-being programs, regular physical assessments, free premium staff meals, and a dedicated cozy break lounge room.' }}</p>
+      <p>{{ sections['benefitWellbeingText'] || 'Mental well-being programmes, regular physical assessments, free premium staff meals, and a dedicated cosy break lounge.' }}</p>
     </div>
     <div class="benefit-card">
       <i class="fas fa-coins"></i>
@@ -65,47 +65,62 @@
   </div>
   <div class="apply-form-wrapper">
     <h3>Submit Application</h3>
-    <form (ngSubmit)="onSubmit()" #appForm="ngForm">
-      <div class="form-grid-2col">
-        <div class="form-group">
-          <label for="fullName">Full Name *</label>
-          <input type="text" id="fullName" name="fullName" [(ngModel)]="applicationForm.fullName" required placeholder="John Doe" />
-        </div>
-        <div class="form-group">
-          <label for="emailAddress">Email Address *</label>
-          <input type="email" id="emailAddress" name="emailAddress" [(ngModel)]="applicationForm.email" required placeholder="johndoe@example.com" />
-        </div>
+
+    @if (submitted) {
+      <div class="form-success">
+        <i class="fas fa-check-circle"></i>
+        <h4>Application Received!</h4>
+        <p>Thank you for applying to Pennine Care Centre. We'll be in touch within 5 working days.</p>
+        <button class="btn-gold" style="margin-top:16px" (click)="submitted = false">Submit Another Application</button>
       </div>
-      <div class="form-grid-2col">
-        <div class="form-group">
-          <label for="phoneNumber">Phone Number *</label>
-          <input type="tel" id="phoneNumber" name="phoneNumber" [(ngModel)]="applicationForm.phone" required placeholder="01457 000000" />
+    } @else {
+      <form (ngSubmit)="onSubmit()" #appForm="ngForm">
+        <div class="form-grid-2col">
+          <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" name="fullName" [(ngModel)]="applicationForm.fullName" required placeholder="John Doe" />
+          </div>
+          <div class="form-group">
+            <label for="emailAddress">Email Address *</label>
+            <input type="email" id="emailAddress" name="emailAddress" [(ngModel)]="applicationForm.email" required placeholder="johndoe@example.com" />
+          </div>
+        </div>
+        <div class="form-grid-2col">
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number *</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" [(ngModel)]="applicationForm.phone" required placeholder="01457 000000" />
+          </div>
+          <div class="form-group">
+            <label for="position">Position Applied For *</label>
+            <select id="position" name="position" [(ngModel)]="applicationForm.position" required>
+              <option value="">-- Please Select --</option>
+              @for (job of jobs; track job.id) {
+                <option [value]="job.title">{{ job.title }}</option>
+              }
+              <option value="Other">Other Care Role</option>
+            </select>
+          </div>
         </div>
         <div class="form-group">
-          <label for="position">Position Applied For *</label>
-          <select id="position" name="position" [(ngModel)]="applicationForm.position" required>
-            <option value="">-- Please Select --</option>
-            @for (job of jobs; track job.id) {
-              <option [value]="job.title">{{ job.title }}</option>
-            }
-            <option value="Other">Other Care Role</option>
-          </select>
+          <label for="coverLetter">Why do you want to join Pennine? *</label>
+          <textarea id="coverLetter" name="coverLetter" [(ngModel)]="applicationForm.coverLetter" rows="5" required placeholder="Tell us briefly about your experience, certifications, and why you would fit our compassionate team culture..."></textarea>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="coverLetter">Why do you want to join Pennine? *</label>
-        <textarea id="coverLetter" name="coverLetter" [(ngModel)]="applicationForm.coverLetter" rows="5" required placeholder="Tell us briefly about your experience, certifications, and why you would fit our compassionate team culture..."></textarea>
-      </div>
-      <div class="form-group">
-        <label>Upload CV (PDF, DOCX formats) *</label>
-        <div class="file-upload-box">
-          <i class="fas fa-cloud-upload-alt"></i>
-          <p>{{ applicationForm.cvFileName || 'Drag and drop your CV file here, or click to browse' }}</p>
-          <input type="file" name="cvFile" accept=".pdf,.doc,.docx" (change)="onFileChange($event)" />
+        <div class="form-group">
+          <label>Upload CV (PDF, DOCX formats)</label>
+          <div class="file-upload-box">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>{{ applicationForm.cvFileName || 'Drag and drop your CV file here, or click to browse' }}</p>
+            <input type="file" name="cvFile" accept=".pdf,.doc,.docx" (change)="onFileChange($event)" />
+          </div>
         </div>
-      </div>
-      <button type="submit" class="btn-submit">Submit My Application</button>
-    </form>
+        @if (submitError) {
+          <div class="form-error">{{ submitError }}</div>
+        }
+        <button type="submit" class="btn-submit" [disabled]="submitting">
+          {{ submitting ? 'Submitting…' : 'Submit My Application' }}
+        </button>
+      </form>
+    }
   </div>
 </section>
 </div>
