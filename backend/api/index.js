@@ -1,8 +1,8 @@
 const express = require('express');
 const { NestFactory } = require('@nestjs/core');
 const { ExpressAdapter } = require('@nestjs/platform-express');
-const { AppModule } = require('../dist/app.module');
-const { configureApp } = require('../dist/bootstrap');
+const { AppModule } = require('../dist/src/app.module');
+const { configureApp } = require('../dist/src/bootstrap');
 
 const server = express();
 let bootstrapPromise;
