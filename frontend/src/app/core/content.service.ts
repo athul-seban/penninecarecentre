@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ContentService {
-  private readonly API = 'http://localhost:3000/api';
+  private readonly API = environment.apiUrl;
   private cache = new Map<string, Observable<Record<string, any>>>();
 
   constructor(private http: HttpClient) {}

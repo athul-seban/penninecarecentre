@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-image-array-upload',
@@ -18,7 +19,7 @@ export class ImageArrayUpload {
   error = '';
   fullscreenImage = '';
 
-  private readonly FRONTEND_BASE = 'http://localhost:4200';
+  private readonly FRONTEND_BASE = environment.frontendUrl;
 
   constructor(private api: ApiService) {}
 

@@ -4,31 +4,42 @@ import { Repository } from 'typeorm';
 import { Media } from './media.entity';
 import * as fs from 'fs';
 import * as path from 'path';
+import { put, del } from '@vercel/blob';
 
 const ASSETS_DIR = path.join(process.cwd(), '..', 'frontend', 'src', 'assets', 'images');
+const useBlob = () => !!process.env.BLOB_READ_WRITE_TOKEN;
 
 @Injectable()
 export class MediaService {
   constructor(@InjectRepository(Media) private repo: Repository<Media>) {}
 
   async upload(file: Express.Multer.File, _folder?: string, altText?: string): Promise<{ url: string }> {
-    if (!fs.existsSync(ASSETS_DIR)) {
-      fs.mkdirSync(ASSETS_DIR, { recursive: true });
-    }
-
     const safeName = file.originalname.replace(/[^a-z0-9._-]/gi, '-').toLowerCase();
     const filename = `${Date.now()}-${safeName}`;
-    fs.writeFileSync(path.join(ASSETS_DIR, filename), file.buffer);
+    let url: string;
 
-    const url = `/assets/images/${filename}`;
+    if (useBlob()) {
+      const blob = await put(filename, file.buffer, {
+        access: 'public',
+        contentType: file.mimetype,
+      });
+      url = blob.url;
+    } else {
+      if (!fs.existsSync(ASSETS_DIR)) {
+        fs.mkdirSync(ASSETS_DIR, { recursive: true });
+      }
+      fs.writeFileSync(path.join(ASSETS_DIR, filename), file.buffer);
+      url = `/assets/images/${filename}`;
+    }
+
     const resourceType = file.mimetype.startsWith('video') ? 'video' : 'image';
 
     const media = this.repo.create({
       originalName: file.originalname,
       url,
-      publicId: filename,
+      publicId: useBlob() ? url : filename,
       resourceType,
-      folder: 'local',
+      folder: useBlob() ? 'blob' : 'local',
       altText,
     });
     await this.repo.save(media);
@@ -54,9 +65,13 @@ export class MediaService {
 
   async remove(id: string): Promise<void> {
     const media = await this.findOne(id);
-    const filepath = path.join(ASSETS_DIR, media.publicId);
-    if (fs.existsSync(filepath)) {
-      fs.unlinkSync(filepath);
+    if (media.folder === 'blob') {
+      await del(media.publicId).catch(() => {});
+    } else {
+      const filepath = path.join(ASSETS_DIR, media.publicId);
+      if (fs.existsSync(filepath)) {
+        fs.unlinkSync(filepath);
+      }
     }
     await this.repo.delete(id);
   }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../core/content.service';
+import { environment } from '../../../environments/environment';
 
 interface TeamMember {
   id: string;
@@ -30,7 +31,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
       next: s => { this.sections = s; },
       error: () => this.router.navigate(['/not-found'])
     });
-    this.http.get<TeamMember[]>('http://localhost:3000/api/team?active=true').subscribe({
+    this.http.get<TeamMember[]>(`${environment.apiUrl}/team?active=true`).subscribe({
       next: members => { this.teamMembers = members; },
       error: () => { this.teamMembers = []; }
     });

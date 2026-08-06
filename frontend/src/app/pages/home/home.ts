@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, Hos
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../core/content.service';
+import { environment } from '../../../environments/environment';
 
 const AVATAR_COLORS = ['#4285f4','#34a853','#fbbc05','#ea4335','#7b1fa2','#00897b','#e65100','#1565c0'];
 
@@ -99,7 +100,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       error: () => this.router.navigate(['/not-found'])
     });
-    this.http.get<ApiReview[]>('http://localhost:3000/api/reviews?visible=true').subscribe({
+    this.http.get<ApiReview[]>(`${environment.apiUrl}/reviews?visible=true`).subscribe({
       next: (reviews) => {
         this.testimonials = reviews.map((r, i) => ({
           initial: r.authorName.charAt(0).toUpperCase(),

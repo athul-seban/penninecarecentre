@@ -7,6 +7,7 @@ import { EMPTY } from 'rxjs';
 import { NavbarComponent } from './shared/navbar/navbar';
 import { FooterComponent } from './shared/footer/footer';
 import { ThemeService } from './core/theme.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,7 @@ export class App implements OnInit {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e) => {
       const nav = e as NavigationEnd;
       this.theme.applyActiveTheme();
-      this.http.post('http://localhost:3000/api/analytics/track', {
+      this.http.post(`${environment.apiUrl}/analytics/track`, {
         path: nav.urlAfterRedirects,
         referrer: document.referrer || undefined,
       }).pipe(catchError(() => EMPTY)).subscribe();

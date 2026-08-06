@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 import { ImageUpload } from '../../shared/image-upload/image-upload';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-team-manager',
@@ -63,7 +64,7 @@ export class TeamManager implements OnInit {
 
   previewUrl(path: string): string {
     if (!path) return '';
-    if (path.startsWith('/assets/')) return 'http://localhost:4200' + path;
+    if (path.startsWith('/assets/')) return environment.frontendUrl + path;
     return path;
   }
 }

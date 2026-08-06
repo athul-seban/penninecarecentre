@@ -4,8 +4,10 @@ import { Repository } from 'typeorm';
 import { CareerApplication, ApplicationStatus } from './application.entity';
 import * as fs from 'fs';
 import * as path from 'path';
+import { put, del } from '@vercel/blob';
 
 const CV_DIR = path.join(process.cwd(), 'uploads', 'cv');
+const useBlob = () => !!process.env.BLOB_READ_WRITE_TOKEN;
 
 @Injectable()
 export class ApplicationsService {
@@ -21,12 +23,22 @@ export class ApplicationsService {
 
     if (file) {
       try {
-        if (!fs.existsSync(CV_DIR)) fs.mkdirSync(CV_DIR, { recursive: true });
         const safeName = file.originalname.replace(/[^a-z0-9._-]/gi, '-').toLowerCase();
         const filename = `${Date.now()}-${safeName}`;
-        fs.writeFileSync(path.join(CV_DIR, filename), file.buffer);
-        cvUrl = `/uploads/cv/${filename}`;
-        cvPublicId = filename;
+
+        if (useBlob()) {
+          const blob = await put(`cv/${filename}`, file.buffer, {
+            access: 'public',
+            contentType: file.mimetype,
+          });
+          cvUrl = blob.url;
+          cvPublicId = blob.url;
+        } else {
+          if (!fs.existsSync(CV_DIR)) fs.mkdirSync(CV_DIR, { recursive: true });
+          fs.writeFileSync(path.join(CV_DIR, filename), file.buffer);
+          cvUrl = `/uploads/cv/${filename}`;
+          cvPublicId = filename;
+        }
         cvOriginalName = file.originalname;
       } catch {
         // proceed without CV if save fails
@@ -55,8 +67,12 @@ export class ApplicationsService {
   async delete(id: string): Promise<void> {
     const app = await this.repo.findOne({ where: { id } });
     if (app?.cvPublicId) {
-      const filepath = path.join(CV_DIR, app.cvPublicId);
-      if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+      if (app.cvPublicId.startsWith('http')) {
+        await del(app.cvPublicId).catch(() => {});
+      } else {
+        const filepath = path.join(CV_DIR, app.cvPublicId);
+        if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+      }
     }
     await this.repo.delete(id);
   }

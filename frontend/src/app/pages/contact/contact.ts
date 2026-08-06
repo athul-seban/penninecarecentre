@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../core/content.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-contact',
@@ -44,7 +45,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
     if (this.submitting) return;
     this.submitting = true;
     this.submitError = '';
-    this.http.post('http://localhost:3000/api/contact', this.contactForm).subscribe({
+    this.http.post(`${environment.apiUrl}/contact`, this.contactForm).subscribe({
       next: () => {
         this.submitted = true;
         this.submitting = false;

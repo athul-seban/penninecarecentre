@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 export const THEMES = [
   { id: 'classic', label: 'Classic',      description: 'Navy & Gold — timeless, professional',   swatch: ['#002b5b','#c5a059','#faf9f6'] },
@@ -11,7 +12,7 @@ export const THEMES = [
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private readonly API = 'http://localhost:3000/api';
+  private readonly API = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

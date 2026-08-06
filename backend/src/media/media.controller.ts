@@ -1,6 +1,6 @@
 import {
   Controller, Get, Post, Delete, Param, Query,
-  UseInterceptors, UploadedFile, Body, UseGuards, Patch,
+  UseInterceptors, UploadedFile, Body, UseGuards, Patch, BadRequestException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -9,6 +9,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { MediaService } from './media.service';
 import * as fs from 'fs';
 import * as path from 'path';
+
+const MAX_MEDIA_SIZE_BYTES = 50 * 1024 * 1024; // 50MB — covers hero images/videos
 
 @ApiTags('media')
 @UseGuards(JwtAuthGuard)
@@ -20,7 +22,18 @@ export class MediaController {
   @Post('upload')
   @ApiOperation({ summary: 'Upload a file to frontend/src/assets/images' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: memoryStorage(),
+      limits: { fileSize: MAX_MEDIA_SIZE_BYTES },
+      fileFilter: (_req, file, cb) => {
+        if (!file.mimetype.startsWith('image/') && !file.mimetype.startsWith('video/')) {
+          return cb(new BadRequestException('Only image or video files are allowed'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
   upload(
     @UploadedFile() file: Express.Multer.File,
     @Body('folder') folder?: string,

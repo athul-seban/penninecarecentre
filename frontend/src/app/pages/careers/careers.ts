@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../core/content.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-careers',
@@ -37,7 +38,7 @@ export class CareersComponent implements OnInit, AfterViewInit {
       next: s => { this.sections = s; },
       error: () => this.router.navigate(['/not-found'])
     });
-    this.http.get<any[]>('http://localhost:3000/api/careers').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/careers`).subscribe({
       next: (jobs) => { this.jobs = jobs.filter(j => j.isOpen); },
       error: () => {}
     });
@@ -83,7 +84,7 @@ export class CareersComponent implements OnInit, AfterViewInit {
       fd.append('cvFile', this.cvFile, this.cvFile.name);
     }
 
-    this.http.post('http://localhost:3000/api/applications', fd).subscribe({
+    this.http.post(`${environment.apiUrl}/applications`, fd).subscribe({
       next: () => {
         this.submitting = false;
         this.submitted = true;
