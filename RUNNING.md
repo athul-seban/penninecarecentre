@@ -160,19 +160,6 @@ cd admin && ng serve --port 4300
 
 ---
 
-## Switching Website Themes
-
-1. Log in to the admin panel at http://localhost:4300/login
-2. Go to **Settings** in the sidebar
-3. Under **Website Design Theme**, click one of the 5 themes:
-   - **Classic** — Navy & Gold (default)
-   - **Modern Dark** — Near-black with cyan
-   - **Warm Sage** — Forest green with copper
-   - **Rose & Slate** — Slate blue with dusty rose
-   - **Royal Purple** — Deep violet with lavender
-4. Click **Save All Settings**
-5. Refresh the public website — theme applies immediately
-
 ---
 
 ## Production Hosting (VPS/Cloud)

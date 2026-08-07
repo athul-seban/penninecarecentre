@@ -63,7 +63,7 @@ A full-stack web platform for **Pennine Care Centre**, a premium residential car
 - `core/auth-guard.ts` — Functional guard, redirects to /login if no token
 - `pages/login/` — Email/password login
 - `pages/dashboard/` — Stats overview
-- `pages/settings-editor/` — Theme switcher (5 themes) + all site settings + SMTP email config
+- `pages/settings-editor/` — All site settings + SMTP email config (no theme switcher)
 - `pages/pages-editor/` — Edit ALL page text sections and meta per page (8 pages with labelled fields)
 - `pages/team-manager/` — Add/edit/delete team members
 - `pages/careers-manager/` — Post/edit/close job listings
@@ -74,19 +74,16 @@ A full-stack web platform for **Pennine Care Centre**, a premium residential car
 
 ---
 
-## 5 Website Themes
+## Website Theme
 
-Themes are applied by setting `body[data-theme="<id>"]` via CSS custom property overrides in `frontend/src/styles.css`.
-
-| ID | Name | Colors |
-|---|---|---|
-| `classic` | Classic | Navy `#002b5b`, Gold `#c5a059` |
-| `modern` | Modern Dark | Near-black `#0d0d1a`, Cyan `#00d4ff` |
-| `sage` | Warm Sage | Forest green `#2a4523`, Copper `#b8925a` |
-| `rose` | Rose & Slate | Slate `#2c3e50`, Rose `#c27b6e` |
-| `royal` | Royal Purple | Violet `#2d1b69`, Lavender `#9b7ed4` |
-
-**To switch theme:** Admin → Settings → click a theme card → Save All Settings.
+The site runs on the Classic palette (Navy `#002b5b`, Gold `#c5a059`), applied by
+setting `body[data-theme="classic"]` via CSS custom property overrides in
+`frontend/src/styles.css`. Four other theme palettes (`modern`, `sage`, `rose`,
+`royal`) still exist in that stylesheet, but the admin Settings page no longer
+has a UI to switch between them — the theme-picker option was removed
+(2026-08-07). The `site.theme` setting stays in the DB fixed at `classic`; to
+change it now requires editing the `settings` table directly or restoring the
+theme-switcher UI.
 
 ---
 

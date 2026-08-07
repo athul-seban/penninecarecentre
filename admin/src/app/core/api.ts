@@ -106,6 +106,9 @@ export class ApiService {
   getAnalytics(): Observable<any> {
     return this.http.get(`${this.BASE}/analytics`, { headers: this.auth.getHeaders() });
   }
+  getAnalyticsReport(from: string, to: string): Observable<any> {
+    return this.http.get(`${this.BASE}/analytics/report?from=${from}&to=${to}`, { headers: this.auth.getHeaders() });
+  }
 
   // Media
   uploadMedia(formData: FormData): Observable<any> {

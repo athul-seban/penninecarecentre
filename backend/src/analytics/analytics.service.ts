@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThanOrEqual } from 'typeorm';
+import { Repository, MoreThanOrEqual, Between, ObjectLiteral } from 'typeorm';
 import { PageVisit } from './analytics.entity';
+import { ContactSubmission } from '../contact/contact.entity';
+import { CareerApplication } from '../applications/application.entity';
+import { Review } from '../reviews/review.entity';
 
 @Injectable()
 export class AnalyticsService {
   constructor(
     @InjectRepository(PageVisit) private repo: Repository<PageVisit>,
+    @InjectRepository(ContactSubmission) private contactRepo: Repository<ContactSubmission>,
+    @InjectRepository(CareerApplication) private applicationRepo: Repository<CareerApplication>,
+    @InjectRepository(Review) private reviewRepo: Repository<Review>,
   ) {}
 
   async track(data: {
@@ -69,5 +75,63 @@ export class AnalyticsService {
       days.push({ date: key, count: map.get(key) ?? 0 });
     }
     return days;
+  }
+
+  async getDateRangeReport(fromStr: string, toStr: string) {
+    const from = new Date(`${fromStr}T00:00:00.000Z`);
+    const to = new Date(`${toStr}T23:59:59.999Z`);
+
+    const [visits, enquiries, applications, reviews, visitsByDay, enquiriesByDay, applicationsByDay, reviewsByDay] =
+      await Promise.all([
+        this.repo.count({ where: { createdAt: Between(from, to) } }),
+        this.contactRepo.count({ where: { createdAt: Between(from, to) } }),
+        this.applicationRepo.count({ where: { createdAt: Between(from, to) } }),
+        this.reviewRepo.count({ where: { createdAt: Between(from, to) } }),
+        this.groupByDay(this.repo, from, to),
+        this.groupByDay(this.contactRepo, from, to),
+        this.groupByDay(this.applicationRepo, from, to),
+        this.groupByDay(this.reviewRepo, from, to),
+      ]);
+
+    const visitsMap = new Map(visitsByDay.map(r => [r.date, r.count]));
+    const enquiriesMap = new Map(enquiriesByDay.map(r => [r.date, r.count]));
+    const applicationsMap = new Map(applicationsByDay.map(r => [r.date, r.count]));
+    const reviewsMap = new Map(reviewsByDay.map(r => [r.date, r.count]));
+
+    const days: { date: string; visits: number; enquiries: number; applications: number; reviews: number }[] = [];
+    const cursor = new Date(from);
+    while (cursor <= to) {
+      const key = cursor.toISOString().slice(0, 10);
+      days.push({
+        date: key,
+        visits: visitsMap.get(key) ?? 0,
+        enquiries: enquiriesMap.get(key) ?? 0,
+        applications: applicationsMap.get(key) ?? 0,
+        reviews: reviewsMap.get(key) ?? 0,
+      });
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+
+    return {
+      from: fromStr,
+      to: toStr,
+      totals: { visits, enquiries, applications, reviews },
+      days,
+    };
+  }
+
+  private async groupByDay(
+    repo: Repository<ObjectLiteral>,
+    from: Date,
+    to: Date,
+  ): Promise<{ date: string; count: number }[]> {
+    const rows = await repo
+      .createQueryBuilder('t')
+      .select("TO_CHAR(t.createdAt AT TIME ZONE 'UTC', 'YYYY-MM-DD')", 'date')
+      .addSelect('COUNT(*)', 'count')
+      .where('t.createdAt BETWEEN :from AND :to', { from, to })
+      .groupBy("TO_CHAR(t.createdAt AT TIME ZONE 'UTC', 'YYYY-MM-DD')")
+      .getRawMany();
+    return rows.map(r => ({ date: r.date, count: parseInt(r.count, 10) }));
   }
 }

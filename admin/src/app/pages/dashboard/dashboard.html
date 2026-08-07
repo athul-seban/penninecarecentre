@@ -10,17 +10,27 @@
         <div class="stat-card">
           <div class="stat-value">{{ stats.team }}</div>
           <div class="stat-label">Team Members</div>
-          <a routerLink="/team" class="stat-link">Manage Team &rarr;</a>
+          <a routerLink="/people" class="stat-link">Manage Team &rarr;</a>
         </div>
         <div class="stat-card">
           <div class="stat-value">{{ stats.careers }}</div>
           <div class="stat-label">Job Listings</div>
-          <a routerLink="/careers" class="stat-link">Manage Careers &rarr;</a>
+          <a routerLink="/people" class="stat-link">Manage Careers &rarr;</a>
         </div>
         <div class="stat-card">
           <div class="stat-value">{{ stats.reviews }}</div>
           <div class="stat-label">Reviews</div>
-          <a routerLink="/reviews" class="stat-link">Manage Reviews &rarr;</a>
+          <a routerLink="/people" class="stat-link">Manage Reviews &rarr;</a>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.contacts }}</div>
+          <div class="stat-label">Contact Enquiries</div>
+          <a routerLink="/contact" class="stat-link">View Enquiries &rarr;</a>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.applications }}</div>
+          <div class="stat-label">Job Applications</div>
+          <a routerLink="/applications" class="stat-link">View Applications &rarr;</a>
         </div>
       </div>
 
@@ -86,6 +96,77 @@
     @if (loading) {
       <div class="loading">Loading...</div>
     }
+
+    <div class="section-title">Date Range Report</div>
+    <div class="report-card">
+      <div class="report-controls">
+        <label class="report-field">
+          <span>From</span>
+          <input type="date" [(ngModel)]="reportFrom" [max]="reportTo" />
+        </label>
+        <label class="report-field">
+          <span>To</span>
+          <input type="date" [(ngModel)]="reportTo" [max]="today" />
+        </label>
+        <button class="btn-generate" (click)="generateReport()" [disabled]="reportLoading">
+          {{ reportLoading ? 'Loading…' : 'Generate Report' }}
+        </button>
+        @if (report) {
+          <button class="btn-export" (click)="exportReportCsv()">Export CSV</button>
+        }
+      </div>
+
+      @if (reportError) {
+        <div class="report-error">Couldn't load the report for that range. Check the dates and try again.</div>
+      }
+
+      @if (report && !reportLoading) {
+        <div class="report-totals">
+          <div class="report-total-item">
+            <span class="report-total-value">{{ report.totals.visits | number }}</span>
+            <span class="report-total-label">Visits</span>
+          </div>
+          <div class="report-total-item">
+            <span class="report-total-value">{{ report.totals.enquiries | number }}</span>
+            <span class="report-total-label">Enquiries</span>
+          </div>
+          <div class="report-total-item">
+            <span class="report-total-value">{{ report.totals.applications | number }}</span>
+            <span class="report-total-label">Applications</span>
+          </div>
+          <div class="report-total-item">
+            <span class="report-total-value">{{ report.totals.reviews | number }}</span>
+            <span class="report-total-label">Reviews</span>
+          </div>
+        </div>
+
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Visits</th>
+                <th>Enquiries</th>
+                <th>Applications</th>
+                <th>Reviews</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (day of report.days; track day.date) {
+                <tr>
+                  <td>{{ day.date }}</td>
+                  <td>{{ day.visits }}</td>
+                  <td>{{ day.enquiries }}</td>
+                  <td>{{ day.applications }}</td>
+                  <td>{{ day.reviews }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+
     <div class="quick-links">
       <h2>Quick Actions</h2>
       <div class="links-grid">

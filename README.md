@@ -35,7 +35,7 @@
 ### Public Website
 - 9-page responsive website covering suites, services, team, careers & contact
 - CMS-driven content — every text field and image editable from the admin panel
-- 5 switchable colour themes applied in real time via CSS custom properties
+- Themed colour palette applied via CSS custom properties
 - Sticky navigation, back-to-top, announcement banner, Google Maps embed
 - Photo carousels, image sliders, and a testimonials section fed from the database
 
@@ -46,7 +46,7 @@
 - **Careers Manager** — post, edit and close job listings with application form
 - **Contact Enquiries** — view all form submissions, update status (read/replied/archived), add internal notes
 - **Media Library** — upload images to Cloudinary, browse and delete files
-- **Settings** — switch themes, manage SMTP email config, and edit all site-wide settings
+- **Settings** — manage SMTP email config and edit all site-wide settings
 - **Dashboard** — stats overview of content across all sections
 
 ### Backend API
@@ -161,19 +161,12 @@ TypeORM auto-creates all tables on first run (`synchronize: true` in dev). The b
 
 ---
 
-## 🎨 Themes
+## 🎨 Theme
 
-Switch themes instantly from **Admin → Settings → Website Design Theme**. No redeploy needed.
-
-| Theme | ID | Primary | Accent |
-|---|---|---|---|
-| Classic | `classic` | Navy `#002b5b` | Gold `#c5a059` |
-| Modern Dark | `modern` | Near-black `#0d0d1a` | Cyan `#00d4ff` |
-| Warm Sage | `sage` | Forest green `#2a4523` | Copper `#b8925a` |
-| Rose & Slate | `rose` | Slate `#2c3e50` | Rose `#c27b6e` |
-| Royal Purple | `royal` | Violet `#2d1b69` | Lavender `#9b7ed4` |
-
-Themes are implemented as CSS custom property overrides on `body[data-theme="<id>"]`.
+The site ships with the Classic palette (Navy `#002b5b` / Gold `#c5a059`), implemented
+as CSS custom property overrides on `body[data-theme="classic"]`. There is no
+admin UI to switch themes — the palette is fixed in code
+(`frontend/src/styles.css`).
 
 ---
 
