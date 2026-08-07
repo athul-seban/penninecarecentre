@@ -57,7 +57,6 @@ $env:PGPASSWORD="postgres123"
 npm run start:dev
 ```
 - API: http://localhost:3000/api
-- Swagger docs: http://localhost:3000/api/docs
 - All HTTP requests are logged with coloured output in the terminal
 
 ### Default admin login
@@ -158,16 +157,6 @@ cd admin && ng serve --port 4300
 3. Set "Forward Enquiries To" to the email that should receive contact form submissions
 4. Click **Save All Settings**
 5. New contact form submissions will be automatically emailed
-
----
-
-## Swagger API Documentation
-
-Visit: **http://localhost:3000/api/docs**
-
-1. Click **Authorize** (top right)
-2. Enter your JWT token from: `POST /api/auth/login` response
-3. All endpoints are documented and testable
 
 ---
 

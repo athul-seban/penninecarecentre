@@ -19,10 +19,7 @@ export class LoggingInterceptor implements NestInterceptor {
     const req = ctx.getRequest<Request>();
     const res = ctx.getResponse<Response>();
     const { method, originalUrl, ip } = req;
-    const userAgent = req.headers['user-agent'] ?? '';
     const start = Date.now();
-
-    const shortAgent = userAgent.length > 60 ? userAgent.slice(0, 60) + '…' : userAgent;
 
     return next.handle().pipe(
       tap(() => {

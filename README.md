@@ -55,7 +55,6 @@
 - Auto-seeds all tables with real content on first run
 - SMTP email forwarding for contact form submissions
 - Structured JSON error responses and coloured HTTP request logging
-- Interactive Swagger docs at `/api/docs`
 
 ---
 
@@ -68,7 +67,6 @@
 | **Database** | PostgreSQL 17 (JSONB for page sections) |
 | **Auth** | JWT · bcryptjs · Passport |
 | **Media** | Cloudinary (upload, delete, list) |
-| **API Docs** | Swagger / OpenAPI |
 | **Language** | TypeScript throughout |
 
 ---
@@ -135,7 +133,7 @@ cd admin && ng serve --port 4300
 |---|---|
 | Public website | http://localhost:4200 |
 | Admin CMS | http://localhost:4300/login |
-| API + Swagger | http://localhost:3000/api/docs |
+| API | http://localhost:3000/api |
 
 **Default admin credentials**
 ```
@@ -180,8 +178,6 @@ Themes are implemented as CSS custom property overrides on `body[data-theme="<id
 ---
 
 ## 📡 API Reference
-
-Full interactive docs: **http://localhost:3000/api/docs**
 
 ```
 POST   /api/auth/login                  Authenticate and receive JWT

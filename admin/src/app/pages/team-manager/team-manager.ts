@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
@@ -8,7 +7,7 @@ import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-team-manager',
-  imports: [CommonModule, FormsModule, Sidebar, ImageUpload],
+  imports: [FormsModule, Sidebar, ImageUpload],
   templateUrl: './team-manager.html',
   styleUrl: './team-manager.css'
 })

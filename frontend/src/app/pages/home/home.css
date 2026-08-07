@@ -65,14 +65,6 @@
   border-color: var(--gold);
   outline: none;
 }
-.mute-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: rgba(255,255,255,0.7);
-  font-weight: 600;
-  pointer-events: none;
-}
 .hero-content {
   opacity: 0;
   transform: translateY(30px);
@@ -374,11 +366,6 @@
 .google-stars-meta {
   text-align: left;
 }
-.google-stars {
-  color: #fbbc05;
-  font-size: 1rem;
-  margin-bottom: 3px;
-}
 .google-reviews-count {
   font-size: 0.78rem;
   color: rgba(0, 43, 91, 0.6);
@@ -476,10 +463,6 @@
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--navy);
-}
-.google-logo-badge {
-  color: #4285f4;
-  font-size: 0.85rem;
 }
 .reviewer-subtitle {
   font-size: 0.78rem;
@@ -830,7 +813,6 @@
 @media (max-width: 968px) {
   /* Hero */
   .hero { padding: calc(var(--banner-height) + 60px) 5% 0; }
-  .mute-label { display: none; }
 
   /* Suites */
   .suite-item,

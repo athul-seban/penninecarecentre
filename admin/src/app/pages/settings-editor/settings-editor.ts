@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
@@ -14,7 +13,7 @@ export const THEMES = [
 
 @Component({
   selector: 'app-settings-editor',
-  imports: [CommonModule, FormsModule, Sidebar],
+  imports: [FormsModule, Sidebar],
   templateUrl: './settings-editor.html',
   styleUrl: './settings-editor.css'
 })

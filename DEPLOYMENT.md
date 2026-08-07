@@ -70,7 +70,6 @@ below need.
    | `ADMIN_EMAIL` | your real admin email |
    | `ADMIN_PASSWORD` | a strong password (change after first login regardless) |
    | `ALLOWED_ORIGINS` | `https://pinninecare.vercel.app,https://pinninecare-admin.vercel.app` |
-   | `ENABLE_SWAGGER` | *(optional)* `true` to keep `/api/docs` live in production — off by default to save cold-start CPU, see [Resource-usage tuning](#resource-usage-tuning-staying-inside-free-tier-quotas) |
 
 6. **Deploy.**
 7. Attach media storage: Project → **Storage** tab → **Create Database** → **Blob** →
@@ -180,10 +179,6 @@ just "whatever the defaults happen to be":
   fastest way to exhaust Neon free tier's connection limit. Pair this with
   Neon's **pooled** (`-pooler` hostname) connection string, not the direct one,
   so pgbouncer absorbs the rest.
-- **Swagger docs skipped in production** (`bootstrap.ts`) — building the OpenAPI
-  document walks every controller/DTO via reflection on every cold start, for a
-  UI that isn't part of the actual admin/frontend traffic. Set `ENABLE_SWAGGER=true`
-  as an env var if you want `/api/docs` back in production without a code change.
 - **Function memory/duration capped explicitly** (`backend/vercel.json` →
   `functions`) — 512MB / 10s, rather than relying on platform defaults, so a
   runaway request can't eat more of the monthly included quota than it needs to.

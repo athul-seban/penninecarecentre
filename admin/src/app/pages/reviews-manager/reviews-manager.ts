@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-reviews-manager',
-  imports: [CommonModule, FormsModule, Sidebar],
+  imports: [FormsModule, Sidebar],
   templateUrl: './reviews-manager.html',
   styleUrl: './reviews-manager.css'
 })

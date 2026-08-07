@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
@@ -89,7 +88,7 @@ const LABEL_MAP: Record<string, string> = {
 
 @Component({
   selector: 'app-pages-editor',
-  imports: [CommonModule, FormsModule, Sidebar, ImageUpload, ImageArrayUpload],
+  imports: [FormsModule, Sidebar, ImageUpload, ImageArrayUpload],
   templateUrl: './pages-editor.html',
   styleUrl: './pages-editor.css'
 })

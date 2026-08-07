@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-error-logs',
   standalone: true,
-  imports: [CommonModule, DatePipe, Sidebar],
+  imports: [DatePipe, Sidebar],
   templateUrl: './error-logs.html',
   styleUrl: './error-logs.css'
 })

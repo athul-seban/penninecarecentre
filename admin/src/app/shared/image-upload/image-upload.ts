@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-image-upload',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './image-upload.html',
   styleUrl: './image-upload.css'
 })
@@ -38,7 +37,7 @@ export class ImageUpload {
     fd.append('file', file);
     this.api.uploadMedia(fd).subscribe({
       next: (res: any) => {
-        const url = res.url || res.secure_url;
+        const url = res.url;
         this.value = url;
         this.valueChange.emit(url);
         this.uploading = false;

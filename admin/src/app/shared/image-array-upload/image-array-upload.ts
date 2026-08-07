@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-image-array-upload',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './image-array-upload.html',
   styleUrl: './image-array-upload.css'
 })
@@ -32,7 +31,7 @@ export class ImageArrayUpload {
     fd.append('file', file);
     this.api.uploadMedia(fd).subscribe({
       next: (res: any) => {
-        const url = res.url || res.secure_url;
+        const url = res.url;
         const updated = [...this.images];
         if (mode === 'replace') updated[index] = url;
         else { updated.push(url); this.pendingUrl = ''; }

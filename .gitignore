@@ -36,3 +36,5 @@ npm-debug.log*
 # Temp / uploads
 uploads/
 backend/uploads/
+
+.vercel

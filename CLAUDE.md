@@ -19,14 +19,13 @@ A full-stack web platform for **Pennine Care Centre**, a premium residential car
 | Database | PostgreSQL 17 |
 | Media storage | Cloudinary |
 | Authentication | JWT (bcryptjs + passport-jwt) |
-| API docs | Swagger at `/api/docs` |
 
 ---
 
 ## Key Files & Folders
 
 ### Backend (`backend/src/`)
-- `main.ts` — App bootstrap, CORS, global prefix `/api`, Swagger setup
+- `main.ts` — App bootstrap, CORS, global prefix `/api`
 - `app.module.ts` — Root module, TypeORM connection
 - `auth/` — JWT login, strategy, guard
 - `users/` — Admin user entity + service (auto-creates default admin)
@@ -117,8 +116,6 @@ All tables are auto-created by TypeORM `synchronize: true` (dev mode only).
 ---
 
 ## API Endpoints
-
-Full interactive docs at: **http://localhost:3000/api/docs** (Swagger UI)
 
 Key endpoints:
 ```

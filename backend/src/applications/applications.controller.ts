@@ -1,5 +1,4 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiOperation, ApiConsumes } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { IsEmail, IsOptional, IsString, MaxLength } from 'class-validator';
@@ -38,15 +37,12 @@ class SubmitApplicationDto {
   coverLetter: string;
 }
 
-@ApiTags('applications')
 @Controller('applications')
 export class ApplicationsController {
   constructor(private service: ApplicationsService) {}
 
   @Post()
   @Throttle({ default: { limit: 5, ttl: 600_000 } }) // anti-spam/flood: 5 submissions/10min/IP
-  @ApiOperation({ summary: 'Submit a job application (public)' })
-  @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileInterceptor('cvFile', {
       storage: memoryStorage(),
@@ -68,16 +64,12 @@ export class ApplicationsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT')
-  @ApiOperation({ summary: 'List all job applications (admin)' })
   findAll() {
     return this.service.findAll();
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT')
-  @ApiOperation({ summary: 'Update application status/notes (admin)' })
   update(
     @Param('id') id: string,
     @Body() body: { status: ApplicationStatus; notes?: string },
@@ -87,8 +79,6 @@ export class ApplicationsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT')
-  @ApiOperation({ summary: 'Delete a job application (admin)' })
   remove(@Param('id') id: string) {
     return this.service.delete(id);
   }
