@@ -40,8 +40,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private moorlandTimer: any;
   private testimonialTimer: any;
 
-  heroVideoUrl = '/assets/images/pennine-care-tour.mp4';
+  heroVideoUrls = [
+    '/assets/images/pennine-care-tour-1.mp4',
+    '/assets/images/pennine-care-tour-2.mp4',
+    '/assets/images/pennine-care-tour-3.mp4',
+  ];
+  heroVideoIndex = -1;
   heroVideoPoster = '/assets/images/pennine-suite-hero.png';
+  private heroSectionsReady = false;
+  private heroViewReady = false;
 
   careDementiaImage = '/assets/images/service-dementia-care.png';
   careMaleOnlyImage = '/assets/images/service-male-only.png';
@@ -80,7 +87,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.content.getPage('home').subscribe({
       next: (s: any) => {
         this.sections = s;
-        if (s.heroVideoUrl) this.heroVideoUrl = s.heroVideoUrl;
+        // Ignore the retired single-video default still baked into older DB rows —
+        // real overrides are any other value.
+        if (s.heroVideoUrl && s.heroVideoUrl !== '/assets/images/pennine-care-tour.mp4') {
+          this.heroVideoUrls = [s.heroVideoUrl];
+        }
         if (s.heroVideoPoster) this.heroVideoPoster = s.heroVideoPoster;
         if (s.careDementiaImage) this.careDementiaImage = s.careDementiaImage;
         if (s.careMaleOnlyImage) this.careMaleOnlyImage = s.careMaleOnlyImage;
@@ -97,6 +108,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         if (Array.isArray(s.moorlandImages) && s.moorlandImages.length > 0) {
           this.moorlandImages = s.moorlandImages.map((url: string) => ({ src: url, alt: '' }));
         }
+        this.heroSectionsReady = true;
+        this.tryStartHeroVideo();
       },
       error: () => this.router.navigate(['/not-found'])
     });
@@ -125,6 +138,28 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initScrollReveal();
     this.startPennineSlider();
     this.startMoorlandSlider();
+    this.heroViewReady = true;
+    this.tryStartHeroVideo();
+  }
+
+  private tryStartHeroVideo(): void {
+    if (!this.heroViewReady || !this.heroSectionsReady || this.heroVideoIndex !== -1) return;
+    this.playHeroVideoAt(0);
+  }
+
+  private playHeroVideoAt(index: number): void {
+    const video = this.heroVideo?.nativeElement;
+    if (!video) return;
+    this.heroVideoIndex = index;
+    video.muted = this.isMuted;
+    video.src = this.heroVideoUrls[index];
+    video.load();
+    video.play().catch(() => { video.muted = true; this.isMuted = true; });
+  }
+
+  onHeroVideoEnded(): void {
+    const next = (this.heroVideoIndex + 1) % this.heroVideoUrls.length;
+    this.playHeroVideoAt(next);
   }
 
   @HostListener('window:scroll')

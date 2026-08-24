@@ -5,13 +5,11 @@
       #heroVideo
       autoplay
       muted
-      loop
       playsinline
       class="hero-img"
       [attr.poster]="heroVideoPoster"
-    >
-      <source [src]="heroVideoUrl" type="video/mp4" />
-    </video>
+      (ended)="onHeroVideoEnded()"
+    ></video>
     <div class="hero-overlay"></div>
     <div class="video-controls">
       <button

@@ -34,7 +34,6 @@ const DEFAULT_PAGES = [
       testimonialsTitle: 'What Families Say',
       reviewRating: 'Trusted By Families',
       reviewCount: 'Read verified reviews from residents\' families',
-      heroVideoUrl: '/assets/images/pennine-care-tour.mp4',
       heroVideoPoster: '/assets/images/pennine-suite-hero.png',
       careDementiaImage: '/assets/images/service-dementia-care.png',
       careMaleOnlyImage: '/assets/images/service-male-only.png',
