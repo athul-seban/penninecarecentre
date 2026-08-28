@@ -41,9 +41,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private testimonialTimer: any;
 
   heroVideoUrls = [
-    '/assets/images/pennine-care-tour-1.mp4',
-    '/assets/images/pennine-care-tour-2.mp4',
-    '/assets/images/pennine-care-tour-3.mp4',
+    '/assets/images/pennine-care-tour.mp4',
   ];
   heroVideoIndex = -1;
   heroVideoPoster = '/assets/images/pennine-suite-hero.png';
