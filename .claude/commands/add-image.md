@@ -1,4 +1,4 @@
-Add or fix an image in the PinnineCare frontend.
+Add or fix an image in the Pennine Care Centre frontend.
 
 Usage: /add-image <description-of-image>
 Examples: /add-image new hero photo for services page, /add-image fix broken bedroom image in moorland suite

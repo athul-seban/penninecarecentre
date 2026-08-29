@@ -1,4 +1,4 @@
-# PinnineCare — How to Run & Host
+# Pennine Care Centre — How to Run & Host
 
 ## Project Structure
 

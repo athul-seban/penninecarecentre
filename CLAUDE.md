@@ -1,4 +1,4 @@
-# PinnineCare — Project Overview for Claude
+# Pennine Care Centre — Project Overview for Claude
 
 ## What This Project Is
 A full-stack web platform for **Pennine Care Centre**, a premium residential care home in Glossop, Derbyshire, UK. It has three parts:

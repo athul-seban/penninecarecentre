@@ -1,4 +1,4 @@
-Start all three PinnineCare dev servers.
+Start all three Pennine Care Centre dev servers.
 
 1. Check that `backend/.env` exists. If it doesn't, warn the user and stop.
 2. Open three background terminals (or instruct the user to run these in three separate terminals):

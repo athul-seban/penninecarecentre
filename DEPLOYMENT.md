@@ -1,4 +1,4 @@
-# Deploying PinnineCare to Vercel (Free Tier)
+# Deploying Pennine Care Centre to Vercel (Free Tier)
 
 This project deploys as **three separate Vercel projects** (frontend, admin, backend),
 plus **two external free-tier services** Vercel doesn't provide itself: a Postgres
