@@ -96,16 +96,30 @@ nav.scrolled {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
 }
 .logo {
-  font-weight: 800;
-  color: var(--white);
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   transition: var(--transition);
 }
+.logo img {
+  height: 52px;
+  width: auto;
+  display: block;
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+nav.scrolled .logo img {
+  transform: scale(0.808);
+}
+@media (min-width: 1200px) {
+  .logo img {
+    height: 62px;
+  }
+  nav.scrolled .logo img {
+    transform: scale(0.774);
+  }
+}
 .logo:hover {
-  color: var(--gold);
   transform: scale(1.02);
 }
 .nav-links {

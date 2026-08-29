@@ -1,8 +1,7 @@
 <div class="login-page">
   <div class="login-card">
     <div class="login-header">
-      <div class="logo-mark"></div>
-      <h1>Pennine Care Centre</h1>
+      <img src="/images/logo-navy.png" alt="Pennine Care Centre" class="logo-mark" />
       <p>Admin Panel</p>
     </div>
     <form (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
@@ -36,7 +35,6 @@
       <button type="submit" class="login-btn" [disabled]="loading || !email || !password">
         {{ loading ? 'Signing in...' : 'Sign In' }}
       </button>
-      <p class="hint">Default: admin&#64;pinnineCare.com / Admin&#64;123</p>
     </form>
   </div>
 </div>

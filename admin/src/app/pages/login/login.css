@@ -19,17 +19,10 @@
   margin-bottom: 36px;
 }
 .logo-mark {
-  width: 56px;
-  height: 56px;
-  background: #c5a059;
-  border-radius: 12px;
+  height: 64px;
+  width: auto;
+  display: block;
   margin: 0 auto 16px;
-}
-.login-header h1 {
-  color: #002b5b;
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0 0 4px;
 }
 .login-header p {
   color: #888;

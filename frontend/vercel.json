@@ -1,20 +1,6 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist/frontend/browser",
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "penninecarecentre.uk" }],
-      "destination": "https://penninecarecentre.com/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "penninecarecentre.co.uk" }],
-      "destination": "https://penninecarecentre.com/:path*",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

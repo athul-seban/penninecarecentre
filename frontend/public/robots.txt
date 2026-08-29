@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://penninecarecentre.com/sitemap.xml
