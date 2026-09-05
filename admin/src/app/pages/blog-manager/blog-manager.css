@@ -33,6 +33,32 @@ td { padding: 14px 16px; border-bottom: 1px solid #f0f0f0; font-size: 14px; colo
 .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
 .status-published { background: #e8f7ee; color: #1e8e4e; }
 .status-draft { background: #f0f0f0; color: #888; }
+
+/* Filter bar */
+.filter-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-btn { padding: 7px 16px; border: 2px solid #e5e7eb; background: white; border-radius: 20px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+.filter-btn:hover { border-color: #002b5b; color: #002b5b; }
+.filter-btn.active { background: #002b5b; color: white; border-color: #002b5b; }
+.filter-count { background: #e5e7eb; color: #374151; border-radius: 10px; padding: 1px 7px; font-size: 0.75rem; }
+.filter-btn.active .filter-count { background: rgba(255,255,255,0.25); color: white; }
+
+/* Search bar */
+.search-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.search-bar input[type="text"] { padding: 8px 14px; border: 1.5px solid #ddd; border-radius: 7px; font-size: 14px; font-family: inherit; min-width: 220px; }
+.search-bar input[type="text"]:focus { outline: none; border-color: #c5a059; }
+.btn-clear-filters { padding: 8px 14px; background: white; border: 1.5px solid #d1d5db; border-radius: 7px; cursor: pointer; font-size: 0.82rem; color: #555; }
+.btn-clear-filters:hover { border-color: #b91c1c; color: #b91c1c; }
+.result-count { font-size: 0.8rem; color: #999; margin-left: auto; }
+
+/* Pagination */
+.pagination-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.pagination-info { font-size: 0.82rem; color: #666; }
+.pagination-controls { display: flex; align-items: center; gap: 8px; }
+.page-btn { padding: 6px 14px; border: 2px solid #e5e7eb; background: white; border-radius: 20px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #374151; transition: all 0.2s; }
+.page-btn:hover:not(:disabled) { border-color: #002b5b; color: #002b5b; }
+.page-btn:disabled { opacity: 0.4; cursor: default; }
+
 @media (max-width: 768px) {
   .content { margin-left: 0; padding: 20px 16px; }
+  .result-count { margin-left: 0; }
 }

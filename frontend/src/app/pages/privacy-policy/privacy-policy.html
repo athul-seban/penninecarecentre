@@ -1,57 +1,57 @@
 <div id="top">
 <header class="hero-sub" [style.background-image]="'url(' + (sections['headerImage'] || '/assets/images/pennine-suite-interior.png') + ')'">
   <div class="hero-content">
-    <p>Your Data &amp; Peace of Mind</p>
-    <h1>Privacy Policy</h1>
+    <p>{{ sections['heroSubtitle'] || 'Your Data &amp; Peace of Mind' }}</p>
+    <h1>{{ sections['heroTitle'] || 'Privacy Policy' }}</h1>
   </div>
 </header>
 
 <main class="policy-container">
   <section class="policy-card reveal-element">
-    <span class="last-updated">Last Updated: September 5, 2026</span>
-    <h2>Information Governance &amp; Compliance</h2>
-    <p>At Pennine Care Centre, we are dedicated to protecting the privacy, dignity, and personal data of our residents, their families, and our staff. This policy describes how we collect, store, and process personal and sensitive information in accordance with the General Data Protection Regulation (GDPR) and the UK Data Protection Act 2018.</p>
+    <span class="last-updated">{{ sections['lastUpdated'] || 'Last Updated: September 5, 2026' }}</span>
+    <h2>{{ sections['introTitle'] || 'Information Governance &amp; Compliance' }}</h2>
+    <p>{{ sections['introText'] || 'At Pennine Care Centre, we are dedicated to protecting the privacy, dignity, and personal data of our residents, their families, and our staff. This policy describes how we collect, store, and process personal and sensitive information in accordance with the General Data Protection Regulation (GDPR) and the UK Data Protection Act 2018.' }}</p>
 
-    <h3>1. Information We Collect</h3>
-    <p>To deliver exceptional care and safety, we collect and process certain personal information, which may include:</p>
+    <h3>{{ sections['collectTitle'] || '1. Information We Collect' }}</h3>
+    <p>{{ sections['collectIntro'] || 'To deliver exceptional care and safety, we collect and process certain personal information, which may include:' }}</p>
     <ul>
-      <li><strong>Personal Details:</strong> Names, contact details, dates of birth, and next-of-kin information.</li>
-      <li><strong>Health &amp; Medical Records:</strong> Medical histories, clinical assessments, dietary needs, care plans, and medication administration records.</li>
-      <li><strong>Financial Information:</strong> Billing addresses, bank details, and funding support data for invoicing purposes.</li>
-      <li><strong>Digital Data:</strong> Submission details from our contact and job application forms, and basic website usage data (page visited, referring page, browser type, and a masked IP address that does not identify you individually) collected automatically when you browse our site. See "Cookies &amp; Website Analytics" below for full detail.</li>
+      <li><strong>{{ sections['collectItem1Label'] || 'Personal Details' }}:</strong> {{ sections['collectItem1Text'] || 'Names, contact details, dates of birth, and next-of-kin information.' }}</li>
+      <li><strong>{{ sections['collectItem2Label'] || 'Health &amp; Medical Records' }}:</strong> {{ sections['collectItem2Text'] || 'Medical histories, clinical assessments, dietary needs, care plans, and medication administration records.' }}</li>
+      <li><strong>{{ sections['collectItem3Label'] || 'Financial Information' }}:</strong> {{ sections['collectItem3Text'] || 'Billing addresses, bank details, and funding support data for invoicing purposes.' }}</li>
+      <li><strong>{{ sections['collectItem4Label'] || 'Digital Data' }}:</strong> {{ sections['collectItem4Text'] || 'Submission details from our contact and job application forms, and basic website usage data (page visited, referring page, browser type, and a masked IP address that does not identify you individually) collected automatically when you browse our site. See "Cookies &amp; Website Analytics" below for full detail.' }}</li>
     </ul>
 
-    <h3>2. How We Use Your Information</h3>
-    <p>We use your personal data strictly to fulfil legal, clinical, and administrative requirements, including:</p>
+    <h3>{{ sections['useTitle'] || '2. How We Use Your Information' }}</h3>
+    <p>{{ sections['useIntro'] || 'We use your personal data strictly to fulfil legal, clinical, and administrative requirements, including:' }}</p>
     <ol>
-      <li>Creating, updating, and delivering custom person-centred care plans.</li>
-      <li>Ensuring emergency medical practitioners have precise and quick clinical references.</li>
-      <li>Managing billing, payroll for our employees, and operational compliance.</li>
-      <li>Responding directly to enquiries submitted through our website and application forms.</li>
+      <li>{{ sections['useItem1'] || 'Creating, updating, and delivering custom person-centred care plans.' }}</li>
+      <li>{{ sections['useItem2'] || 'Ensuring emergency medical practitioners have precise and quick clinical references.' }}</li>
+      <li>{{ sections['useItem3'] || 'Managing billing, payroll for our employees, and operational compliance.' }}</li>
+      <li>{{ sections['useItem4'] || 'Responding directly to enquiries submitted through our website and application forms.' }}</li>
     </ol>
 
-    <h3>3. Data Retention &amp; Protection</h3>
-    <p>All digital data is encrypted using advanced Secure Socket Layer (SSL) protocols. Physical records are kept in secure, restricted-access cabinets. We retain information only for as long as required by law, Care Quality Commission (CQC) standards, or to maintain care continuity.</p>
-    <p>We use reputable third-party providers to host our website, database, and email services, and to store photographs and documents such as CVs. These providers act as our data processors, are based in the UK/EU or hold equivalent data-protection safeguards, and may only use your data to provide these services to us.</p>
+    <h3>{{ sections['retentionTitle'] || '3. Data Retention &amp; Protection' }}</h3>
+    <p>{{ sections['retentionText1'] || 'All digital data is encrypted using advanced Secure Socket Layer (SSL) protocols. Physical records are kept in secure, restricted-access cabinets. We retain information only for as long as required by law, Care Quality Commission (CQC) standards, or to maintain care continuity.' }}</p>
+    <p>{{ sections['retentionText2'] || 'We use reputable third-party providers to host our website, database, and email services, and to store photographs and documents such as CVs. These providers act as our data processors, are based in the UK/EU or hold equivalent data-protection safeguards, and may only use your data to provide these services to us.' }}</p>
 
-    <h3>4. Cookies &amp; Website Analytics</h3>
-    <p>Our website does not use third-party advertising or tracking cookies, and no consent banner is shown because we only use the following, which do not identify you personally:</p>
+    <h3>{{ sections['cookiesTitle'] || '4. Cookies &amp; Website Analytics' }}</h3>
+    <p>{{ sections['cookiesIntro'] || 'Our website does not use third-party advertising or tracking cookies, and no consent banner is shown because we only use the following, which do not identify you personally:' }}</p>
     <ul>
-      <li><strong>Local storage (your device only):</strong> A remembered choice if you dismiss the announcement banner, and your display theme preference. These stay on your own device and are never sent to us.</li>
-      <li><strong>First-party website analytics:</strong> When you visit a page, our server automatically logs the page path, the referring page, and your browser's user agent, together with your IP address masked so the last part is removed (e.g. <em>203.0.113.0</em> rather than your full address) before it is stored. This is used only in aggregate, to understand which pages are useful and improve the site, under our legitimate interest in operating and improving our website.</li>
+      <li><strong>{{ sections['cookiesItem1Label'] || 'Local storage (your device only)' }}:</strong> {{ sections['cookiesItem1Text'] || 'A remembered choice if you dismiss the announcement banner, and your display theme preference. These stay on your own device and are never sent to us.' }}</li>
+      <li><strong>{{ sections['cookiesItem2Label'] || 'First-party website analytics' }}:</strong> {{ sections['cookiesItem2Text'] || 'When you visit a page, our server automatically logs the page path, the referring page, and your browser\'s user agent, together with your IP address masked so the last part is removed (e.g. 203.0.113.0 rather than your full address) before it is stored. This is used only in aggregate, to understand which pages are useful and improve the site, under our legitimate interest in operating and improving our website.' }}</li>
     </ul>
 
-    <h3>5. Your Rights</h3>
-    <p>Under UK data protection laws, you retain extensive rights regarding your data. You may request to:</p>
+    <h3>{{ sections['rightsTitle'] || '5. Your Rights' }}</h3>
+    <p>{{ sections['rightsIntro'] || 'Under UK data protection laws, you retain extensive rights regarding your data. You may request to:' }}</p>
     <ul>
-      <li>Access the personal records we hold about you.</li>
-      <li>Rectify any mistakes or update outdated information.</li>
-      <li>Object to or restrict the processing of non-essential data.</li>
-      <li>Request deletion of data, subject to nursing and medical retention statutory regulations.</li>
+      <li>{{ sections['rightsItem1'] || 'Access the personal records we hold about you.' }}</li>
+      <li>{{ sections['rightsItem2'] || 'Rectify any mistakes or update outdated information.' }}</li>
+      <li>{{ sections['rightsItem3'] || 'Object to or restrict the processing of non-essential data.' }}</li>
+      <li>{{ sections['rightsItem4'] || 'Request deletion of data, subject to nursing and medical retention statutory regulations.' }}</li>
     </ul>
 
-    <h3>6. Contact Our Data Controller</h3>
-    <p>If you have any questions or would like to submit a Subject Access Request (SAR), please contact our Data Governance Officer at:</p>
+    <h3>{{ sections['contactTitle'] || '6. Contact Our Data Controller' }}</h3>
+    <p>{{ sections['contactIntro'] || 'If you have any questions or would like to submit a Subject Access Request (SAR), please contact our Data Governance Officer at:' }}</p>
     <p style="font-weight: 600; color: var(--navy)">
       Pennine Care Centre<br />
       Data Protection Officer<br />
@@ -60,7 +60,7 @@
     </p>
 
     <button (click)="printPolicy()" class="btn-gold">
-      <i class="fas fa-print" style="margin-right: 8px"></i> Print Policy
+      <i class="fas fa-print" style="margin-right: 8px"></i> {{ sections['printButtonText'] || 'Print Policy' }}
     </button>
   </section>
 </main>

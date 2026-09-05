@@ -24,6 +24,7 @@ const LABEL_MAP: Record<string, string> = {
   havenTitle: 'Haven Title', havenText: 'Haven Text', havenDetailText: 'Haven Detail Text',
   spacesTitle: 'Community Spaces Title', spacesText: 'Community Spaces Text',
   modernisationTitle: 'Modernisation Title', modernisationText: 'Modernisation Text',
+  featuresTitle: 'Key Features Section Heading ("Why Choose...")',
   featureCost: 'Feature: No Hidden Costs (title)', featureCostText: 'Feature: No Hidden Costs (text)',
   featureTeam: 'Feature: Dedicated Team (title)', featureTeamText: 'Feature: Dedicated Team (text)',
   featureEnvironment: 'Feature: Fresh Environment (title)', featureEnvironmentText: 'Feature: Fresh Environment (text)',
@@ -93,6 +94,24 @@ const LABEL_MAP: Record<string, string> = {
   lifeNutritionImage: 'Life Grid: Nutrition & Dining Image',
   lifeNutritionDesc: 'Life Grid: Nutrition & Dining Description (flip-card back)',
   awardImages: 'Awards & Affiliations Images',
+  // Privacy Policy page
+  lastUpdated: 'Last Updated Label',
+  collectTitle: 'Section 1 Title (Information We Collect)', collectIntro: 'Section 1 Intro',
+  collectItem1Label: 'Section 1 Item 1 Label', collectItem1Text: 'Section 1 Item 1 Text',
+  collectItem2Label: 'Section 1 Item 2 Label', collectItem2Text: 'Section 1 Item 2 Text',
+  collectItem3Label: 'Section 1 Item 3 Label', collectItem3Text: 'Section 1 Item 3 Text',
+  collectItem4Label: 'Section 1 Item 4 Label', collectItem4Text: 'Section 1 Item 4 Text',
+  useTitle: 'Section 2 Title (How We Use Your Information)', useIntro: 'Section 2 Intro',
+  useItem1: 'Section 2 Item 1', useItem2: 'Section 2 Item 2', useItem3: 'Section 2 Item 3', useItem4: 'Section 2 Item 4',
+  retentionTitle: 'Section 3 Title (Data Retention & Protection)',
+  retentionText1: 'Section 3 Text 1', retentionText2: 'Section 3 Text 2',
+  cookiesTitle: 'Section 4 Title (Cookies & Website Analytics)', cookiesIntro: 'Section 4 Intro',
+  cookiesItem1Label: 'Section 4 Item 1 Label', cookiesItem1Text: 'Section 4 Item 1 Text',
+  cookiesItem2Label: 'Section 4 Item 2 Label', cookiesItem2Text: 'Section 4 Item 2 Text',
+  rightsTitle: 'Section 5 Title (Your Rights)', rightsIntro: 'Section 5 Intro',
+  rightsItem1: 'Section 5 Item 1', rightsItem2: 'Section 5 Item 2', rightsItem3: 'Section 5 Item 3', rightsItem4: 'Section 5 Item 4',
+  contactTitle: 'Section 6 Title (Contact Data Controller)', contactIntro: 'Section 6 Intro',
+  printButtonText: 'Print Button Text',
 };
 
 @Component({

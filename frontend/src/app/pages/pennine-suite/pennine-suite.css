@@ -75,6 +75,68 @@
 }
 
 /* =============================================
+   KEY FEATURES SECTION
+   ============================================= */
+.section-padding {
+  padding: 90px 10%;
+  background: var(--cream);
+}
+
+.centered-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.centered-header h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+
+.key-features {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.feature-box {
+  flex: 1;
+  min-width: 240px;
+  max-width: 340px;
+  background: var(--white);
+  border: 1px solid var(--gold-a20, rgba(197,160,89,0.2));
+  border-top: 3px solid var(--gold);
+  padding: 40px 30px;
+  border-radius: 3px;
+  text-align: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.feature-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px var(--navy-a10, rgba(0,43,91,0.1));
+}
+
+.feature-box i {
+  font-size: 2rem;
+  color: var(--gold);
+  margin-bottom: 18px;
+  display: block;
+}
+
+.feature-box h3 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+
+.feature-box p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.7;
+}
+
+/* =============================================
    GALLERY SECTION
    ============================================= */
 .gallery-section {
@@ -177,6 +239,20 @@
    RESPONSIVE
    ============================================= */
 @media (max-width: 968px) {
+  .section-padding {
+    padding: 60px 5%;
+  }
+
+  .key-features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-box {
+    max-width: 100%;
+    width: 100%;
+  }
+
   .gallery-section {
     padding: 60px 5%;
   }

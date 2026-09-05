@@ -1,0 +1,52 @@
+<div id="top">
+
+@if (loading) {
+  <div class="blog-detail-loading">Loading…</div>
+}
+
+@if (!loading && post) {
+  <header class="hero-sub" [style.background-image]="'url(' + (post.featuredImage || fallbackImage) + ')'">
+    <div class="hero-content">
+      <span class="blog-detail-date">{{ post.createdAt | date:'d MMMM y' }}</span>
+      <h1>{{ post.title }}</h1>
+    </div>
+  </header>
+
+  <main class="blog-detail-container">
+    <div class="blog-detail-layout">
+      <article class="blog-detail-card">
+        <a routerLink="/blog" class="blog-back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+
+        @if (post.excerpt) {
+          <p class="blog-detail-excerpt">{{ post.excerpt }}</p>
+        }
+
+        <p class="blog-detail-content">{{ post.content }}</p>
+
+        <div class="blog-detail-cta">
+          <p>Have a question about life at Pennine?</p>
+          <a routerLink="/contact" class="btn-gold">Contact Us</a>
+        </div>
+      </article>
+
+      @if (relatedPosts.length > 0) {
+        <aside class="blog-sidebar">
+          <h2 class="blog-sidebar-title">More Updates</h2>
+          <div class="blog-sidebar-list">
+            @for (rp of relatedPosts; track rp.id) {
+              <a [routerLink]="['/blog', rp.id]" class="blog-sidebar-item">
+                <img [src]="rp.featuredImage || fallbackImage" [alt]="rp.title" class="blog-sidebar-thumb" />
+                <div class="blog-sidebar-item-body">
+                  <span class="blog-sidebar-date">{{ rp.createdAt | date:'d MMM y' }}</span>
+                  <h3>{{ rp.title }}</h3>
+                </div>
+              </a>
+            }
+          </div>
+        </aside>
+      }
+    </div>
+  </main>
+}
+
+</div>

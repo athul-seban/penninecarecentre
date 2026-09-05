@@ -126,7 +126,7 @@
   <!-- KEY FEATURES SECTION -->
   <section class="section-padding reveal-element">
     <div class="centered-header">
-      <h2>Why Choose the Moorland Suite?</h2>
+      <h2>{{ sections['featuresTitle'] || 'Why Choose the Moorland Suite?' }}</h2>
       <div class="gold-divider"></div>
     </div>
     <div class="key-features">
@@ -142,8 +142,8 @@
       </div>
       <div class="feature-box">
         <i class="fas fa-leaf"></i>
-        <h3>Fresh Environment</h3>
-        <p>As a newly built, purpose-designed home, Pennine Care offers a modern, bright, and immaculately maintained environment — setting a new standard for residential care in the region.</p>
+        <h3>{{ sections['featureEnvironment'] || 'Fresh Environment' }}</h3>
+        <p>{{ sections['featureEnvironmentText'] || 'As a newly built, purpose-designed home, Pennine Care offers a modern, bright, and immaculately maintained environment — setting a new standard for residential care in the region.' }}</p>
       </div>
     </div>
   </section>

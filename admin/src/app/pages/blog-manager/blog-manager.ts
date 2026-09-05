@@ -19,16 +19,64 @@ export class BlogManager implements OnInit {
   saving = false;
   form: any = { title: '', excerpt: '', content: '', featuredImage: '', isPublished: true };
 
+  filterStatus: 'all' | 'published' | 'draft' = 'all';
+  searchQuery = '';
+  counts = { all: 0, published: 0, draft: 0 };
+
+  page = 1;
+  pageSize = 10;
+  total = 0;
+
   constructor(private api: ApiService) {}
 
   ngOnInit() { this.load(); }
 
   load() {
     this.loading = true;
-    this.api.getBlogPosts().subscribe({
-      next: (d: any) => { this.posts = d; this.loading = false; },
+    this.api.getBlogPosts({
+      page: this.page,
+      pageSize: this.pageSize,
+      status: this.filterStatus === 'all' ? undefined : this.filterStatus,
+      q: this.searchQuery.trim() || undefined,
+    }).subscribe({
+      next: (res: any) => {
+        this.posts = res.items;
+        this.total = res.total;
+        this.counts = res.counts;
+        this.loading = false;
+      },
       error: () => { this.loading = false; }
     });
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.total / this.pageSize));
+  }
+
+  goToPage(p: number) {
+    if (p < 1 || p > this.totalPages || p === this.page) return;
+    this.page = p;
+    this.load();
+  }
+
+  countFor(status: string): number {
+    return (this.counts as unknown as Record<string, number>)[status] ?? 0;
+  }
+
+  setFilter(status: 'all' | 'published' | 'draft') {
+    this.filterStatus = status;
+    this.page = 1;
+    this.load();
+  }
+
+  applySearch() {
+    this.page = 1;
+    this.load();
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+    this.applySearch();
   }
 
   openAdd() {

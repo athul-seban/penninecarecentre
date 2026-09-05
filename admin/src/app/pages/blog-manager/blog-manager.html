@@ -9,6 +9,32 @@
       <button class="btn-primary" (click)="openAdd()">+ Add Post</button>
     </div>
 
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      @for (f of [['all','All'],['published','Published'],['draft','Draft']]; track f[0]) {
+        <button class="filter-btn" [class.active]="filterStatus === f[0]" (click)="setFilter($any(f[0]))">
+          {{ f[1] }}
+          <span class="filter-count">{{ countFor(f[0]) }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        name="searchQuery"
+        placeholder="Search by title…"
+        (keyup.enter)="applySearch()"
+      />
+      <button class="btn-secondary" (click)="applySearch()">Search</button>
+      @if (searchQuery) {
+        <button class="btn-clear-filters" (click)="clearSearch()">Clear</button>
+      }
+      <span class="result-count">{{ total }} result{{ total === 1 ? '' : 's' }}</span>
+    </div>
+
     @if (showForm) {
       <div class="modal-overlay">
         <div class="modal">
@@ -86,10 +112,22 @@
               </tr>
             }
             @if (posts.length === 0) {
-              <tr><td colspan="4" class="empty">No blog posts yet</td></tr>
+              <tr><td colspan="4" class="empty">No {{ filterStatus === 'all' ? '' : filterStatus + ' ' }}blog posts found</td></tr>
             }
           </tbody>
         </table>
+      </div>
+    }
+
+    @if (!loading && total > 0) {
+      <div class="pagination-bar">
+        <span class="pagination-info">Page {{ page }} of {{ totalPages }} &middot; {{ total }} total</span>
+        <div class="pagination-controls">
+          <button class="page-btn" (click)="goToPage(1)" [disabled]="page === 1">« First</button>
+          <button class="page-btn" (click)="goToPage(page - 1)" [disabled]="page === 1">‹ Prev</button>
+          <button class="page-btn" (click)="goToPage(page + 1)" [disabled]="page === totalPages">Next ›</button>
+          <button class="page-btn" (click)="goToPage(totalPages)" [disabled]="page === totalPages">Last »</button>
+        </div>
       </div>
     }
   </div>

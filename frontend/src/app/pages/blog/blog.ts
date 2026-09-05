@@ -26,8 +26,17 @@ export class BlogComponent implements OnInit, AfterViewInit {
   posts: BlogPost[] = [];
   loading = true;
   sections: Record<string, string> = {};
+  fallbackImage = '/assets/images/pennine-suite-interior.png';
 
   constructor(private http: HttpClient, private seo: SeoService, private content: ContentService) {}
+
+  get heroPost(): BlogPost | null {
+    return this.posts.length > 0 ? this.posts[0] : null;
+  }
+
+  get otherPosts(): BlogPost[] {
+    return this.posts.slice(1);
+  }
 
   ngOnInit(): void {
     this.seo.update({
@@ -52,6 +61,12 @@ export class BlogComponent implements OnInit, AfterViewInit {
       next: (posts) => { this.posts = posts; this.loading = false; },
       error: () => { this.loading = false; }
     });
+  }
+
+  excerptFor(post: BlogPost): string {
+    if (post.excerpt) return post.excerpt;
+    const text = post.content || '';
+    return text.length > 160 ? text.slice(0, 160).trim() + '…' : text;
   }
 
   ngAfterViewInit(): void {

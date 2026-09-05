@@ -17,26 +17,41 @@
     </div>
   }
 
-  @if (!loading && posts.length > 0) {
-    <div class="blog-list">
-      @for (post of posts; track post.id) {
-        <article class="blog-card">
-          @if (post.featuredImage) {
-            <div class="blog-card-image">
-              <img [src]="post.featuredImage" [alt]="post.title" />
+  @if (!loading && heroPost) {
+    <!-- FEATURED POST -->
+    <article class="blog-hero">
+      <a [routerLink]="['/blog', heroPost.id]" class="blog-hero-image">
+        <img [src]="heroPost.featuredImage || fallbackImage" [alt]="heroPost.title" />
+      </a>
+      <div class="blog-hero-body">
+        <span class="blog-eyebrow">Latest Story</span>
+        <h2><a [routerLink]="['/blog', heroPost.id]">{{ heroPost.title }}</a></h2>
+        <span class="blog-card-date">{{ heroPost.createdAt | date:'d MMMM y' }}</span>
+        <p class="blog-hero-excerpt">{{ excerptFor(heroPost) }}</p>
+        <a [routerLink]="['/blog', heroPost.id]" class="btn-gold">Read Full Story</a>
+      </div>
+    </article>
+
+    @if (otherPosts.length > 0) {
+      <div class="centered-header blog-more-header">
+        <h2 class="section-title-line">More From the Blog</h2>
+      </div>
+      <div class="blog-grid">
+        @for (post of otherPosts; track post.id) {
+          <article class="blog-card">
+            <a [routerLink]="['/blog', post.id]" class="blog-card-image">
+              <img [src]="post.featuredImage || fallbackImage" [alt]="post.title" />
+            </a>
+            <div class="blog-card-body">
+              <span class="blog-card-date">{{ post.createdAt | date:'d MMMM y' }}</span>
+              <h3><a [routerLink]="['/blog', post.id]">{{ post.title }}</a></h3>
+              <p class="blog-card-excerpt">{{ excerptFor(post) }}</p>
+              <a [routerLink]="['/blog', post.id]" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
             </div>
-          }
-          <div class="blog-card-body">
-            <span class="blog-card-date">{{ post.createdAt | date:'d MMMM y' }}</span>
-            <h2>{{ post.title }}</h2>
-            @if (post.excerpt) {
-              <p class="blog-card-excerpt">{{ post.excerpt }}</p>
-            }
-            <p class="blog-card-content">{{ post.content }}</p>
-          </div>
-        </article>
-      }
-    </div>
+          </article>
+        }
+      </div>
+    }
   }
 
   <div class="blog-cta">

@@ -117,8 +117,8 @@ export class ApiService {
   }
 
   // Blog
-  getBlogPosts(): Observable<any> {
-    return this.http.get(`${this.BASE}/blog`, { headers: this.auth.getHeaders() });
+  getBlogPosts(params: { page?: number; pageSize?: number; status?: string; q?: string } = {}): Observable<any> {
+    return this.http.get(`${this.BASE}/blog/admin${this.buildQuery(params)}`, { headers: this.auth.getHeaders() });
   }
   createBlogPost(data: any): Observable<any> {
     return this.http.post(`${this.BASE}/blog`, data, { headers: this.auth.getHeaders() });
