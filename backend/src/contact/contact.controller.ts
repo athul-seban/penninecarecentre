@@ -1,9 +1,39 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { IsDateString, IsEmail, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 import { Throttle } from '@nestjs/throttler';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { PermissionsGuard } from '../auth/permissions.guard';
+import { RequirePermission } from '../auth/permissions.decorator';
 import { ContactService } from './contact.service';
 import { ContactStatus } from './contact.entity';
+
+class FindContactQueryDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  pageSize?: number;
+
+  @IsOptional()
+  @IsIn(['new', 'read', 'replied', 'archived'])
+  status?: string;
+
+  @IsOptional()
+  @IsDateString()
+  from?: string;
+
+  @IsOptional()
+  @IsDateString()
+  to?: string;
+}
 
 class SubmitContactDto {
   @IsString()
@@ -52,25 +82,29 @@ export class ContactController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  findAll() {
-    return this.service.findAll();
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('contact')
+  findAll(@Query() query: FindContactQueryDto) {
+    return this.service.findAll(query);
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('contact')
   update(@Param('id') id: string, @Body() body: { status: ContactStatus; notes?: string }) {
     return this.service.updateStatus(id, body.status, body.notes);
   }
 
   @Post(':id/reply')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('contact')
   reply(@Param('id') id: string, @Body() body: ReplyContactDto) {
     return this.service.reply(id, body.subject, body.message);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('contact')
   remove(@Param('id') id: string) {
     return this.service.delete(id);
   }

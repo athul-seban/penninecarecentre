@@ -72,10 +72,14 @@ below need.
    | `ALLOWED_ORIGINS` | `https://pinninecare.vercel.app,https://pinninecare-admin.vercel.app` |
 
 6. **Deploy.**
-7. Attach media storage: Project → **Storage** tab → **Create Database** → **Blob** →
-   connect it to this project. Vercel automatically injects `BLOB_READ_WRITE_TOKEN`
-   into the project's environment — you don't set it by hand.
-8. **Redeploy** once after attaching Blob so the function picks up the new env var.
+
+Media uploads (images/video) are stored as binary data directly in Postgres and
+served from `GET /api/media/:id/raw`, so no separate media storage needs
+attaching. That route returns an absolute URL built from `PUBLIC_API_URL` (set
+it only if this project's domain differs from `https://pinninecare-api.vercel.app`,
+the default it falls back to in production). `BLOB_READ_WRITE_TOKEN` is legacy —
+only relevant if the database still has rows uploaded before this switch
+(`media.folder = 'blob'`); harmless to leave unset otherwise.
 
 ### One-time: create the database tables
 

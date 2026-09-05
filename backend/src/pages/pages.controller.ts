@@ -1,5 +1,7 @@
 import { Controller, Get, Put, Param, Body, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { PermissionsGuard } from '../auth/permissions.guard';
+import { RequirePermission } from '../auth/permissions.decorator';
 import { PagesService } from './pages.service';
 
 @Controller('pages')
@@ -12,7 +14,8 @@ export class PagesController {
   @Get(':pageKey')
   findOne(@Param('pageKey') pageKey: string) { return this.pages.findByKey(pageKey); }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('pages')
   @Put(':pageKey')
   update(@Param('pageKey') pageKey: string, @Body() body: any) { return this.pages.update(pageKey, body); }
 }

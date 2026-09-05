@@ -23,6 +23,12 @@ export class Media {
   @Column({ nullable: true })
   altText: string;
 
+  @Column({ type: 'bytea', nullable: true, select: false })
+  data: Buffer | null;
+
+  @Column({ nullable: true })
+  mimeType: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

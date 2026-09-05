@@ -38,12 +38,10 @@ DB_USERNAME=postgres
 DB_PASSWORD=postgres123
 DB_NAME=pinninecaredb
 JWT_SECRET=change_this_to_a_strong_secret
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-> **Cloudinary**: Free account at cloudinary.com — copy the cloud name, API key, and secret from your dashboard.
+Media uploads (images/video) are stored as binary data directly in Postgres and
+served from `GET /api/media/:id/raw` — no external media service to configure.
 
 ### Create database (first time only)
 ```bash

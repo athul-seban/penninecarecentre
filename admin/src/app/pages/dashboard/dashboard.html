@@ -17,21 +17,27 @@
           <div class="stat-label">Job Listings</div>
           <a routerLink="/people" class="stat-link">Manage Careers &rarr;</a>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">{{ stats.reviews }}</div>
-          <div class="stat-label">Reviews</div>
-          <a routerLink="/people" class="stat-link">Manage Reviews &rarr;</a>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">{{ stats.contacts }}</div>
-          <div class="stat-label">Contact Enquiries</div>
-          <a routerLink="/contact" class="stat-link">View Enquiries &rarr;</a>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">{{ stats.applications }}</div>
-          <div class="stat-label">Job Applications</div>
-          <a routerLink="/applications" class="stat-link">View Applications &rarr;</a>
-        </div>
+        @if (auth.hasPermission('reviews')) {
+          <div class="stat-card">
+            <div class="stat-value">{{ stats.reviews }}</div>
+            <div class="stat-label">Reviews</div>
+            <a routerLink="/people" class="stat-link">Manage Reviews &rarr;</a>
+          </div>
+        }
+        @if (auth.hasPermission('contact')) {
+          <div class="stat-card">
+            <div class="stat-value">{{ stats.contacts }}</div>
+            <div class="stat-label">Contact Enquiries</div>
+            <a routerLink="/contact" class="stat-link">View Enquiries &rarr;</a>
+          </div>
+        }
+        @if (auth.hasPermission('applications')) {
+          <div class="stat-card">
+            <div class="stat-value">{{ stats.applications }}</div>
+            <div class="stat-label">Job Applications</div>
+            <a routerLink="/applications" class="stat-link">View Applications &rarr;</a>
+          </div>
+        }
       </div>
 
       @if (analytics) {
@@ -90,7 +96,86 @@
               }
             </div>
           </div>
+
+          <div class="chart-card">
+            <div class="chart-title">Devices</div>
+            @if (!analytics.devices.length) {
+              <div class="no-data">No visits recorded yet.</div>
+            }
+            @for (d of analytics.devices; track d.device) {
+              <div class="bar-row">
+                <div class="bar-label">{{ d.device }}</div>
+                <div class="bar-track">
+                  <div class="bar-fill" [style.width.%]="d.count / maxDeviceCount * 100"></div>
+                </div>
+                <div class="bar-count">{{ d.count }}</div>
+              </div>
+            }
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title">Traffic Sources</div>
+            @if (!analytics.referrers.length) {
+              <div class="no-data">No visits recorded yet.</div>
+            }
+            @for (r of analytics.referrers; track r.source) {
+              <div class="bar-row">
+                <div class="bar-label">{{ r.source }}</div>
+                <div class="bar-track">
+                  <div class="bar-fill" [style.width.%]="r.count / maxReferrerCount * 100"></div>
+                </div>
+                <div class="bar-count">{{ r.count }}</div>
+              </div>
+            }
+          </div>
         </div>
+
+        @if (auth.hasPermission('contact', 'applications')) {
+          <div class="section-title">Recent Activity</div>
+          <div class="activity-row">
+            @if (auth.hasPermission('contact')) {
+              <div class="chart-card">
+                <div class="chart-title">Recent Enquiries</div>
+                @if (!recentContacts.length) {
+                  <div class="no-data">No enquiries yet.</div>
+                }
+                @for (c of recentContacts; track c.id) {
+                  <a routerLink="/contact" class="activity-item">
+                    <div class="activity-main">
+                      <span class="activity-title">{{ c.name }}</span>
+                      <span class="activity-sub">{{ c.subject || 'General enquiry' }}</span>
+                    </div>
+                    <div class="activity-meta">
+                      <span class="badge" [class]="contactBadgeClass(c.status)">{{ c.status }}</span>
+                      <span class="activity-time">{{ timeAgo(c.createdAt) }}</span>
+                    </div>
+                  </a>
+                }
+              </div>
+            }
+
+            @if (auth.hasPermission('applications')) {
+              <div class="chart-card">
+                <div class="chart-title">Recent Applications</div>
+                @if (!recentApplications.length) {
+                  <div class="no-data">No applications yet.</div>
+                }
+                @for (a of recentApplications; track a.id) {
+                  <a routerLink="/applications" class="activity-item">
+                    <div class="activity-main">
+                      <span class="activity-title">{{ a.fullName }}</span>
+                      <span class="activity-sub">{{ a.position }}</span>
+                    </div>
+                    <div class="activity-meta">
+                      <span class="badge" [class]="applicationBadgeClass(a.status)">{{ a.status }}</span>
+                      <span class="activity-time">{{ timeAgo(a.createdAt) }}</span>
+                    </div>
+                  </a>
+                }
+              </div>
+            }
+          </div>
+        }
       }
     }
     @if (loading) {
@@ -140,6 +225,37 @@
           </div>
         </div>
 
+        <div class="trend-chart-card">
+          <div class="trend-legend">
+            @for (s of reportSeries; track s.key) {
+              <button
+                type="button"
+                class="legend-item"
+                [class.legend-off]="!visibleSeries[s.key]"
+                (click)="toggleSeries(s.key)"
+              >
+                <span class="legend-swatch" [style.background]="s.color"></span>
+                {{ s.label }}
+              </button>
+            }
+          </div>
+          @if (chartDays.length < 2) {
+            <div class="no-data">Not enough data points to draw a trend line for this range.</div>
+          } @else {
+            <svg class="trend-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+              @for (s of reportSeries; track s.key) {
+                @if (visibleSeries[s.key]) {
+                  <polyline [attr.points]="chartPoints(s.key)" [attr.stroke]="s.color" fill="none" vector-effect="non-scaling-stroke" />
+                }
+              }
+            </svg>
+            <div class="trend-x-labels">
+              <span>{{ chartStartLabel }}</span>
+              <span>{{ chartEndLabel }}</span>
+            </div>
+          }
+        </div>
+
         <div class="report-table-wrap">
           <table class="report-table">
             <thead>
@@ -152,7 +268,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (day of report.days; track day.date) {
+              @for (day of pagedReportDays; track day.date) {
                 <tr>
                   <td>{{ day.date }}</td>
                   <td>{{ day.visits }}</td>
@@ -164,21 +280,39 @@
             </tbody>
           </table>
         </div>
+
+        @if (report.days.length > reportPageSize) {
+          <div class="pagination-bar">
+            <span class="pagination-info">Page {{ reportPage }} of {{ reportTotalPages }} &middot; {{ report.days.length }} days</span>
+            <div class="pagination-controls">
+              <button class="page-btn" (click)="goToReportPage(1)" [disabled]="reportPage === 1">« First</button>
+              <button class="page-btn" (click)="goToReportPage(reportPage - 1)" [disabled]="reportPage === 1">‹ Prev</button>
+              <button class="page-btn" (click)="goToReportPage(reportPage + 1)" [disabled]="reportPage === reportTotalPages">Next ›</button>
+              <button class="page-btn" (click)="goToReportPage(reportTotalPages)" [disabled]="reportPage === reportTotalPages">Last »</button>
+            </div>
+          </div>
+        }
       }
     </div>
 
-    <div class="quick-links">
-      <h2>Quick Actions</h2>
-      <div class="links-grid">
-        <a routerLink="/pages" class="quick-card">
-          <strong>Edit Pages</strong>
-          <span>Update hero text, meta tags, and page sections</span>
-        </a>
-        <a routerLink="/settings" class="quick-card">
-          <strong>Site Settings</strong>
-          <span>Update contact info, address and other settings</span>
-        </a>
+    @if (auth.hasPermission('pages', 'settings')) {
+      <div class="quick-links">
+        <h2>Quick Actions</h2>
+        <div class="links-grid">
+          @if (auth.hasPermission('pages')) {
+            <a routerLink="/pages" class="quick-card">
+              <strong>Edit Pages</strong>
+              <span>Update hero text, meta tags, and page sections</span>
+            </a>
+          }
+          @if (auth.hasPermission('settings')) {
+            <a routerLink="/settings" class="quick-card">
+              <strong>Site Settings</strong>
+              <span>Update contact info, address and other settings</span>
+            </a>
+          }
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>

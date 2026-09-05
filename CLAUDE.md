@@ -5,7 +5,7 @@ A full-stack web platform for **Pennine Care Centre**, a premium residential car
 
 1. **Public website** (`frontend/`) — Angular 21, 9 pages
 2. **Admin CMS** (`admin/`) — Angular 21, edits all content
-3. **REST API** (`backend/`) — NestJS + PostgreSQL + Cloudinary
+3. **REST API** (`backend/`) — NestJS + PostgreSQL
 
 ---
 
@@ -17,7 +17,7 @@ A full-stack web platform for **Pennine Care Centre**, a premium residential car
 | Admin framework | Angular 21 (standalone components) |
 | Backend | NestJS 11, TypeORM |
 | Database | PostgreSQL 17 |
-| Media storage | Cloudinary |
+| Media storage | Postgres (binary, in `media.data`), served from `GET /api/media/:id/raw` |
 | Authentication | JWT (bcryptjs + passport-jwt) |
 
 ---
@@ -31,14 +31,14 @@ A full-stack web platform for **Pennine Care Centre**, a premium residential car
 - `users/` — Admin user entity + service (auto-creates default admin)
 - `pages/` — Page content CMS (8 pages auto-seeded with real content in `sections` JSONB)
 - `settings/` — Key-value site settings (includes `site.theme`, SMTP email config)
-- `media/` — Cloudinary upload/delete/list
+- `media/` — Upload/delete/list; file bytes stored in the `media` table (`data` bytea column), served publicly (no auth) from `GET /media/:id/raw`. Legacy rows uploaded before this (Vercel Blob or local disk, `media.folder` = `'blob'`/`'local'`) still delete correctly, but new uploads are always `folder: 'db'`.
 - `team/` — Team member CRUD (auto-seeded with 6 placeholder members)
 - `careers/` — Job listing CRUD (auto-seeded with 3 open + 1 closed job)
 - `reviews/` — Google reviews CRUD (auto-seeded with 5 real testimonials)
 - `contact/` — Contact form submissions (save to DB + optional email via SMTP)
 - `common/logging.interceptor.ts` — Global HTTP request logger (coloured terminal output)
 - `common/http-exception.filter.ts` — Global exception filter, structured JSON errors
-- `.env` — Environment config (DB, JWT, Cloudinary)
+- `.env` — Environment config (DB, JWT, `PUBLIC_API_URL` for media URLs)
 
 ### Frontend (`frontend/src/app/`)
 - `app.ts` — Root component, calls `ThemeService.applyActiveTheme()` on init, back-to-top button
@@ -68,7 +68,7 @@ A full-stack web platform for **Pennine Care Centre**, a premium residential car
 - `pages/team-manager/` — Add/edit/delete team members
 - `pages/careers-manager/` — Post/edit/close job listings
 - `pages/reviews-manager/` — Manage testimonials
-- `pages/media-library/` — Upload to Cloudinary, delete files
+- `pages/media-library/` — Upload (stored as binary in Postgres), delete files
 - `pages/contact-manager/` — View/manage contact form submissions, update status, add notes
 - `shared/sidebar/` — Responsive sidebar with hamburger toggle on mobile (≤768px)
 
@@ -99,7 +99,7 @@ All tables are auto-created by TypeORM `synchronize: true` (dev mode only).
 | `team_members` | Staff profiles | Yes (6 placeholder members) |
 | `jobs` | Career listings | Yes (3 open + 1 closed) |
 | `reviews` | Testimonials | Yes (5 real Google reviews) |
-| `media` | Cloudinary file records | No |
+| `media` | Uploaded file binary (bytea) + metadata | No |
 | `contact_submissions` | Website contact form submissions | No |
 | `audit_logs` | Per-user admin activity trail (who changed what) | No |
 
@@ -131,6 +131,7 @@ GET/POST/PUT/DELETE /api/reviews      ?visible=true for public
 POST   /api/contact                   (public, saves + optional email)
 GET/PATCH/DELETE /api/contact         (auth)
 POST   /api/media/upload              (auth)
+GET    /api/media/:id/raw             (public — serves the stored binary)
 DELETE /api/media/:id                 (auth)
 ```
 

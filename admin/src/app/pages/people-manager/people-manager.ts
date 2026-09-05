@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
+import { AuthService } from '../../core/auth';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 import { ImageUpload } from '../../shared/image-upload/image-upload';
 
@@ -42,12 +43,12 @@ export class PeopleManager implements OnInit {
   savedReview = false;
   reviewForm: any = {};
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public auth: AuthService) {}
 
   ngOnInit() {
-    this.loadTeam();
-    this.loadJobs();
-    this.loadReviews();
+    if (this.auth.hasPermission('team')) this.loadTeam();
+    if (this.auth.hasPermission('careers')) this.loadJobs();
+    if (this.auth.hasPermission('reviews')) this.loadReviews();
   }
 
   // ── Team ──

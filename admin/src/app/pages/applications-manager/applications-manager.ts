@@ -20,6 +20,15 @@ interface CareerApplication {
   createdAt: string;
 }
 
+interface ApplicationCounts {
+  all: number;
+  new: number;
+  reviewing: number;
+  shortlisted: number;
+  rejected: number;
+  archived: number;
+}
+
 @Component({
   selector: 'app-applications-manager',
   standalone: true,
@@ -29,9 +38,16 @@ interface CareerApplication {
 })
 export class ApplicationsManager implements OnInit {
   applications: CareerApplication[] = [];
-  filtered: CareerApplication[] = [];
   selected: CareerApplication | null = null;
   filterStatus: string = 'all';
+  dateFrom = '';
+  dateTo = '';
+  counts: ApplicationCounts = { all: 0, new: 0, reviewing: 0, shortlisted: 0, rejected: 0, archived: 0 };
+
+  page = 1;
+  pageSize = 10;
+  total = 0;
+
   loading = true;
   saving = false;
   toast = '';
@@ -47,27 +63,54 @@ export class ApplicationsManager implements OnInit {
 
   ngOnInit() { this.load(); }
 
-  load() {
-    this.loading = true;
-    this.api.getApplications().subscribe({
-      next: (data: CareerApplication[]) => {
-        this.applications = data;
-        this.applyFilter();
-        this.loading = false;
+  load(showLoading = true) {
+    if (showLoading) this.loading = true;
+    this.api.getApplications({
+      page: this.page,
+      pageSize: this.pageSize,
+      status: this.filterStatus === 'all' ? undefined : this.filterStatus,
+      from: this.dateFrom || undefined,
+      to: this.dateTo || undefined,
+    }).subscribe({
+      next: (res) => {
+        this.applications = res.items;
+        this.total = res.total;
+        this.counts = res.counts;
+        if (this.selected) {
+          this.selected = this.applications.find(a => a.id === this.selected!.id) ?? this.selected;
+        }
+        if (showLoading) this.loading = false;
       },
-      error: () => { this.loading = false; }
+      error: () => { if (showLoading) this.loading = false; }
     });
   }
 
-  applyFilter() {
-    this.filtered = this.filterStatus === 'all'
-      ? this.applications
-      : this.applications.filter(a => a.status === this.filterStatus);
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.total / this.pageSize));
+  }
+
+  goToPage(p: number) {
+    if (p < 1 || p > this.totalPages || p === this.page) return;
+    this.page = p;
+    this.load();
   }
 
   setFilter(status: string) {
     this.filterStatus = status;
-    this.applyFilter();
+    this.page = 1;
+    this.load();
+  }
+
+  applyDateFilter() {
+    this.page = 1;
+    this.load();
+  }
+
+  clearDateFilter() {
+    this.dateFrom = '';
+    this.dateTo = '';
+    this.page = 1;
+    this.load();
   }
 
   open(app: CareerApplication) {
@@ -81,11 +124,10 @@ export class ApplicationsManager implements OnInit {
   setStatus(app: CareerApplication, status: ApplicationStatus) {
     const previous = app.status;
     app.status = status;
-    this.applyFilter();
     this.api.updateApplication(app.id, { status, notes: app.notes }).subscribe({
+      next: () => this.load(false),
       error: (e) => {
         app.status = previous;
-        this.applyFilter();
         this.showToast(this.extractError(e, 'Failed to update status'), 'error');
       }
     });
@@ -102,7 +144,6 @@ export class ApplicationsManager implements OnInit {
         this.selected!.notes = updated.notes;
         const i = this.applications.findIndex(a => a.id === updated.id);
         if (i > -1) this.applications[i] = updated;
-        this.applyFilter();
         this.saving = false;
         this.showToast('Notes saved');
       },
@@ -117,10 +158,9 @@ export class ApplicationsManager implements OnInit {
     if (!confirm(`Delete application from ${app.fullName}?`)) return;
     this.api.deleteApplication(app.id).subscribe({
       next: () => {
-        this.applications = this.applications.filter(a => a.id !== app.id);
-        this.applyFilter();
         if (this.selected?.id === app.id) this.selected = null;
         this.showToast('Application deleted');
+        this.load(false);
       },
       error: (e) => this.showToast(this.extractError(e, 'Failed to delete application'), 'error')
     });
@@ -136,6 +176,10 @@ export class ApplicationsManager implements OnInit {
     }[status];
   }
 
+  countFor(status: string): number {
+    return (this.counts as unknown as Record<string, number>)[status] ?? 0;
+  }
+
   showToast(msg: string, type: 'success' | 'error' = 'success') {
     this.toast = msg;
     this.toastType = type;
@@ -146,10 +190,6 @@ export class ApplicationsManager implements OnInit {
     const msg = e?.error?.message;
     if (Array.isArray(msg)) return msg.join(', ');
     return msg || fallback;
-  }
-
-  countByStatus(status: string): number {
-    return this.applications.filter(a => a.status === status).length;
   }
 
   formatDate(d: string) {

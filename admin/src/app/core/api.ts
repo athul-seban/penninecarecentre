@@ -10,8 +10,60 @@ export class ApiService {
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
+  private buildQuery(params: Record<string, any> = {}): string {
+    const usp = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') usp.set(key, String(value));
+    });
+    const qs = usp.toString();
+    return qs ? `?${qs}` : '';
+  }
+
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.BASE}/auth/login`, { email, password });
+  }
+
+  getMe(): Observable<any> {
+    return this.http.post(`${this.BASE}/auth/me`, {}, { headers: this.auth.getHeaders() });
+  }
+
+  updateProfile(data: { name?: string; email?: string }): Observable<any> {
+    return this.http.put(`${this.BASE}/auth/profile`, data, { headers: this.auth.getHeaders() });
+  }
+
+  changePassword(data: { currentPassword: string; newPassword: string }): Observable<any> {
+    return this.http.put(`${this.BASE}/auth/change-password`, data, { headers: this.auth.getHeaders() });
+  }
+
+  // Users
+  getUsers(): Observable<any> {
+    return this.http.get(`${this.BASE}/users`, { headers: this.auth.getHeaders() });
+  }
+  createUser(data: any): Observable<any> {
+    return this.http.post(`${this.BASE}/users`, data, { headers: this.auth.getHeaders() });
+  }
+  updateUser(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.BASE}/users/${id}`, data, { headers: this.auth.getHeaders() });
+  }
+  deleteUser(id: string): Observable<any> {
+    return this.http.delete(`${this.BASE}/users/${id}`, { headers: this.auth.getHeaders() });
+  }
+
+  // Roles
+  getRoles(): Observable<any> {
+    return this.http.get(`${this.BASE}/roles`, { headers: this.auth.getHeaders() });
+  }
+  getPermissionKeys(): Observable<any> {
+    return this.http.get(`${this.BASE}/roles/permissions`, { headers: this.auth.getHeaders() });
+  }
+  createRole(data: { name: string; permissions: string[] }): Observable<any> {
+    return this.http.post(`${this.BASE}/roles`, data, { headers: this.auth.getHeaders() });
+  }
+  updateRole(id: string, data: { name?: string; permissions?: string[] }): Observable<any> {
+    return this.http.put(`${this.BASE}/roles/${id}`, data, { headers: this.auth.getHeaders() });
+  }
+  deleteRole(id: string): Observable<any> {
+    return this.http.delete(`${this.BASE}/roles/${id}`, { headers: this.auth.getHeaders() });
   }
 
   // Pages
@@ -87,8 +139,8 @@ export class ApiService {
   }
 
   // Contact Submissions
-  getContactSubmissions(): Observable<any> {
-    return this.http.get(`${this.BASE}/contact`, { headers: this.auth.getHeaders() });
+  getContactSubmissions(params: { page?: number; pageSize?: number; status?: string; from?: string; to?: string } = {}): Observable<any> {
+    return this.http.get(`${this.BASE}/contact${this.buildQuery(params)}`, { headers: this.auth.getHeaders() });
   }
   updateContactSubmission(id: string, data: { status: string; notes?: string }): Observable<any> {
     return this.http.patch(`${this.BASE}/contact/${id}`, data, { headers: this.auth.getHeaders() });
@@ -101,8 +153,8 @@ export class ApiService {
   }
 
   // Job Applications
-  getApplications(): Observable<any> {
-    return this.http.get(`${this.BASE}/applications`, { headers: this.auth.getHeaders() });
+  getApplications(params: { page?: number; pageSize?: number; status?: string; from?: string; to?: string } = {}): Observable<any> {
+    return this.http.get(`${this.BASE}/applications${this.buildQuery(params)}`, { headers: this.auth.getHeaders() });
   }
   updateApplication(id: string, data: { status: string; notes?: string }): Observable<any> {
     return this.http.patch(`${this.BASE}/applications/${id}`, data, { headers: this.auth.getHeaders() });
@@ -115,16 +167,16 @@ export class ApiService {
   }
 
   // Error Logs
-  getErrorLogs(limit = 100): Observable<any> {
-    return this.http.get(`${this.BASE}/error-logs?limit=${limit}`, { headers: this.auth.getHeaders() });
+  getErrorLogs(params: { page?: number; pageSize?: number; method?: string; statusCode?: number; from?: string; to?: string; q?: string } = {}): Observable<any> {
+    return this.http.get(`${this.BASE}/error-logs${this.buildQuery(params)}`, { headers: this.auth.getHeaders() });
   }
   clearErrorLogs(): Observable<any> {
     return this.http.delete(`${this.BASE}/error-logs`, { headers: this.auth.getHeaders() });
   }
 
   // Activity Log (per-user audit trail)
-  getAuditLogs(limit = 200): Observable<any> {
-    return this.http.get(`${this.BASE}/audit-logs?limit=${limit}`, { headers: this.auth.getHeaders() });
+  getAuditLogs(params: { page?: number; pageSize?: number; method?: string; from?: string; to?: string; q?: string } = {}): Observable<any> {
+    return this.http.get(`${this.BASE}/audit-logs${this.buildQuery(params)}`, { headers: this.auth.getHeaders() });
   }
   clearAuditLogs(): Observable<any> {
     return this.http.delete(`${this.BASE}/audit-logs`, { headers: this.auth.getHeaders() });

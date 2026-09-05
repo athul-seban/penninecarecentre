@@ -5,6 +5,23 @@ import { ContactSubmission, ContactStatus } from './contact.entity';
 import { SettingsService } from '../settings/settings.service';
 import { MailerService } from '../mailer/mailer.service';
 import { escapeHtml } from '../common/escape-html';
+import { applyDateRange, parsePagination } from '../common/query.util';
+
+export interface FindContactQuery {
+  page?: number;
+  pageSize?: number;
+  status?: string;
+  from?: string;
+  to?: string;
+}
+
+export interface PaginatedContactSubmissions {
+  items: ContactSubmission[];
+  total: number;
+  page: number;
+  pageSize: number;
+  counts: Record<'all' | ContactStatus, number>;
+}
 
 @Injectable()
 export class ContactService {
@@ -26,8 +43,35 @@ export class ContactService {
     return saved;
   }
 
-  findAll(): Promise<ContactSubmission[]> {
-    return this.repo.find({ order: { createdAt: 'DESC' } });
+  async findAll(query: FindContactQuery = {}): Promise<PaginatedContactSubmissions> {
+    const { page, pageSize, skip } = parsePagination(query.page, query.pageSize);
+
+    const qb = this.repo.createQueryBuilder('c').orderBy('c.createdAt', 'DESC');
+    applyDateRange(qb, 'c.createdAt', query.from, query.to);
+    if (query.status) qb.andWhere('c.status = :status', { status: query.status });
+
+    const [items, total] = await qb.skip(skip).take(pageSize).getManyAndCount();
+    const counts = await this.getStatusCounts(query.from, query.to);
+
+    return { items, total, page, pageSize, counts };
+  }
+
+  private async getStatusCounts(from?: string, to?: string): Promise<Record<'all' | ContactStatus, number>> {
+    const qb = this.repo
+      .createQueryBuilder('c')
+      .select('c.status', 'status')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy('c.status');
+    applyDateRange(qb, 'c.createdAt', from, to);
+
+    const rows = await qb.getRawMany<{ status: ContactStatus; count: string }>();
+    const counts: Record<'all' | ContactStatus, number> = { all: 0, new: 0, read: 0, replied: 0, archived: 0 };
+    for (const row of rows) {
+      const n = parseInt(row.count, 10);
+      counts[row.status] = n;
+      counts.all += n;
+    }
+    return counts;
   }
 
   findOne(id: string): Promise<ContactSubmission | null> {

@@ -18,6 +18,14 @@ interface ContactSubmission {
   createdAt: string;
 }
 
+interface ContactCounts {
+  all: number;
+  new: number;
+  read: number;
+  replied: number;
+  archived: number;
+}
+
 @Component({
   selector: 'app-contact-manager',
   standalone: true,
@@ -27,9 +35,16 @@ interface ContactSubmission {
 })
 export class ContactManager implements OnInit {
   submissions: ContactSubmission[] = [];
-  filtered: ContactSubmission[] = [];
   selected: ContactSubmission | null = null;
   filterStatus: string = 'all';
+  dateFrom = '';
+  dateTo = '';
+  counts: ContactCounts = { all: 0, new: 0, read: 0, replied: 0, archived: 0 };
+
+  page = 1;
+  pageSize = 10;
+  total = 0;
+
   loading = true;
   saving = false;
   toast = '';
@@ -45,27 +60,54 @@ export class ContactManager implements OnInit {
 
   ngOnInit() { this.load(); }
 
-  load() {
-    this.loading = true;
-    this.api.getContactSubmissions().subscribe({
-      next: (data) => {
-        this.submissions = data;
-        this.applyFilter();
-        this.loading = false;
+  load(showLoading = true) {
+    if (showLoading) this.loading = true;
+    this.api.getContactSubmissions({
+      page: this.page,
+      pageSize: this.pageSize,
+      status: this.filterStatus === 'all' ? undefined : this.filterStatus,
+      from: this.dateFrom || undefined,
+      to: this.dateTo || undefined,
+    }).subscribe({
+      next: (res) => {
+        this.submissions = res.items;
+        this.total = res.total;
+        this.counts = res.counts;
+        if (this.selected) {
+          this.selected = this.submissions.find(s => s.id === this.selected!.id) ?? this.selected;
+        }
+        if (showLoading) this.loading = false;
       },
-      error: () => { this.loading = false; }
+      error: () => { if (showLoading) this.loading = false; }
     });
   }
 
-  applyFilter() {
-    this.filtered = this.filterStatus === 'all'
-      ? this.submissions
-      : this.submissions.filter(s => s.status === this.filterStatus);
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.total / this.pageSize));
+  }
+
+  goToPage(p: number) {
+    if (p < 1 || p > this.totalPages || p === this.page) return;
+    this.page = p;
+    this.load();
   }
 
   setFilter(status: string) {
     this.filterStatus = status;
-    this.applyFilter();
+    this.page = 1;
+    this.load();
+  }
+
+  applyDateFilter() {
+    this.page = 1;
+    this.load();
+  }
+
+  clearDateFilter() {
+    this.dateFrom = '';
+    this.dateTo = '';
+    this.page = 1;
+    this.load();
   }
 
   open(sub: ContactSubmission) {
@@ -79,11 +121,10 @@ export class ContactManager implements OnInit {
   setStatus(sub: ContactSubmission, status: ContactStatus) {
     const previous = sub.status;
     sub.status = status;
-    this.applyFilter();
     this.api.updateContactSubmission(sub.id, { status, notes: sub.notes }).subscribe({
+      next: () => this.load(false),
       error: (e) => {
         sub.status = previous;
-        this.applyFilter();
         this.showToast(this.extractError(e, 'Failed to update status'), 'error');
       }
     });
@@ -100,7 +141,6 @@ export class ContactManager implements OnInit {
         this.selected!.notes = updated.notes;
         const i = this.submissions.findIndex(s => s.id === updated.id);
         if (i > -1) this.submissions[i] = updated;
-        this.applyFilter();
         this.saving = false;
         this.showToast('Notes saved');
       },
@@ -115,10 +155,9 @@ export class ContactManager implements OnInit {
     if (!confirm(`Delete enquiry from ${sub.name}?`)) return;
     this.api.deleteContactSubmission(sub.id).subscribe({
       next: () => {
-        this.submissions = this.submissions.filter(s => s.id !== sub.id);
-        this.applyFilter();
         if (this.selected?.id === sub.id) this.selected = null;
         this.showToast('Submission deleted');
+        this.load(false);
       },
       error: (e) => this.showToast(this.extractError(e, 'Failed to delete submission'), 'error')
     });
@@ -126,6 +165,10 @@ export class ContactManager implements OnInit {
 
   badgeClass(status: ContactStatus): string {
     return { new: 'badge-new', read: 'badge-read', replied: 'badge-replied', archived: 'badge-archived' }[status];
+  }
+
+  countFor(status: string): number {
+    return (this.counts as unknown as Record<string, number>)[status] ?? 0;
   }
 
   showToast(msg: string, type: 'success' | 'error' = 'success') {
@@ -138,10 +181,6 @@ export class ContactManager implements OnInit {
     const msg = e?.error?.message;
     if (Array.isArray(msg)) return msg.join(', ');
     return msg || fallback;
-  }
-
-  countByStatus(status: string): number {
-    return this.submissions.filter(s => s.status === status).length;
   }
 
   formatDate(d: string) {
@@ -177,7 +216,6 @@ export class ContactManager implements OnInit {
         this.selected!.status = updated.status;
         const i = this.submissions.findIndex(s => s.id === updated.id);
         if (i > -1) this.submissions[i] = updated;
-        this.applyFilter();
         this.sendingReply = false;
         this.replying = false;
         this.showToast('Reply sent to ' + this.selected!.email);

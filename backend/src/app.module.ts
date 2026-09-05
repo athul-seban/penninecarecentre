@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module';
+import { PermissionsModule } from './auth/permissions.module';
 import { PagesModule } from './pages/pages.module';
 import { MediaModule } from './media/media.module';
 import { SettingsModule } from './settings/settings.module';
@@ -68,8 +70,10 @@ import { AuditLogModule } from './audit-log/audit-log.module';
       },
       inject: [ConfigService],
     }),
+    PermissionsModule,
     AuthModule,
     UsersModule,
+    RolesModule,
     PagesModule,
     MediaModule,
     SettingsModule,

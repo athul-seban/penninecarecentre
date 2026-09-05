@@ -3,9 +3,26 @@
 .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
 .page-header h1 { font-size: 1.75rem; color: #002b5b; margin-bottom: 4px; }
 .sub { color: #666; font-size: 0.9rem; }
-.btn-clear { padding: 9px 18px; background: #fff0f0; color: #b91c1c; border: 1px solid #fca5a5; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
-.btn-clear:hover:not(:disabled) { background: #fee2e2; }
-.btn-clear:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Filter bar */
+.filter-bar { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-field { display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; }
+.filter-field-search { flex: 1; min-width: 180px; }
+.filter-field select, .filter-field input { padding: 7px 10px; border: 1.5px solid #d1d5db; border-radius: 7px; font-size: 0.85rem; font-family: inherit; }
+.filter-field select:focus, .filter-field input:focus { outline: none; border-color: #002b5b; }
+.btn-apply { padding: 8px 16px; background: #002b5b; color: white; border: none; border-radius: 7px; cursor: pointer; font-size: 0.82rem; font-weight: 600; }
+.btn-apply:hover { background: #003f85; }
+.btn-clear-filters { padding: 8px 14px; background: white; border: 1.5px solid #d1d5db; border-radius: 7px; cursor: pointer; font-size: 0.82rem; color: #555; }
+.btn-clear-filters:hover { border-color: #b91c1c; color: #b91c1c; }
+.result-count { font-size: 0.8rem; color: #999; margin-left: auto; }
+
+/* Pagination */
+.pagination-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.pagination-info { font-size: 0.82rem; color: #666; }
+.pagination-controls { display: flex; align-items: center; gap: 8px; }
+.page-btn { padding: 6px 14px; border: 2px solid #e5e7eb; background: white; border-radius: 20px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #374151; transition: all 0.2s; }
+.page-btn:hover:not(:disabled) { border-color: #002b5b; color: #002b5b; }
+.page-btn:disabled { opacity: 0.4; cursor: default; }
 
 .loading-state, .empty-state { text-align: center; padding: 60px 20px; color: #999; }
 .empty-icon { font-size: 3rem; display: block; margin-bottom: 12px; }

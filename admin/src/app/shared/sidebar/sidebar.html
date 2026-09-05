@@ -15,29 +15,53 @@
     <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" (click)="close()">
       <span class="icon">&#9632;</span> Dashboard
     </a>
-    <a routerLink="/pages" routerLinkActive="active" class="nav-item" (click)="close()">
-      <span class="icon">&#9632;</span> Content
-    </a>
-    <a routerLink="/people" routerLinkActive="active" class="nav-item" (click)="close()">
-      <span class="icon">&#9632;</span> People
-    </a>
-    <a routerLink="/blog" routerLinkActive="active" class="nav-item" (click)="close()">
-      <span class="icon">&#9632;</span> Blog
-    </a>
-    <a routerLink="/settings" routerLinkActive="active" class="nav-item" (click)="close()">
-      <span class="icon">&#9632;</span> Settings
-    </a>
-    <a routerLink="/contact" routerLinkActive="active" class="nav-item" (click)="close()">
-      <span class="icon">&#9632;</span> Contact Enquiries
-    </a>
-    <a routerLink="/applications" routerLinkActive="active" class="nav-item" (click)="close()">
-      <span class="icon">&#9632;</span> Job Applications
-    </a>
-    <a routerLink="/error-logs" routerLinkActive="active" class="nav-item" (click)="close()">
-      <span class="icon">&#9632;</span> Error Logs
-    </a>
-    <a routerLink="/activity-log" routerLinkActive="active" class="nav-item" (click)="close()">
-      <span class="icon">&#9632;</span> Activity Log
+    @if (auth.hasPermission('pages')) {
+      <a routerLink="/pages" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> Content
+      </a>
+    }
+    @if (auth.hasPermission('team', 'careers', 'reviews')) {
+      <a routerLink="/people" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> People
+      </a>
+    }
+    @if (auth.hasPermission('blog')) {
+      <a routerLink="/blog" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> Blog
+      </a>
+    }
+    @if (auth.hasPermission('settings')) {
+      <a routerLink="/settings" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> Settings
+      </a>
+    }
+    @if (auth.hasPermission('contact')) {
+      <a routerLink="/contact" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> Contact Enquiries
+      </a>
+    }
+    @if (auth.hasPermission('applications')) {
+      <a routerLink="/applications" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> Job Applications
+      </a>
+    }
+    @if (auth.hasPermission('users')) {
+      <a routerLink="/users" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> Users &amp; Roles
+      </a>
+    }
+    @if (auth.hasPermission('errorLogs')) {
+      <a routerLink="/error-logs" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> Error Logs
+      </a>
+    }
+    @if (auth.hasPermission('activityLog')) {
+      <a routerLink="/activity-log" routerLinkActive="active" class="nav-item" (click)="close()">
+        <span class="icon">&#9632;</span> Activity Log
+      </a>
+    }
+    <a routerLink="/account" routerLinkActive="active" class="nav-item" (click)="close()">
+      <span class="icon">&#9632;</span> My Account
     </a>
   </nav>
   <div class="sidebar-footer">

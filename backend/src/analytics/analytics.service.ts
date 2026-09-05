@@ -49,7 +49,7 @@ export class AnalyticsService {
     weekStart.setDate(weekStart.getDate() - 6);
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    const [total, today, thisWeek, thisMonth, topPages, last7Days] = await Promise.all([
+    const [total, today, thisWeek, thisMonth, topPages, last7Days, devices, referrers] = await Promise.all([
       this.repo.count(),
       this.repo.count({ where: { createdAt: MoreThanOrEqual(todayStart) } }),
       this.repo.count({ where: { createdAt: MoreThanOrEqual(weekStart) } }),
@@ -64,9 +64,45 @@ export class AnalyticsService {
         .getRawMany()
         .then(rows => rows.map(r => ({ path: r.path, count: parseInt(r.count, 10) }))),
       this.getLast7Days(),
+      this.getDeviceBreakdown(),
+      this.getTopReferrers(),
     ]);
 
-    return { total, today, thisWeek, thisMonth, topPages, last7Days };
+    return { total, today, thisWeek, thisMonth, topPages, last7Days, devices, referrers };
+  }
+
+  private async getDeviceBreakdown(): Promise<{ device: string; count: number }[]> {
+    const deviceExpr = `CASE
+      WHEN v.userAgent IS NULL THEN 'Unknown'
+      WHEN v.userAgent ~* 'bot|crawl|spider|slurp|facebookexternalhit' THEN 'Bot'
+      WHEN v.userAgent ~* 'ipad|tablet' THEN 'Tablet'
+      WHEN v.userAgent ~* 'mobile|iphone|android' THEN 'Mobile'
+      ELSE 'Desktop'
+    END`;
+    const rows = await this.repo
+      .createQueryBuilder('v')
+      .select(deviceExpr, 'device')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy(deviceExpr)
+      .orderBy('count', 'DESC')
+      .getRawMany();
+    return rows.map(r => ({ device: r.device, count: parseInt(r.count, 10) }));
+  }
+
+  private async getTopReferrers(): Promise<{ source: string; count: number }[]> {
+    const sourceExpr = `CASE
+      WHEN v.referrer IS NULL OR v.referrer = '' THEN 'Direct'
+      ELSE regexp_replace(regexp_replace(regexp_replace(v.referrer, '^https?://', ''), '^www\\.', ''), '/.*$', '')
+    END`;
+    const rows = await this.repo
+      .createQueryBuilder('v')
+      .select(sourceExpr, 'source')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy(sourceExpr)
+      .orderBy('count', 'DESC')
+      .limit(8)
+      .getRawMany();
+    return rows.map(r => ({ source: r.source, count: parseInt(r.count, 10) }));
   }
 
   private async getLast7Days(): Promise<{ date: string; count: number }[]> {
@@ -128,6 +164,8 @@ export class AnalyticsService {
       });
       cursor.setUTCDate(cursor.getUTCDate() + 1);
     }
+
+    days.reverse(); // latest date first
 
     return {
       from: fromStr,

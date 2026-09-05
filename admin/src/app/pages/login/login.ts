@@ -27,7 +27,7 @@ export class Login {
     this.loading = true;
     this.api.login(this.email, this.password).subscribe({
       next: (res: any) => {
-        this.auth.setToken(res.access_token || res.token);
+        this.auth.setSession(res.access_token || res.token, res.user);
         this.router.navigate(['/dashboard']);
       },
       error: () => {

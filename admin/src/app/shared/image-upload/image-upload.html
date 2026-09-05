@@ -3,21 +3,24 @@
     <div class="upload-error">{{ error }}</div>
   }
 
-  <div class="image-input-row">
-    <input
-      type="text"
-      [ngModel]="value"
-      (ngModelChange)="onUrlInput($event)"
-      [placeholder]="placeholder"
-      class="image-url-input"
-      name="img-url-field"
-    />
-    <label class="btn-upload-img" [class.uploading]="uploading">
-      @if (uploading) { Uploading… } @else { ⬆ Upload }
-      <input type="file" [accept]="accept" style="display:none"
-        (change)="onFileSelected($event)" [disabled]="uploading" />
-    </label>
-  </div>
+  @if (!isUploadedMedia(value)) {
+    <div class="image-input-row">
+      <input
+        type="text"
+        [ngModel]="value"
+        (ngModelChange)="onUrlInput($event)"
+        [placeholder]="placeholder"
+        class="image-url-input"
+        name="img-url-field"
+        [disabled]="uploading"
+      />
+      <label class="btn-upload-img" [class.uploading]="uploading">
+        @if (uploading) { Uploading… } @else { ⬆ Upload }
+        <input type="file" [accept]="accept" style="display:none"
+          (change)="onFileSelected($event)" [disabled]="uploading" />
+      </label>
+    </div>
+  }
 
   @if (value) {
     <div class="img-thumb-row">

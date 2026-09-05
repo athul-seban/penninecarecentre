@@ -1,5 +1,5 @@
 import { Controller, Post, Body, UseGuards, Request, Put } from '@nestjs/common';
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -19,6 +19,18 @@ class ChangePasswordDto {
   newPassword: string;
 }
 
+class UpdateProfileDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(150)
+  name?: string;
+
+  @IsOptional()
+  @IsEmail()
+  @MaxLength(200)
+  email?: string;
+}
+
 @Controller('auth')
 export class AuthController {
   constructor(private auth: AuthService) {}
@@ -35,9 +47,16 @@ export class AuthController {
     return this.auth.changePassword(req.user.id, dto.currentPassword, dto.newPassword);
   }
 
+  // Self-service profile update (name/email) — every role may edit their own account.
+  @UseGuards(JwtAuthGuard)
+  @Put('profile')
+  updateProfile(@Request() req, @Body() dto: UpdateProfileDto) {
+    return this.auth.updateProfile(req.user.id, dto);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post('me')
   me(@Request() req) {
-    return req.user;
+    return this.auth.getSessionInfo(req.user.id);
   }
 }

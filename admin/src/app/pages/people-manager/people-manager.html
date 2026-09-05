@@ -11,69 +11,75 @@
       <div class="cms-nav">
 
         <!-- Team Members -->
-        <div class="nav-section">
-          <div class="nav-section-title">
-            Team Members
-            <button class="btn-add-inline" (click)="addTeamMember()" title="Add team member">+</button>
-          </div>
-          @if (loadingTeam) { <div class="nav-loading">Loading…</div> }
-          @if (activeType === 'team' && isNewTeam) {
-            <div class="nav-item active">+ New Member</div>
-          }
-          @for (m of teamMembers; track m._id || m.id) {
-            <div class="nav-item" [class.active]="isTeamActive(m)" (click)="selectTeam(m)">
-              <span class="nav-item-main">{{ m.name }}</span>
-              <span class="nav-item-sub">{{ m.role }}</span>
+        @if (auth.hasPermission('team')) {
+          <div class="nav-section">
+            <div class="nav-section-title">
+              Team Members
+              <button class="btn-add-inline" (click)="addTeamMember()" title="Add team member">+</button>
             </div>
-          }
-          @if (!loadingTeam && teamMembers.length === 0) {
-            <div class="nav-empty">No members yet</div>
-          }
-        </div>
+            @if (loadingTeam) { <div class="nav-loading">Loading…</div> }
+            @if (activeType === 'team' && isNewTeam) {
+              <div class="nav-item active">+ New Member</div>
+            }
+            @for (m of teamMembers; track m._id || m.id) {
+              <div class="nav-item" [class.active]="isTeamActive(m)" (click)="selectTeam(m)">
+                <span class="nav-item-main">{{ m.name }}</span>
+                <span class="nav-item-sub">{{ m.role }}</span>
+              </div>
+            }
+            @if (!loadingTeam && teamMembers.length === 0) {
+              <div class="nav-empty">No members yet</div>
+            }
+          </div>
+        }
 
         <!-- Job Listings -->
-        <div class="nav-section">
-          <div class="nav-section-title">
-            Job Listings
-            <button class="btn-add-inline" (click)="addJob()" title="Add job listing">+</button>
-          </div>
-          @if (loadingJobs) { <div class="nav-loading">Loading…</div> }
-          @if (activeType === 'career' && isNewJob) {
-            <div class="nav-item active">+ New Job</div>
-          }
-          @for (j of jobs; track j._id || j.id) {
-            <div class="nav-item" [class.active]="isJobActive(j)" (click)="selectJob(j)">
-              <span class="nav-item-main">{{ j.title }}</span>
-              <span class="nav-badge" [class.open]="j.isOpen" [class.closed]="!j.isOpen">
-                {{ j.isOpen ? 'Open' : 'Closed' }}
-              </span>
+        @if (auth.hasPermission('careers')) {
+          <div class="nav-section">
+            <div class="nav-section-title">
+              Job Listings
+              <button class="btn-add-inline" (click)="addJob()" title="Add job listing">+</button>
             </div>
-          }
-          @if (!loadingJobs && jobs.length === 0) {
-            <div class="nav-empty">No jobs yet</div>
-          }
-        </div>
+            @if (loadingJobs) { <div class="nav-loading">Loading…</div> }
+            @if (activeType === 'career' && isNewJob) {
+              <div class="nav-item active">+ New Job</div>
+            }
+            @for (j of jobs; track j._id || j.id) {
+              <div class="nav-item" [class.active]="isJobActive(j)" (click)="selectJob(j)">
+                <span class="nav-item-main">{{ j.title }}</span>
+                <span class="nav-badge" [class.open]="j.isOpen" [class.closed]="!j.isOpen">
+                  {{ j.isOpen ? 'Open' : 'Closed' }}
+                </span>
+              </div>
+            }
+            @if (!loadingJobs && jobs.length === 0) {
+              <div class="nav-empty">No jobs yet</div>
+            }
+          </div>
+        }
 
         <!-- Reviews -->
-        <div class="nav-section">
-          <div class="nav-section-title">
-            Reviews
-            <button class="btn-add-inline" (click)="addReview()" title="Add review">+</button>
-          </div>
-          @if (loadingReviews) { <div class="nav-loading">Loading…</div> }
-          @if (activeType === 'review' && isNewReview) {
-            <div class="nav-item active">+ New Review</div>
-          }
-          @for (r of reviews; track r._id || r.id) {
-            <div class="nav-item" [class.active]="isReviewActive(r)" (click)="selectReview(r)">
-              <span class="nav-item-main">{{ r.authorName }}</span>
-              <span class="nav-item-sub">{{ stars(r.rating) }} {{ r.isVisible ? '' : '(hidden)' }}</span>
+        @if (auth.hasPermission('reviews')) {
+          <div class="nav-section">
+            <div class="nav-section-title">
+              Reviews
+              <button class="btn-add-inline" (click)="addReview()" title="Add review">+</button>
             </div>
-          }
-          @if (!loadingReviews && reviews.length === 0) {
-            <div class="nav-empty">No reviews yet</div>
-          }
-        </div>
+            @if (loadingReviews) { <div class="nav-loading">Loading…</div> }
+            @if (activeType === 'review' && isNewReview) {
+              <div class="nav-item active">+ New Review</div>
+            }
+            @for (r of reviews; track r._id || r.id) {
+              <div class="nav-item" [class.active]="isReviewActive(r)" (click)="selectReview(r)">
+                <span class="nav-item-main">{{ r.authorName }}</span>
+                <span class="nav-item-sub">{{ stars(r.rating) }} {{ r.isVisible ? '' : '(hidden)' }}</span>
+              </div>
+            }
+            @if (!loadingReviews && reviews.length === 0) {
+              <div class="nav-empty">No reviews yet</div>
+            }
+          </div>
+        }
 
       </div>
 
@@ -87,7 +93,7 @@
         }
 
         <!-- TEAM EDITOR -->
-        @if (activeType === 'team' && (selectedTeam || isNewTeam)) {
+        @if (auth.hasPermission('team') && activeType === 'team' && (selectedTeam || isNewTeam)) {
           <div class="editor-card">
             <div class="editor-header-row">
               <h2>{{ isNewTeam ? 'Add Team Member' : 'Edit Team Member' }}</h2>
@@ -129,7 +135,7 @@
         }
 
         <!-- CAREER EDITOR -->
-        @if (activeType === 'career' && (selectedJob || isNewJob)) {
+        @if (auth.hasPermission('careers') && activeType === 'career' && (selectedJob || isNewJob)) {
           <div class="editor-card">
             <div class="editor-header-row">
               <h2>{{ isNewJob ? 'Add Job Listing' : 'Edit Job Listing' }}</h2>
@@ -188,7 +194,7 @@
         }
 
         <!-- REVIEW EDITOR -->
-        @if (activeType === 'review' && (selectedReview || isNewReview)) {
+        @if (auth.hasPermission('reviews') && activeType === 'review' && (selectedReview || isNewReview)) {
           <div class="editor-card">
             <div class="editor-header-row">
               <h2>{{ isNewReview ? 'Add Review' : 'Edit Review' }}</h2>

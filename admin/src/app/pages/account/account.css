@@ -1,0 +1,19 @@
+.layout { display: flex; }
+.content { margin-left: 240px; flex: 1; padding: 32px; min-height: 100vh; background: #f5f5f5; }
+.page-header { margin-bottom: 28px; }
+.page-header h1 { font-size: 28px; color: #002b5b; margin: 0 0 4px; font-weight: 700; }
+.page-header p { color: #777; margin: 0; font-size: 14px; }
+.page-header strong { color: #002b5b; text-transform: capitalize; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; max-width: 820px; }
+.card { background: white; border-radius: 10px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.card h2 { margin: 0 0 20px; color: #002b5b; font-size: 18px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px; }
+.form-group input { width: 100%; padding: 10px 12px; border: 1.5px solid #ddd; border-radius: 7px; font-size: 14px; box-sizing: border-box; font-family: inherit; }
+.form-group input:focus { outline: none; border-color: #c5a059; }
+.form-actions { display: flex; justify-content: flex-end; margin-top: 20px; }
+.btn-primary { background: #002b5b; color: white; border: none; padding: 10px 20px; border-radius: 7px; cursor: pointer; font-size: 14px; font-weight: 600; }
+.btn-primary:hover { background: #003f85; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.error { background: #fff0f0; color: #cc0000; padding: 10px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 12px; }
+.success { background: #f0fff4; color: #1a7a3b; padding: 10px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 12px; }

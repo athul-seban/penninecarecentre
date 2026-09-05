@@ -1,11 +1,41 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsDateString, IsEmail, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 import { Throttle } from '@nestjs/throttler';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { PermissionsGuard } from '../auth/permissions.guard';
+import { RequirePermission } from '../auth/permissions.decorator';
 import { ApplicationsService } from './applications.service';
 import { ApplicationStatus } from './application.entity';
+
+class FindApplicationsQueryDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  pageSize?: number;
+
+  @IsOptional()
+  @IsIn(['new', 'reviewing', 'shortlisted', 'rejected', 'archived'])
+  status?: string;
+
+  @IsOptional()
+  @IsDateString()
+  from?: string;
+
+  @IsOptional()
+  @IsDateString()
+  to?: string;
+}
 
 const ALLOWED_CV_MIMETYPES = new Set([
   'application/pdf',
@@ -75,13 +105,15 @@ export class ApplicationsController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  findAll() {
-    return this.service.findAll();
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('applications')
+  findAll(@Query() query: FindApplicationsQueryDto) {
+    return this.service.findAll(query);
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('applications')
   update(
     @Param('id') id: string,
     @Body() body: { status: ApplicationStatus; notes?: string },
@@ -90,13 +122,15 @@ export class ApplicationsController {
   }
 
   @Post(':id/reply')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('applications')
   reply(@Param('id') id: string, @Body() body: ReplyApplicationDto) {
     return this.service.reply(id, body.subject, body.message);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @RequirePermission('applications')
   remove(@Param('id') id: string) {
     return this.service.delete(id);
   }

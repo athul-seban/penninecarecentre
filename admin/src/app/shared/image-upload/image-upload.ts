@@ -55,6 +55,11 @@ export class ImageUpload {
     this.valueChange.emit('');
   }
 
+  isUploadedMedia(url: string): boolean {
+    if (!url) return false;
+    return /\/media\/[0-9a-f-]{36}\/raw(\?.*)?$/i.test(url);
+  }
+
   isVideo(url: string): boolean {
     if (!url) return false;
     const clean = url.split('?')[0].toLowerCase();

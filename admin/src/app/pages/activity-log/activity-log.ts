@@ -1,20 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-activity-log',
   standalone: true,
-  imports: [DatePipe, Sidebar],
+  imports: [CommonModule, DatePipe, FormsModule, Sidebar],
   templateUrl: './activity-log.html',
   styleUrl: './activity-log.css'
 })
 export class ActivityLog implements OnInit {
   logs: any[] = [];
   loading = true;
-  clearing = false;
   expanded: string | null = null;
+
+  methodFilter = '';
+  dateFrom = '';
+  dateTo = '';
+  search = '';
+
+  page = 1;
+  pageSize = 25;
+  total = 0;
 
   constructor(private api: ApiService) {}
 
@@ -22,22 +31,48 @@ export class ActivityLog implements OnInit {
 
   load() {
     this.loading = true;
-    this.api.getAuditLogs().subscribe({
-      next: (d) => { this.logs = d; this.loading = false; },
+    this.api.getAuditLogs({
+      page: this.page,
+      pageSize: this.pageSize,
+      method: this.methodFilter || undefined,
+      from: this.dateFrom || undefined,
+      to: this.dateTo || undefined,
+      q: this.search.trim() || undefined,
+    }).subscribe({
+      next: (res) => {
+        this.logs = res.items;
+        this.total = res.total;
+        this.loading = false;
+      },
       error: () => { this.loading = false; }
     });
   }
 
-  toggle(id: string) {
-    this.expanded = this.expanded === id ? null : id;
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.total / this.pageSize));
   }
 
-  clear() {
-    if (!confirm('Clear all activity logs? This cannot be undone.')) return;
-    this.clearing = true;
-    this.api.clearAuditLogs().subscribe({
-      next: () => { this.logs = []; this.clearing = false; },
-      error: () => { this.clearing = false; }
-    });
+  goToPage(p: number) {
+    if (p < 1 || p > this.totalPages || p === this.page) return;
+    this.page = p;
+    this.load();
+  }
+
+  applyFilters() {
+    this.page = 1;
+    this.load();
+  }
+
+  clearFilters() {
+    this.methodFilter = '';
+    this.dateFrom = '';
+    this.dateTo = '';
+    this.search = '';
+    this.page = 1;
+    this.load();
+  }
+
+  toggle(id: string) {
+    this.expanded = this.expanded === id ? null : id;
   }
 }

@@ -8,6 +8,23 @@ import { put, del } from '@vercel/blob';
 import { SettingsService } from '../settings/settings.service';
 import { MailerService } from '../mailer/mailer.service';
 import { escapeHtml } from '../common/escape-html';
+import { applyDateRange, parsePagination } from '../common/query.util';
+
+export interface FindApplicationsQuery {
+  page?: number;
+  pageSize?: number;
+  status?: string;
+  from?: string;
+  to?: string;
+}
+
+export interface PaginatedApplications {
+  items: CareerApplication[];
+  total: number;
+  page: number;
+  pageSize: number;
+  counts: Record<'all' | ApplicationStatus, number>;
+}
 
 const CV_DIR = path.join(process.cwd(), 'uploads', 'cv');
 const useBlob = () => !!process.env.BLOB_READ_WRITE_TOKEN;
@@ -60,8 +77,42 @@ export class ApplicationsService {
     return saved;
   }
 
-  findAll(): Promise<CareerApplication[]> {
-    return this.repo.find({ order: { createdAt: 'DESC' } });
+  async findAll(query: FindApplicationsQuery = {}): Promise<PaginatedApplications> {
+    const { page, pageSize, skip } = parsePagination(query.page, query.pageSize);
+
+    const qb = this.repo.createQueryBuilder('a').orderBy('a.createdAt', 'DESC');
+    applyDateRange(qb, 'a.createdAt', query.from, query.to);
+    if (query.status) qb.andWhere('a.status = :status', { status: query.status });
+
+    const [items, total] = await qb.skip(skip).take(pageSize).getManyAndCount();
+    const counts = await this.getStatusCounts(query.from, query.to);
+
+    return { items, total, page, pageSize, counts };
+  }
+
+  private async getStatusCounts(from?: string, to?: string): Promise<Record<'all' | ApplicationStatus, number>> {
+    const qb = this.repo
+      .createQueryBuilder('a')
+      .select('a.status', 'status')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy('a.status');
+    applyDateRange(qb, 'a.createdAt', from, to);
+
+    const rows = await qb.getRawMany<{ status: ApplicationStatus; count: string }>();
+    const counts: Record<'all' | ApplicationStatus, number> = {
+      all: 0,
+      new: 0,
+      reviewing: 0,
+      shortlisted: 0,
+      rejected: 0,
+      archived: 0,
+    };
+    for (const row of rows) {
+      const n = parseInt(row.count, 10);
+      counts[row.status] = n;
+      counts.all += n;
+    }
+    return counts;
   }
 
   findOne(id: string): Promise<CareerApplication | null> {
