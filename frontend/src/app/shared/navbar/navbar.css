@@ -283,7 +283,7 @@ nav.scrolled .logo img {
 }
 
 /* RESPONSIVE */
-@media (max-width: 968px) {
+@media (max-width: 1550px) {
   nav {
     padding: 1rem 5%;
   }

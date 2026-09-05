@@ -13,6 +13,10 @@ export class SettingsController {
   constructor(private settings: SettingsService) {}
 
   @Get()
+  findAllPublic() { return this.settings.findAllPublic(); }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('admin')
   findAll() { return this.settings.findAll(); }
 
   @UseGuards(JwtAuthGuard)

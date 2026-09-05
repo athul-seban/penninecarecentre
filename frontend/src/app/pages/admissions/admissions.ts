@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
+import { SeoService } from '../../core/seo.service';
 
 @Component({
   selector: 'app-admissions',
@@ -14,11 +15,14 @@ export class AdmissionsComponent implements OnInit, AfterViewInit {
   sections: Record<string, string> = {};
   steps = [1, 2, 3, 4, 5, 6, 7];
 
-  constructor(private content: ContentService, private router: Router) {}
+  constructor(private content: ContentService, private router: Router, private seo: SeoService) {}
 
   ngOnInit(): void {
     this.content.getPage('admissions').subscribe({
-      next: s => { this.sections = s; },
+      next: s => {
+        this.sections = s;
+        this.seo.update({ title: s['metaTitle'], description: s['metaDescription'], path: '/admissions' });
+      },
       error: () => this.router.navigate(['/not-found'])
     });
   }

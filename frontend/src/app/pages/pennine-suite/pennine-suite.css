@@ -2,8 +2,7 @@
    HERO – Pennine Suite
    ============================================= */
 .hero-sub {
-  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-              url("/assets/images/pennine-suite-hero.png") center center / cover no-repeat;
+  background: url("/assets/images/pennine-suite-hero.png") center center / cover no-repeat;
 }
 
 /* hero-content, heroReveal, h1, p are in global styles.css */

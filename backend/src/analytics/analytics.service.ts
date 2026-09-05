@@ -6,6 +6,23 @@ import { ContactSubmission } from '../contact/contact.entity';
 import { CareerApplication } from '../applications/application.entity';
 import { Review } from '../reviews/review.entity';
 
+/** Masks the last IPv4 octet (or last 80 bits of an IPv6 address) so no individual visitor's full IP is retained — UK GDPR data minimisation. */
+function anonymizeIp(ip?: string): string | undefined {
+  if (!ip) return ip;
+  if (ip.includes('.')) {
+    const parts = ip.split('.');
+    if (parts.length === 4) {
+      parts[3] = '0';
+      return parts.join('.');
+    }
+    return ip;
+  }
+  if (ip.includes(':')) {
+    return ip.split(':').slice(0, 3).join(':') + '::';
+  }
+  return ip;
+}
+
 @Injectable()
 export class AnalyticsService {
   constructor(
@@ -21,7 +38,7 @@ export class AnalyticsService {
     userAgent?: string;
     ip?: string;
   }): Promise<void> {
-    const visit = this.repo.create(data);
+    const visit = this.repo.create({ ...data, ip: anonymizeIp(data.ip) });
     await this.repo.save(visit);
   }
 

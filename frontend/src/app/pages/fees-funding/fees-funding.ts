@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
+import { SeoService } from '../../core/seo.service';
 
 @Component({
   selector: 'app-fees-funding',
@@ -13,11 +14,14 @@ import { ContentService } from '../../core/content.service';
 export class FeesFundingComponent implements OnInit, AfterViewInit {
   sections: Record<string, string> = {};
 
-  constructor(private content: ContentService, private router: Router) {}
+  constructor(private content: ContentService, private router: Router, private seo: SeoService) {}
 
   ngOnInit(): void {
     this.content.getPage('fees-funding').subscribe({
-      next: s => { this.sections = s; },
+      next: s => {
+        this.sections = s;
+        this.seo.update({ title: s['metaTitle'], description: s['metaDescription'], path: '/fees-funding' });
+      },
       error: () => this.router.navigate(['/not-found'])
     });
   }

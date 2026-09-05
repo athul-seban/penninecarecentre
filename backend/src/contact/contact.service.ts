@@ -5,6 +5,15 @@ import * as nodemailer from 'nodemailer';
 import { ContactSubmission, ContactStatus } from './contact.entity';
 import { SettingsService } from '../settings/settings.service';
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 @Injectable()
 export class ContactService {
   private readonly logger = new Logger(ContactService.name);
@@ -64,9 +73,11 @@ export class ContactService {
       auth: { user: smtpUser, pass: smtpPass },
     });
 
-    const subject = sub.subject
-      ? `New Contact: ${sub.subject}`
-      : `New Contact Enquiry from ${sub.name}`;
+    // Strip CR/LF defensively (SMTP header injection) and HTML-escape before interpolating into the email body (HTML injection).
+    const safeSubject = sub.subject?.replace(/[\r\n]+/g, ' ');
+    const subject = safeSubject
+      ? `New Contact: ${safeSubject}`
+      : `New Contact Enquiry from ${sub.name.replace(/[\r\n]+/g, ' ')}`;
 
     await transporter.sendMail({
       from: fromEmail ?? smtpUser,
@@ -77,14 +88,14 @@ export class ContactService {
         <div style="font-family:sans-serif;max-width:600px">
           <h2 style="color:#002b5b">New Contact Enquiry – Pennine Care Centre</h2>
           <table style="border-collapse:collapse;width:100%">
-            <tr><td style="padding:8px;font-weight:bold;width:120px">Name</td><td style="padding:8px">${sub.name}</td></tr>
-            <tr style="background:#f5f5f5"><td style="padding:8px;font-weight:bold">Email</td><td style="padding:8px">${sub.email}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold">Phone</td><td style="padding:8px">${sub.phone ?? '—'}</td></tr>
-            <tr style="background:#f5f5f5"><td style="padding:8px;font-weight:bold">Subject</td><td style="padding:8px">${sub.subject ?? '—'}</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;width:120px">Name</td><td style="padding:8px">${escapeHtml(sub.name)}</td></tr>
+            <tr style="background:#f5f5f5"><td style="padding:8px;font-weight:bold">Email</td><td style="padding:8px">${escapeHtml(sub.email)}</td></tr>
+            <tr><td style="padding:8px;font-weight:bold">Phone</td><td style="padding:8px">${escapeHtml(sub.phone ?? '—')}</td></tr>
+            <tr style="background:#f5f5f5"><td style="padding:8px;font-weight:bold">Subject</td><td style="padding:8px">${escapeHtml(sub.subject ?? '—')}</td></tr>
           </table>
           <div style="margin-top:16px;padding:16px;background:#f9f9f9;border-left:4px solid #c5a059">
             <strong>Message:</strong><br/><br/>
-            ${sub.message.replace(/\n/g, '<br/>')}
+            ${escapeHtml(sub.message).replace(/\n/g, '<br/>')}
           </div>
           <p style="color:#888;font-size:0.8rem;margin-top:24px">Submitted ${new Date(sub.createdAt).toLocaleString('en-GB')}</p>
         </div>

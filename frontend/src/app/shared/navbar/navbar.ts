@@ -1,6 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -10,14 +12,39 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './navbar.css'
 })
 export class NavbarComponent implements OnInit {
+  private readonly API = environment.apiUrl;
+
   menuOpen = false;
   scrolled = false;
-  bannerVisible = true;
   scrollPct = 0;
 
+  bannerText = '';
+  bannerActive = false;
+  bannerDismissed = false;
+
+  constructor(private http: HttpClient) {}
+
+  get bannerVisible(): boolean {
+    return this.bannerActive && !!this.bannerText && !this.bannerDismissed;
+  }
+
   ngOnInit(): void {
-    const dismissed = localStorage.getItem('announcement-dismissed');
-    if (dismissed === 'true') this.bannerVisible = false;
+    this.http.get<any>(`${this.API}/settings`).subscribe({
+      next: (groups) => {
+        const announcement = groups?.announcement ?? [];
+        const textEntry = announcement.find((s: any) => s.key === 'announcement.text');
+        const activeEntry = announcement.find((s: any) => s.key === 'announcement.active');
+        this.bannerText = textEntry?.value ?? '';
+        this.bannerActive = activeEntry?.value === 'true';
+        this.applyDismissedState();
+      },
+      error: () => { /* fetch failed — banner stays hidden */ }
+    });
+  }
+
+  private applyDismissedState(): void {
+    const dismissedText = localStorage.getItem('announcement-dismissed');
+    this.bannerDismissed = dismissedText === this.bannerText;
   }
 
   @HostListener('window:scroll')
@@ -39,7 +66,7 @@ export class NavbarComponent implements OnInit {
   }
 
   dismissBanner(): void {
-    this.bannerVisible = false;
-    localStorage.setItem('announcement-dismissed', 'true');
+    this.bannerDismissed = true;
+    localStorage.setItem('announcement-dismissed', this.bannerText);
   }
 }

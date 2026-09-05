@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
+import { SeoService } from '../../core/seo.service';
 
 @Component({
   selector: 'app-moorland-suite',
@@ -13,12 +14,13 @@ import { ContentService } from '../../core/content.service';
 export class MoorlandSuiteComponent implements OnInit, AfterViewInit, OnDestroy {
   sections: Record<string, any> = {};
 
-  constructor(private content: ContentService, private router: Router) {}
+  constructor(private content: ContentService, private router: Router, private seo: SeoService) {}
 
   ngOnInit(): void {
     this.content.getPage('moorland-suite').subscribe({
       next: (s: any) => {
         this.sections = s;
+        this.seo.update({ title: s.metaTitle, description: s.metaDescription, path: '/moorland-suite' });
         if (Array.isArray(s.havenImages) && s.havenImages.length > 0)
           this.sliders.haven.images = s.havenImages.map((u: string) => ({ src: u, alt: '' }));
         if (Array.isArray(s.spacesImages) && s.spacesImages.length > 0)

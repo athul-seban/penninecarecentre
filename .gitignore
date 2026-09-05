@@ -38,3 +38,6 @@ uploads/
 backend/uploads/
 
 .vercel
+
+# Playwright MCP tool output
+.playwright-mcp/

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../core/content.service';
+import { SeoService } from '../../core/seo.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -31,11 +32,14 @@ export class CareersComponent implements OnInit, AfterViewInit {
   submitted = false;
   submitError = '';
 
-  constructor(private http: HttpClient, private content: ContentService, private router: Router) {}
+  constructor(private http: HttpClient, private content: ContentService, private router: Router, private seo: SeoService) {}
 
   ngOnInit(): void {
     this.content.getPage('careers').subscribe({
-      next: s => { this.sections = s; },
+      next: s => {
+        this.sections = s;
+        this.seo.update({ title: s['metaTitle'], description: s['metaDescription'], path: '/careers' });
+      },
       error: () => this.router.navigate(['/not-found'])
     });
     this.http.get<any[]>(`${environment.apiUrl}/careers`).subscribe({

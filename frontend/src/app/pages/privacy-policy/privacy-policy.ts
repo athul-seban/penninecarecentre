@@ -1,4 +1,5 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { SeoService } from '../../core/seo.service';
 
 @Component({
   selector: 'app-privacy-policy',
@@ -7,7 +8,17 @@ import { Component, AfterViewInit } from '@angular/core';
   templateUrl: './privacy-policy.html',
   styleUrl: './privacy-policy.css'
 })
-export class PrivacyPolicyComponent implements AfterViewInit {
+export class PrivacyPolicyComponent implements OnInit, AfterViewInit {
+  constructor(private seo: SeoService) {}
+
+  ngOnInit(): void {
+    this.seo.update({
+      title: 'Privacy Policy | Pennine Care Centre',
+      description: 'How Pennine Care Centre collects, stores, and protects personal data, in line with UK GDPR and the Data Protection Act 2018.',
+      path: '/privacy-policy',
+    });
+  }
+
   ngAfterViewInit(): void {
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {

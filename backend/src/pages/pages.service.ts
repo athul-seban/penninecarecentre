@@ -36,13 +36,21 @@ const DEFAULT_PAGES = [
       reviewCount: 'Read verified reviews from residents\' families',
       heroVideoPoster: '/assets/images/pennine-suite-hero.png',
       careDementiaImage: '/assets/images/service-dementia-care.png',
+      careDementiaDesc: 'Specialist, person-centred dementia care in a safe, familiar environment designed to support memory, dignity, and independence.',
       careMaleOnlyImage: '/assets/images/service-male-only.png',
+      careMaleOnlyDesc: 'A dedicated space within our Moorland Suite offering tailored support, companionship, and activities for male residents.',
       careYoungerPeopleImage: '/assets/images/service-younger-people.png',
+      careYoungerPeopleDesc: 'Person-centred support for younger adults, encouraging independence, community involvement, and an active lifestyle.',
       careEmotionalPhysicalImage: '/assets/images/service-emotional-physical.png',
+      careEmotionalPhysicalDesc: 'Comprehensive support that nurtures both emotional wellbeing and physical health, tailored to each resident\'s individual needs.',
       lifeGalleryImage: '/assets/images/life-pennine-gallery.png',
+      lifeGalleryDesc: 'A warm, vibrant community where every day brings connection, comfort, and genuine care.',
       lifePersonCenteredImage: '/assets/images/life-person-centered-care.png',
+      lifePersonCenteredDesc: 'Care built entirely around the individual — their history, preferences, and what matters most to them.',
       lifeActivitiesImage: '/assets/images/life-activities.png',
+      lifeActivitiesDesc: 'A full programme of music, art, movement, and outings designed to nourish body, mind, and soul.',
       lifeNutritionImage: '/assets/images/life-nutrition-dining.png',
+      lifeNutritionDesc: 'Freshly prepared, nutritious meals tailored to individual tastes, preferences, and dietary needs.',
       awardImages: [
         '/assets/images/award-care-association.jpg',
         '/assets/images/award-care-standards.jpg',
@@ -384,7 +392,11 @@ export class PagesService implements OnModuleInit {
       } else {
         // Merge any missing keys from defaults without overwriting existing values
         const merged = { ...p.sections, ...exists.sections };
-        await this.repo.update(exists.id, { sections: merged as Record<string, any> });
+        const patch: Partial<PageContent> = { sections: merged as Record<string, any> };
+        if (!exists.title && p.title) patch.title = p.title;
+        if (!exists.metaTitle && p.metaTitle) patch.metaTitle = p.metaTitle;
+        if (!exists.metaDescription && p.metaDescription) patch.metaDescription = p.metaDescription;
+        await this.repo.update(exists.id, patch);
       }
     }
   }

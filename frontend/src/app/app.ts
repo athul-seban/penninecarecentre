@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -18,7 +18,6 @@ import { environment } from '../environments/environment';
 })
 export class App implements OnInit {
   title = 'Pennine Care Centre';
-  showBackToTop = false;
 
   constructor(private theme: ThemeService, private router: Router, private http: HttpClient) {}
 
@@ -32,14 +31,5 @@ export class App implements OnInit {
         referrer: document.referrer || undefined,
       }).pipe(catchError(() => EMPTY)).subscribe();
     });
-  }
-
-  @HostListener('window:scroll')
-  onScroll(): void {
-    this.showBackToTop = window.scrollY > 400;
-  }
-
-  scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

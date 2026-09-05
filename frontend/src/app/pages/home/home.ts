@@ -1,7 +1,8 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, HostListener, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../core/content.service';
+import { SeoService } from '../../core/seo.service';
 import { environment } from '../../../environments/environment';
 
 const AVATAR_COLORS = ['#4285f4','#34a853','#fbbc05','#ea4335','#7b1fa2','#00897b','#e65100','#1565c0'];
@@ -25,12 +26,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private http = inject(HttpClient);
   private content = inject(ContentService);
   private router = inject(Router);
+  private seo = inject(SeoService);
 
   sections: Record<string, any> = {};
 
   @ViewChild('heroVideo') heroVideo!: ElementRef<HTMLVideoElement>;
   isMuted = true;
-  scrollCueVisible = true;
 
   pennineCurrentIndex = 1;
   moorlandCurrentIndex = 1;
@@ -85,6 +86,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.content.getPage('home').subscribe({
       next: (s: any) => {
         this.sections = s;
+        this.seo.update({ title: s.metaTitle, description: s.metaDescription, path: '/' });
         // Ignore the retired single-video default still baked into older DB rows —
         // real overrides are any other value.
         if (s.heroVideoUrl && s.heroVideoUrl !== '/assets/images/pennine-care-tour.mp4') {
@@ -160,11 +162,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.playHeroVideoAt(next);
   }
 
-  @HostListener('window:scroll')
-  onScroll(): void {
-    this.scrollCueVisible = window.scrollY < 80;
-  }
-
   toggleAudio(): void {
     const video = this.heroVideo?.nativeElement;
     if (!video) return;
@@ -173,10 +170,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!video.muted && video.paused) {
       video.play().catch(() => { video.muted = true; this.isMuted = true; });
     }
-  }
-
-  scrollToSuites(): void {
-    document.getElementById('suites')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // Pennine slider

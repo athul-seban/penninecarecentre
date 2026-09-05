@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
+import { SeoService } from '../../core/seo.service';
 
 @Component({
   selector: 'app-pennine-suite',
@@ -13,12 +14,13 @@ import { ContentService } from '../../core/content.service';
 export class PennineSuiteComponent implements OnInit, AfterViewInit, OnDestroy {
   sections: Record<string, any> = {};
 
-  constructor(private content: ContentService, private router: Router) {}
+  constructor(private content: ContentService, private router: Router, private seo: SeoService) {}
 
   ngOnInit(): void {
     this.content.getPage('pennine-suite').subscribe({
       next: (s: any) => {
         this.sections = s;
+        this.seo.update({ title: s.metaTitle, description: s.metaDescription, path: '/pennine-suite' });
         if (Array.isArray(s.introImages) && s.introImages.length > 0)
           this.sliders.intro.images = s.introImages.map((u: string) => ({ src: u, alt: '' }));
         if (Array.isArray(s.communityImages) && s.communityImages.length > 0)

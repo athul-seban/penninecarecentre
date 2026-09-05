@@ -37,7 +37,17 @@ export class SettingsService implements OnModuleInit {
 
   async findAll(): Promise<Record<string, Setting[]>> {
     const all = await this.repo.find({ order: { group: 'ASC' } });
-    return all.reduce((acc, s) => {
+    return this.groupSettings(all);
+  }
+
+  /** Same as findAll() but strips groups only the authenticated admin should see (e.g. SMTP credentials) — used by the unauthenticated public endpoint the marketing site calls. */
+  async findAllPublic(): Promise<Record<string, Setting[]>> {
+    const all = await this.repo.find({ order: { group: 'ASC' } });
+    return this.groupSettings(all.filter((s) => s.group !== 'email'));
+  }
+
+  private groupSettings(settings: Setting[]): Record<string, Setting[]> {
+    return settings.reduce((acc, s) => {
       const g = s.group ?? 'general';
       if (!acc[g]) acc[g] = [];
       acc[g].push(s);

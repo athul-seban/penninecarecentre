@@ -3,7 +3,7 @@
 
 <!-- Announcement Banner -->
 <div class="announcement-banner" [class.hidden]="!bannerVisible">
-  <span><strong>Update:</strong> Pennine Care Centre is regularly inspected by the Care Quality Commission (CQC). <a href="https://www.cqc.org.uk/location/1-8495787563" target="_blank" rel="noopener">Read our latest CQC report</a></span>
+  <span>{{ bannerText }}</span>
   <button class="announcement-close" (click)="dismissBanner()" aria-label="Close Announcement">&times;</button>
 </div>
 

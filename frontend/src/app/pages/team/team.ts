@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../core/content.service';
+import { SeoService } from '../../core/seo.service';
 import { environment } from '../../../environments/environment';
 
 interface TeamMember {
@@ -24,11 +25,14 @@ export class TeamComponent implements OnInit, AfterViewInit {
   sections: Record<string, string> = {};
   teamMembers: TeamMember[] = [];
 
-  constructor(private content: ContentService, private router: Router, private http: HttpClient) {}
+  constructor(private content: ContentService, private router: Router, private http: HttpClient, private seo: SeoService) {}
 
   ngOnInit(): void {
     this.content.getPage('team').subscribe({
-      next: s => { this.sections = s; },
+      next: s => {
+        this.sections = s;
+        this.seo.update({ title: s['metaTitle'], description: s['metaDescription'], path: '/team' });
+      },
       error: () => this.router.navigate(['/not-found'])
     });
     this.http.get<TeamMember[]>(`${environment.apiUrl}/team?active=true`).subscribe({

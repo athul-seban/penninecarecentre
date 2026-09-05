@@ -83,12 +83,24 @@
   text-transform: uppercase;
   letter-spacing: 3px;
   color: var(--gold);
+  font-weight: 700;
   margin-bottom: 10px;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.6);
 }
 .hero h1 {
   font-size: clamp(2.2rem, 7vw, 4.2rem);
   margin-bottom: 25px;
   line-height: 1.25;
+}
+.hero-content .btn-gold {
+  background: rgba(0,0,0,0.32);
+  border-width: 1.5px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+}
+.hero-content .btn-gold:hover {
+  background: var(--gold);
 }
 
 /* ============================================================
@@ -310,6 +322,98 @@
 }
 .life-card h4 {
   color: var(--gold);
+}
+
+/* ============================================================
+   FLIP CARDS (Our Care / Life at Pennine)
+   ============================================================ */
+.flip-card {
+  height: 355px;
+  background: transparent;
+  border: none;
+  perspective: 1400px;
+}
+.flip-card:hover {
+  transform: none;
+  border: none;
+  box-shadow: none;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.flip-card-front {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+.flip-card-front img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+.flip-card-front h4 {
+  padding: 25px;
+  color: var(--navy);
+  font-size: 1.25rem;
+  text-transform: capitalize;
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+  background: var(--navy);
+  border-color: var(--gold);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+}
+.flip-card-back h4 {
+  color: var(--gold);
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  margin-bottom: 14px;
+}
+.flip-card-back p {
+  color: var(--white);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  opacity: 0.92;
+}
+.life-card.flip-card .flip-card-front {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--gold-a20, rgba(197,160,89,0.2));
+}
+.life-card.flip-card .flip-card-front h4 {
+  color: var(--gold);
+}
+.life-card.flip-card .flip-card-back {
+  background: var(--gold);
+  border-color: var(--navy);
+}
+.life-card.flip-card .flip-card-back h4 {
+  color: var(--navy);
+}
+.life-card.flip-card .flip-card-back p {
+  color: var(--navy);
+  opacity: 0.85;
 }
 
 /* ============================================================
@@ -675,59 +779,6 @@
   );
 }
 
-/* Scroll cue */
-.hero-scroll-cue {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: rgba(255,255,255,0.75);
-  opacity: 0;
-  animation: fadeInCue 1s ease forwards 1.8s;
-  z-index: 10;
-  padding: 10px;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-.hero-scroll-cue:hover { color: var(--gold); transform: translateX(-50%) translateY(-4px); }
-.hero-scroll-cue.hidden { opacity: 0 !important; pointer-events: none; }
-@keyframes fadeInCue { to { opacity: 1; } }
-.mouse-icon {
-  width: 26px;
-  height: 42px;
-  border: 2px solid rgba(255,255,255,0.6);
-  border-radius: 13px;
-  display: flex;
-  justify-content: center;
-  padding-top: 7px;
-  transition: border-color 0.3s;
-}
-.hero-scroll-cue:hover .mouse-icon { border-color: var(--gold); }
-.mouse-wheel {
-  width: 4px;
-  height: 8px;
-  background: var(--gold);
-  border-radius: 2px;
-  animation: scrollWheel 1.8s ease-in-out infinite;
-}
-@keyframes scrollWheel {
-  0%   { transform: translateY(0);    opacity: 1; }
-  60%  { transform: translateY(13px); opacity: 0; }
-  100% { transform: translateY(0);    opacity: 0; }
-}
-.scroll-label {
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  letter-spacing: 2.5px;
-  font-weight: 600;
-}
-
 /* ============================================================
    FEATURE CARD ENHANCEMENTS
    ============================================================ */
@@ -764,6 +815,12 @@
   z-index: 3;
 }
 .feature-card:hover::before { transform: scaleX(1); }
+/* Flip cards use the back face for their reveal — the darken-overlay and
+   underline enhancements above are for the non-flip feature cards only. */
+.flip-card::after,
+.flip-card::before {
+  display: none;
+}
 
 /* ============================================================
    TESTIMONIAL DOT → PILL MORPH
@@ -871,10 +928,9 @@
   .hero h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
   .hero-content p { font-size: 0.82rem; letter-spacing: 2px; }
 
-  /* Sound & scroll buttons */
+  /* Sound button */
   .video-controls { bottom: 22px; left: 4%; }
   .mute-btn { width: 44px; height: 44px; min-width: 44px; font-size: 0.95rem; }
-  .hero-scroll-cue { bottom: 22px; }
 
   /* Intro box */
   .intro-box { padding: 40px 6%; }

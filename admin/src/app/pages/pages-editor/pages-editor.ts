@@ -76,13 +76,21 @@ const LABEL_MAP: Record<string, string> = {
   heroVideoUrl: 'Hero Video',
   heroVideoPoster: 'Hero Video Poster Image',
   careDementiaImage: 'Care Grid: Dementia Care Image',
+  careDementiaDesc: 'Care Grid: Dementia Care Description (flip-card back)',
   careMaleOnlyImage: 'Care Grid: Male Only Unit Image',
+  careMaleOnlyDesc: 'Care Grid: Male Only Unit Description (flip-card back)',
   careYoungerPeopleImage: 'Care Grid: Younger People Image',
+  careYoungerPeopleDesc: 'Care Grid: Younger People Description (flip-card back)',
   careEmotionalPhysicalImage: 'Care Grid: Emotional & Physical Care Image',
+  careEmotionalPhysicalDesc: 'Care Grid: Emotional & Physical Care Description (flip-card back)',
   lifeGalleryImage: 'Life Grid: Gallery Image',
+  lifeGalleryDesc: 'Life Grid: Gallery Description (flip-card back)',
   lifePersonCenteredImage: 'Life Grid: Person Centered Care Image',
+  lifePersonCenteredDesc: 'Life Grid: Person Centered Care Description (flip-card back)',
   lifeActivitiesImage: 'Life Grid: Activities Image',
+  lifeActivitiesDesc: 'Life Grid: Activities Description (flip-card back)',
   lifeNutritionImage: 'Life Grid: Nutrition & Dining Image',
+  lifeNutritionDesc: 'Life Grid: Nutrition & Dining Description (flip-card back)',
   awardImages: 'Awards & Affiliations Images',
 };
 
@@ -148,12 +156,13 @@ export class PagesEditor implements OnInit {
   }
 
   isVideoField(key: string): boolean {
-    return key === 'heroVideoUrl' || key.toLowerCase().includes('video');
+    const k = key.toLowerCase();
+    return k.includes('video') && !k.includes('poster');
   }
 
   isImageField(key: string): boolean {
     if (this.isVideoField(key)) return false;
-    return (key.endsWith('Image') || key.endsWith('Url') || key.endsWith('Src')) && !key.endsWith('Images');
+    return (key.endsWith('Image') || key.endsWith('Url') || key.endsWith('Src') || key.endsWith('Poster')) && !key.endsWith('Images');
   }
 
   pageDisplayName(p: any): string {

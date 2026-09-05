@@ -24,8 +24,8 @@ footer {
   font-size: 1.1rem;
 }
 .footer-logo {
-  height: 56px;
-  width: auto;
+  width: 260px;
+  height: auto;
   margin-bottom: 18px;
 }
 .footer-link {
@@ -86,37 +86,8 @@ footer {
   color: var(--navy);
   transform: translateY(-5px) rotate(360deg);
 }
-.whatsapp-float {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: var(--whatsapp-green);
-  color: white;
-  width: 60px;
-  height: 60px;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  z-index: 1001;
-  text-decoration: none;
-  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.25);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.whatsapp-float:hover {
-  transform: scale(1.15) translateY(-5px);
-}
-
 @media (max-width: 968px) {
   .footer-grid {
     gap: 30px;
-  }
-  .whatsapp-float {
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    font-size: 25px;
   }
 }

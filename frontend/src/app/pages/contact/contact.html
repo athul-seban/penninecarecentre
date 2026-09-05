@@ -38,7 +38,7 @@
     <h3>{{ sections['formTitle'] || 'Send us a Message' }}</h3>
 
     @if (submitted) {
-      <div class="form-success">
+      <div class="form-success" role="status">
         <div class="success-icon">✓</div>
         <h4>{{ sections['successHeading'] || 'Message Received!' }}</h4>
         <p>{{ sections['successMessage'] || 'Thank you for getting in touch. A member of our team will respond within 24 hours.' }}</p>
@@ -47,22 +47,27 @@
     } @else {
       <form (ngSubmit)="onSubmit()" #form="ngForm">
         <div class="form-group">
-          <input type="text" name="name" [(ngModel)]="contactForm.name" placeholder="Your Name *" required [disabled]="submitting" />
+          <label class="sr-only" for="contactName">Your Name</label>
+          <input type="text" id="contactName" name="name" [(ngModel)]="contactForm.name" placeholder="Your Name *" required [disabled]="submitting" />
         </div>
         <div class="form-group">
-          <input type="email" name="email" [(ngModel)]="contactForm.email" placeholder="Your Email *" required [disabled]="submitting" />
+          <label class="sr-only" for="contactEmail">Your Email</label>
+          <input type="email" id="contactEmail" name="email" [(ngModel)]="contactForm.email" placeholder="Your Email *" required [disabled]="submitting" />
         </div>
         <div class="form-group">
-          <input type="tel" name="phone" [(ngModel)]="contactForm.phone" placeholder="Phone Number" [disabled]="submitting" />
+          <label class="sr-only" for="contactPhone">Phone Number</label>
+          <input type="tel" id="contactPhone" name="phone" [(ngModel)]="contactForm.phone" placeholder="Phone Number" [disabled]="submitting" />
         </div>
         <div class="form-group">
-          <input type="text" name="subject" [(ngModel)]="contactForm.subject" placeholder="Subject (e.g. Room Availability, Brochure)" [disabled]="submitting" />
+          <label class="sr-only" for="contactSubject">Subject</label>
+          <input type="text" id="contactSubject" name="subject" [(ngModel)]="contactForm.subject" placeholder="Subject (e.g. Room Availability, Brochure)" [disabled]="submitting" />
         </div>
         <div class="form-group">
-          <textarea name="message" [(ngModel)]="contactForm.message" rows="6" placeholder="How can we help you? *" required [disabled]="submitting"></textarea>
+          <label class="sr-only" for="contactMessage">How can we help you?</label>
+          <textarea id="contactMessage" name="message" [(ngModel)]="contactForm.message" rows="6" placeholder="How can we help you? *" required [disabled]="submitting"></textarea>
         </div>
         @if (submitError) {
-          <div class="form-error">{{ submitError }}</div>
+          <div class="form-error" role="alert">{{ submitError }}</div>
         }
         <button type="submit" class="btn-submit" [disabled]="submitting || form.invalid">
           {{ submitting ? 'Sending…' : 'Send Message' }}

@@ -14,7 +14,7 @@ export class ContentService {
   getPage(pageKey: string): Observable<Record<string, any>> {
     if (!this.cache.has(pageKey)) {
       const req = this.http.get<any>(`${this.API}/pages/${pageKey}`).pipe(
-        map(p => p.sections ?? {}),
+        map(p => ({ ...(p.sections ?? {}), metaTitle: p.metaTitle, metaDescription: p.metaDescription })),
         shareReplay(1),
       );
       this.cache.set(pageKey, req);

@@ -67,7 +67,7 @@
     <h3>Submit Application</h3>
 
     @if (submitted) {
-      <div class="form-success">
+      <div class="form-success" role="status">
         <i class="fas fa-check-circle"></i>
         <h4>Application Received!</h4>
         <p>Thank you for applying to Pennine Care Centre. We'll be in touch within 5 working days.</p>
@@ -114,7 +114,7 @@
           </div>
         </div>
         @if (submitError) {
-          <div class="form-error">{{ submitError }}</div>
+          <div class="form-error" role="alert">{{ submitError }}</div>
         }
         <button type="submit" class="btn-submit" [disabled]="submitting">
           {{ submitting ? 'Submitting…' : 'Submit My Application' }}

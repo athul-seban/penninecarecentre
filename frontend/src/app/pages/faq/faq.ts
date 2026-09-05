@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
+import { SeoService } from '../../core/seo.service';
 
 interface FaqItem {
   key: string;
@@ -39,12 +40,13 @@ export class FaqComponent implements OnInit, AfterViewInit {
   faqItems: FaqItem[] = [];
   openIndex: number | null = 0;
 
-  constructor(private content: ContentService, private router: Router) {}
+  constructor(private content: ContentService, private router: Router, private seo: SeoService) {}
 
   ngOnInit(): void {
     this.content.getPage('faq').subscribe({
       next: s => {
         this.sections = s;
+        this.seo.update({ title: s['metaTitle'], description: s['metaDescription'], path: '/faq' });
         this.faqItems = FAQ_KEYS.map(item => ({
           key: item.key,
           question: s[`${item.key}Q`] || item.question,

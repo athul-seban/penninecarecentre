@@ -66,7 +66,7 @@ export class ApiService {
 
   // Settings
   getSettings(): Observable<any> {
-    return this.http.get(`${this.BASE}/settings`, { headers: this.auth.getHeaders() });
+    return this.http.get(`${this.BASE}/settings/admin`, { headers: this.auth.getHeaders() });
   }
   updateSettings(updates: any): Observable<any> {
     return this.http.put(`${this.BASE}/settings`, updates, { headers: this.auth.getHeaders() });
