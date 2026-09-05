@@ -1,18 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as nodemailer from 'nodemailer';
 import { ContactSubmission, ContactStatus } from './contact.entity';
 import { SettingsService } from '../settings/settings.service';
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+import { MailerService } from '../mailer/mailer.service';
+import { escapeHtml } from '../common/escape-html';
 
 @Injectable()
 export class ContactService {
@@ -22,12 +14,13 @@ export class ContactService {
     @InjectRepository(ContactSubmission)
     private repo: Repository<ContactSubmission>,
     private settings: SettingsService,
+    private mailer: MailerService,
   ) {}
 
   async submit(data: Partial<ContactSubmission>): Promise<ContactSubmission> {
     const submission = this.repo.create(data);
     const saved = await this.repo.save(submission);
-    await this.sendEmail(saved).catch((e) =>
+    await this.notifyAdmin(saved).catch((e) =>
       this.logger.warn(`Email send failed: ${e.message}`),
     );
     return saved;
@@ -52,26 +45,49 @@ export class ContactService {
     await this.repo.delete(id);
   }
 
-  private async sendEmail(sub: ContactSubmission): Promise<void> {
-    const smtpHost    = await this.settings.get('email.smtp.host');
-    const smtpPort    = await this.settings.get('email.smtp.port');
-    const smtpUser    = await this.settings.get('email.smtp.user');
-    const smtpPass    = await this.settings.get('email.smtp.pass');
-    const smtpSecure  = await this.settings.get('email.smtp.secure');
-    const toEmail     = await this.settings.get('email.contact.to');
-    const fromEmail   = await this.settings.get('email.contact.from');
+  /** Sends the admin's reply to the enquirer and marks the submission as replied. */
+  async reply(id: string, subject: string, message: string): Promise<ContactSubmission> {
+    const sub = await this.repo.findOneOrFail({ where: { id } });
 
-    if (!smtpHost || !smtpUser || !smtpPass || !toEmail) {
+    if (!(await this.mailer.isConfigured())) {
+      throw new BadRequestException(
+        'Email is not configured. Set up SMTP under Settings → Email & SMTP Configuration before sending a reply.',
+      );
+    }
+
+    const fromEmail = (await this.settings.get('email.contact.from')) || (await this.settings.get('email.smtp.user'));
+
+    try {
+      await this.mailer.send({
+        to: sub.email,
+        replyTo: fromEmail ?? undefined,
+        subject: subject.replace(/[\r\n]+/g, ' '),
+        html: `
+          <div style="font-family:sans-serif;max-width:600px">
+            <div style="line-height:1.7;color:#374151">${escapeHtml(message).replace(/\n/g, '<br/>')}</div>
+            <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb" />
+            <p style="color:#888;font-size:0.8rem">Pennine Care Centre${fromEmail ? ` · ${escapeHtml(fromEmail)}` : ''}</p>
+          </div>
+        `,
+      });
+    } catch (e: any) {
+      this.logger.warn(`Reply send failed for submission ${id}: ${e.message}`);
+      throw new BadRequestException(
+        `Could not send the email — check your SMTP settings and try again. (${e.message})`,
+      );
+    }
+
+    sub.status = 'replied';
+    return this.repo.save(sub);
+  }
+
+  private async notifyAdmin(sub: ContactSubmission): Promise<void> {
+    const toEmail = await this.settings.get('email.contact.to');
+
+    if (!toEmail || !(await this.mailer.isConfigured())) {
       this.logger.warn('Email not configured — skipping notification');
       return;
     }
-
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: parseInt(smtpPort ?? '587'),
-      secure: smtpSecure === 'true',
-      auth: { user: smtpUser, pass: smtpPass },
-    });
 
     // Strip CR/LF defensively (SMTP header injection) and HTML-escape before interpolating into the email body (HTML injection).
     const safeSubject = sub.subject?.replace(/[\r\n]+/g, ' ');
@@ -79,8 +95,7 @@ export class ContactService {
       ? `New Contact: ${safeSubject}`
       : `New Contact Enquiry from ${sub.name.replace(/[\r\n]+/g, ' ')}`;
 
-    await transporter.sendMail({
-      from: fromEmail ?? smtpUser,
+    await this.mailer.send({
       to: toEmail,
       replyTo: sub.email,
       subject,

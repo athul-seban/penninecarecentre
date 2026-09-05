@@ -11,6 +11,7 @@ import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy';
 import { FaqComponent } from './pages/faq/faq';
 import { AdmissionsComponent } from './pages/admissions/admissions';
 import { FeesFundingComponent } from './pages/fees-funding/fees-funding';
+import { BlogComponent } from './pages/blog/blog';
 import { NotFoundComponent } from './pages/not-found/not-found';
 
 export const routes: Routes = [
@@ -26,6 +27,7 @@ export const routes: Routes = [
   { path: 'faq', component: FaqComponent },
   { path: 'admissions', component: AdmissionsComponent },
   { path: 'fees-funding', component: FeesFundingComponent },
+  { path: 'blog', component: BlogComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', component: NotFoundComponent }
 ];

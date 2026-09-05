@@ -283,7 +283,12 @@ nav.scrolled .logo img {
 }
 
 /* RESPONSIVE */
-@media (max-width: 1550px) {
+/* Hamburger only kicks in below this width. With 8 nav items at the current
+   font-size/gap, the full menu needs ~1150px to render without clipping
+   (verified in-browser) — that's the real floor, not a zoom-percentage math
+   target. On a 1366px-wide screen this holds the desktop menu up to ~119%
+   zoom, not the full 150% originally hoped for, without shrinking text. */
+@media (max-width: 1150px) {
   nav {
     padding: 1rem 5%;
   }

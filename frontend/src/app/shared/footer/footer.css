@@ -51,7 +51,17 @@ footer {
 }
 .footer-copy {
   font-size: 0.75rem;
+}
+.footer-copy-text {
   opacity: 0.5;
+}
+.footer-credit-link {
+  color: var(--white);
+  font-weight: 700;
+  text-decoration: none;
+}
+.footer-credit-link:hover {
+  color: var(--gold);
 }
 .back-to-top {
   color: var(--gold);

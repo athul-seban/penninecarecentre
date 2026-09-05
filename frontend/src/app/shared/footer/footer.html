@@ -2,7 +2,7 @@
   <div class="footer-grid">
     <div class="footer-col">
       <img src="/assets/images/footer-logo.png" alt="Pennine Care Centre" class="footer-logo" />
-      <p>Turnlee Road, Glossop,<br />Derbyshire, SK13 6JW</p>
+      <p>{{ address }}</p>
     </div>
     <div class="footer-col">
       <h4>Navigation</h4>
@@ -10,6 +10,7 @@
       <a routerLink="/pennine-suite" class="footer-link">Pennine Suite</a>
       <a routerLink="/moorland-suite" class="footer-link">Moorland Suite</a>
       <a routerLink="/services" class="footer-link">Care Services</a>
+      <a routerLink="/blog" class="footer-link">Blog</a>
     </div>
     <div class="footer-col">
       <h4>Information</h4>
@@ -22,22 +23,46 @@
     </div>
     <div class="footer-col">
       <h4>Get in Touch</h4>
-      <p><i class="fas fa-phone-alt" style="color: var(--gold); margin-right: 10px"></i>01457 862466</p>
-      <p><i class="fas fa-envelope" style="color: var(--gold); margin-right: 10px"></i>Admin&#64;nyms-services.com</p>
+      <p>
+        <i class="fas fa-phone-alt" style="color: var(--gold); margin-right: 10px"></i>{{ phone }}
+      </p>
+      <p>
+        <i class="fas fa-envelope" style="color: var(--gold); margin-right: 10px"></i>{{ email }}
+      </p>
       <div class="socials" style="margin-top: 25px; display: flex; gap: 15px">
-        <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="https://facebook.com" target="_blank" aria-label="Facebook"
+          ><i class="fab fa-facebook-f"></i
+        ></a>
+        <a href="https://instagram.com" target="_blank" aria-label="Instagram"
+          ><i class="fab fa-instagram"></i
+        ></a>
+        <a href="https://twitter.com" target="_blank" aria-label="Twitter"
+          ><i class="fab fa-twitter"></i
+        ></a>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© Copyright 2026 Pennine Care Centre | All Rights Reserved. | Built by <a href="https://wireframesolution.com/" target="_blank" rel="noopener">wireframesolution.com</a></div>
-    <a href="#top" class="back-to-top">Back to top <i class="fas fa-arrow-up" style="margin-left: 5px"></i></a>
+    <div class="footer-copy">
+      <span class="footer-copy-text"
+        >© Copyright 2026 Pennine Care Centre | All Rights Reserved. | Built by
+      </span>
+      <a
+        href="https://wireframesolution.com/"
+        target="_blank"
+        rel="noopener"
+        class="footer-credit-link"
+      >
+        wireframesolution.com</a
+      >
+    </div>
+    <a href="#top" class="back-to-top"
+      >Back to top <i class="fas fa-arrow-up" style="margin-left: 5px"></i
+    ></a>
   </div>
 </footer>
 
 <!-- Floating Call CTA -->
-<a href="tel:+441457862466" class="call-float" aria-label="Call us">
+<a href="tel:{{ telHref }}" class="call-float" aria-label="Call us">
   <i class="fas fa-phone-alt"></i>
 </a>

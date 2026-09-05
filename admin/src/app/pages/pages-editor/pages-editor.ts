@@ -6,6 +6,7 @@ import { ImageUpload } from '../../shared/image-upload/image-upload';
 import { ImageArrayUpload } from '../../shared/image-array-upload/image-array-upload';
 
 const LABEL_MAP: Record<string, string> = {
+  headerImage: 'Header Background Image',
   heroEyebrow: 'Hero Eyebrow Text', heroHeadline: 'Hero Headline', heroCta: 'Hero Button Text',
   heroTitle: 'Hero Title', heroSubtitle: 'Hero Subtitle', heroSubText: 'Hero Sub Text',
   heroPretext: 'Hero Pre-text',

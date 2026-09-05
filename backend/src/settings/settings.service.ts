@@ -6,7 +6,7 @@ import { Setting } from './setting.entity';
 const DEFAULT_SETTINGS = [
   { key: 'site.phone', value: '01457 862466', group: 'contact', label: 'Phone Number' },
   { key: 'site.email', value: 'Admin@nyms-services.com', group: 'contact', label: 'Email Address' },
-  { key: 'site.address', value: 'Pennine Care Centre, Glossop, Derbyshire', group: 'contact', label: 'Address' },
+  { key: 'site.address', value: 'Turnlee Road, Glossop, Derbyshire, SK13 6JW', group: 'contact', label: 'Address' },
   { key: 'site.whatsapp', value: '441457862466', group: 'contact', label: 'WhatsApp Number' },
   { key: 'hero.headline', value: 'A Place to Call Home', group: 'hero', label: 'Hero Headline' },
   { key: 'hero.subtext', value: 'Premium residential care in the heart of Glossop', group: 'hero', label: 'Hero Subtext' },
@@ -21,6 +21,7 @@ const DEFAULT_SETTINGS = [
   { key: 'email.smtp.user', value: '', group: 'email', label: 'SMTP Username / Email' },
   { key: 'email.smtp.pass', value: '', group: 'email', label: 'SMTP Password / App Password' },
   { key: 'email.contact.to', value: '', group: 'email', label: 'Forward Enquiries To (email address)' },
+  { key: 'email.careers.to', value: '', group: 'email', label: 'Forward Job Applications To (email address, defaults to Forward Enquiries To if blank)' },
   { key: 'email.contact.from', value: '', group: 'email', label: 'Send Emails From (display address)' },
 ];
 

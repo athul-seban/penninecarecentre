@@ -33,6 +33,7 @@ export class SettingsEditor implements OnInit {
     { key: 'email.smtp.user',     label: 'SMTP Username',      type: 'email',    group: 'email' },
     { key: 'email.smtp.pass',     label: 'SMTP Password',      type: 'password', group: 'email' },
     { key: 'email.contact.to',    label: 'Forward Enquiries To', type: 'email',  group: 'email' },
+    { key: 'email.careers.to',    label: 'Forward Job Applications To (defaults to Forward Enquiries To if blank)', type: 'email', group: 'email' },
     { key: 'email.contact.from',  label: 'Send From Address',  type: 'email',    group: 'email' },
   ];
 

@@ -15,6 +15,7 @@ import { ContactModule } from './contact/contact.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { ErrorLogModule } from './error-log/error-log.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -78,6 +79,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
     ApplicationsModule,
     ErrorLogModule,
     AnalyticsModule,
+    BlogModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

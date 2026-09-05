@@ -69,6 +69,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Pennine Suite | Pennine Care Centre',
     metaDescription: 'The Pennine Suite offers modern, person-centred residential care in Glossop. Private en-suite rooms, beautiful gardens, and 24-hour support.',
     sections: {
+      headerImage: '/assets/images/pennine-suite-hero.png',
       heroSubtitle: 'A Welcoming, Supportive Environment',
       heroTitle: 'Pennine Suite',
       introTitle: 'An Introduction to Tasteful Modernity',
@@ -127,6 +128,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Moorland Suite | Pennine Care Centre',
     metaDescription: 'The Moorland Suite is a dedicated male-only residential care unit in Glossop, offering specialist support in a secure, modern environment.',
     sections: {
+      headerImage: '/assets/images/moorland-suite-garden-exterior.png',
       heroSubtitle: 'An Elegant Haven for Gentlemen',
       heroTitle: 'Moorland Suite',
       havenTitle: 'An Elegant Haven for Gentlemen',
@@ -182,6 +184,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Care Services | Pennine Care Centre',
     metaDescription: 'Pennine Care Centre provides residential, dementia, male-only, rehabilitation, and end-of-life care services in Glossop, Derbyshire.',
     sections: {
+      headerImage: '/assets/images/life-at-pennine-hero.png',
       heroTitle: 'Life & Care Services',
       heroSubtitle: 'Providing dignity, exceptional support, and professional care in Glossop.',
       olderPeopleTitle: 'Older People Care',
@@ -209,6 +212,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Life at Pennine | Pennine Care Centre',
     metaDescription: 'Discover daily life at Pennine Care Centre — activities, nutrition, person-centred care, family partnerships, and innovative wellbeing.',
     sections: {
+      headerImage: '/assets/images/life-at-pennine-hero.png',
       heroTitle: 'Life at Pennine',
       heroSubtitle: 'Nourishing body, mind, and soul through dedicated care and vibrant activities.',
       activitiesTitle: 'In-House Activities',
@@ -237,6 +241,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Our Team & Values | Pennine Care Centre',
     metaDescription: 'Meet the dedicated team behind Pennine Care Centre. Our staff are our greatest asset — passionate, trained, and committed to outstanding care.',
     sections: {
+      headerImage: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=1600&q=80',
       heroTitle: 'Our Team & Values',
       introTitle: 'Who We Are',
       introText: 'At Pennine Care Centre, our staff are our greatest asset. We are dedicated to creating a rewarding workplace that translates into world-class care for our residents.',
@@ -257,6 +262,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Contact Us | Pennine Care Centre',
     metaDescription: 'Get in touch with Pennine Care Centre in Glossop. Call us, email, or complete our contact form — we respond within 24 hours.',
     sections: {
+      headerImage: '/assets/images/pennine-suite-interior.png',
       heroPretext: 'We\'d love to hear from you',
       heroTitle: 'Stay Connected',
       contactInfoTitle: 'Reach us through',
@@ -274,6 +280,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Careers | Pennine Care Centre',
     metaDescription: 'Join our team at Pennine Care Centre in Glossop. We offer career development, competitive pay, and a supportive working environment.',
     sections: {
+      headerImage: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&q=80&w=2000',
       heroSubtitle: 'Build a rewarding, purposeful career',
       heroTitle: 'Join Our Family',
       benefitTitle: 'Why Work with Pennine?',
@@ -296,6 +303,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Frequently Asked Questions | Pennine Care Centre',
     metaDescription: 'Answers to common questions about visiting, admissions, daily life, and care at Pennine Care Centre in Glossop.',
     sections: {
+      headerImage: '/assets/images/pennine-suite-interior.png',
       heroTitle: 'Frequently Asked Questions',
       heroSubtitle: 'Answers to the questions families ask us most often.',
       visitingQ: 'What are your visiting arrangements?',
@@ -336,6 +344,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Admissions & Referrals | Pennine Care Centre',
     metaDescription: 'How admissions work at Pennine Care Centre — from initial enquiry through to settling in, step by step.',
     sections: {
+      headerImage: '/assets/images/pennine-suite-interior.png',
       heroTitle: 'Admissions & Referrals',
       heroSubtitle: 'A clear, supportive path from first enquiry to moving in.',
       introText: 'Moving into residential care is a significant decision. We aim to make the process as clear and reassuring as possible, guiding every family and referring professional through each step.',
@@ -361,6 +370,7 @@ const DEFAULT_PAGES = [
     metaTitle: 'Fees & Funding | Pennine Care Centre',
     metaDescription: 'How care is funded at Pennine Care Centre, including private funding, local authority support, and NHS Continuing Healthcare.',
     sections: {
+      headerImage: '/assets/images/pennine-suite-interior.png',
       heroTitle: 'Fees & Funding',
       heroSubtitle: 'Understanding how care at Pennine Care Centre is funded.',
       introText: 'Every resident\'s care needs are different, so fees are based on an individual assessment rather than a single fixed rate. This page explains the main ways care can be funded — please contact us for a personalised quote and full breakdown of costs.',
@@ -376,6 +386,26 @@ const DEFAULT_PAGES = [
       includedText: 'Our standard fees typically include accommodation, meals, personal care, activities, and laundry. We set out exactly what is included in your personalised quote.',
       additionalTitle: 'Services That May Carry an Additional Charge',
       additionalText: 'Certain services — such as hairdressing, chiropody, or particular outings — may carry an additional charge. We\'ll always be clear about any additional costs before they\'re incurred.',
+    },
+  },
+  {
+    pageKey: 'privacy-policy',
+    title: 'Privacy Policy',
+    metaTitle: 'Privacy Policy | Pennine Care Centre',
+    metaDescription: 'How Pennine Care Centre collects, stores, and protects personal data, in line with UK GDPR and the Data Protection Act 2018.',
+    sections: {
+      headerImage: '/assets/images/pennine-suite-interior.png',
+    },
+  },
+  {
+    pageKey: 'blog',
+    title: 'Blog',
+    metaTitle: 'Blog | Pennine Care Centre',
+    metaDescription: 'News, updates, and stories from life at Pennine Care Centre in Glossop.',
+    sections: {
+      headerImage: '/assets/images/pennine-suite-interior.png',
+      heroTitle: 'Blog',
+      heroSubtitle: 'News, updates, and stories from life at Pennine Care Centre',
     },
   },
 ];

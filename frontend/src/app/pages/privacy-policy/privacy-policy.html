@@ -1,5 +1,5 @@
 <div id="top">
-<header class="hero-sub">
+<header class="hero-sub" [style.background-image]="'url(' + (sections['headerImage'] || '/assets/images/pennine-suite-interior.png') + ')'">
   <div class="hero-content">
     <p>Your Data &amp; Peace of Mind</p>
     <h1>Privacy Policy</h1>
@@ -55,8 +55,8 @@
     <p style="font-weight: 600; color: var(--navy)">
       Pennine Care Centre<br />
       Data Protection Officer<br />
-      Turnlee Road, Glossop, SK13 6JW<br />
-      Email: Admin&#64;nyms-services.com
+      {{ address }}<br />
+      Email: {{ email }}
     </p>
 
     <button (click)="printPolicy()" class="btn-gold">

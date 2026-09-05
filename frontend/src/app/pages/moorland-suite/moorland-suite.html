@@ -1,7 +1,7 @@
 <div id="top">
 
   <!-- HERO BANNER -->
-  <header class="hero-sub">
+  <header class="hero-sub" [style.background-image]="'url(' + (sections['headerImage'] || '/assets/images/moorland-suite-garden-exterior.png') + ')'">
     <div class="hero-content">
       <p>{{ sections['heroSubtitle'] || 'An Elegant Haven for Gentlemen' }}</p>
       <h1>{{ sections['heroTitle'] || 'Moorland Suite' }}</h1>

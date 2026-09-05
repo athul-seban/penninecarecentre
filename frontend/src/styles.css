@@ -251,6 +251,9 @@ h1, h2, h3, h4 {
   margin-top: 80px;
   position: relative;
   overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .hero-content {
   max-width: 800px;
@@ -272,7 +275,7 @@ h1, h2, h3, h4 {
 }
 .hero-sub p {
   font-size: 1.2rem;
-  font-weight: 300;
+  font-weight: 700;
   letter-spacing: 1px;
   opacity: 0.95;
   color: var(--gold);

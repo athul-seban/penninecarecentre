@@ -1,8 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { SettingsService } from '../../core/settings.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +11,6 @@ import { environment } from '../../../environments/environment';
   styleUrl: './navbar.css'
 })
 export class NavbarComponent implements OnInit {
-  private readonly API = environment.apiUrl;
-
   menuOpen = false;
   scrolled = false;
   scrollPct = 0;
@@ -22,16 +19,16 @@ export class NavbarComponent implements OnInit {
   bannerActive = false;
   bannerDismissed = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private settings: SettingsService) {}
 
   get bannerVisible(): boolean {
     return this.bannerActive && !!this.bannerText && !this.bannerDismissed;
   }
 
   ngOnInit(): void {
-    this.http.get<any>(`${this.API}/settings`).subscribe({
+    this.settings.getSettings().subscribe({
       next: (groups) => {
-        const announcement = groups?.announcement ?? [];
+        const announcement = groups?.['announcement'] ?? [];
         const textEntry = announcement.find((s: any) => s.key === 'announcement.text');
         const activeEntry = announcement.find((s: any) => s.key === 'announcement.active');
         this.bannerText = textEntry?.value ?? '';

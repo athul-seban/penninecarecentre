@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo.service';
+import { SettingsService, toTelHref } from '../../core/settings.service';
 
 @Component({
   selector: 'app-not-found',
@@ -10,7 +11,13 @@ import { SeoService } from '../../core/seo.service';
   styleUrl: './not-found.css'
 })
 export class NotFoundComponent implements OnInit {
-  constructor(private seo: SeoService) {}
+  phone = '01457 862466';
+
+  constructor(private seo: SeoService, private settings: SettingsService) {}
+
+  get telHref(): string {
+    return toTelHref(this.phone);
+  }
 
   ngOnInit(): void {
     this.seo.update({
@@ -18,6 +25,11 @@ export class NotFoundComponent implements OnInit {
       description: 'The page you were looking for could not be found.',
       path: '/not-found',
       noindex: true,
+    });
+
+    this.settings.getContactInfo().subscribe({
+      next: (info) => { if (info.phone) this.phone = info.phone; },
+      error: () => { /* keep default */ }
     });
   }
 }

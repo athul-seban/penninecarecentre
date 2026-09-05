@@ -14,6 +14,7 @@ export const routes: Routes = [
       { path: 'team', loadComponent: () => import('./pages/team-manager/team-manager').then(m => m.TeamManager) },
       { path: 'careers', loadComponent: () => import('./pages/careers-manager/careers-manager').then(m => m.CareersManager) },
       { path: 'reviews', loadComponent: () => import('./pages/reviews-manager/reviews-manager').then(m => m.ReviewsManager) },
+      { path: 'blog', loadComponent: () => import('./pages/blog-manager/blog-manager').then(m => m.BlogManager) },
       { path: 'settings', loadComponent: () => import('./pages/settings-editor/settings-editor').then(m => m.SettingsEditor) },
       { path: 'contact', loadComponent: () => import('./pages/contact-manager/contact-manager').then(m => m.ContactManager) },
       { path: 'applications', loadComponent: () => import('./pages/applications-manager/applications-manager').then(m => m.ApplicationsManager) },

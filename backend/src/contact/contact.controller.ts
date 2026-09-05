@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
-import { IsEmail, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Throttle } from '@nestjs/throttler';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ContactService } from './contact.service';
@@ -29,6 +29,18 @@ class SubmitContactDto {
   message: string;
 }
 
+class ReplyContactDto {
+  @IsString()
+  @IsNotEmpty({ message: 'Subject is required' })
+  @MaxLength(200)
+  subject: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'Message is required' })
+  @MaxLength(5000)
+  message: string;
+}
+
 @Controller('contact')
 export class ContactController {
   constructor(private service: ContactService) {}
@@ -49,6 +61,12 @@ export class ContactController {
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() body: { status: ContactStatus; notes?: string }) {
     return this.service.updateStatus(id, body.status, body.notes);
+  }
+
+  @Post(':id/reply')
+  @UseGuards(JwtAuthGuard)
+  reply(@Param('id') id: string, @Body() body: ReplyContactDto) {
+    return this.service.reply(id, body.subject, body.message);
   }
 
   @Delete(':id')

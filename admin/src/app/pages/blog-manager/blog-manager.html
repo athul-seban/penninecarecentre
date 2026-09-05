@@ -1,0 +1,96 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>Blog</h1>
+        <p>Manage blog posts shown on the public site</p>
+      </div>
+      <button class="btn-primary" (click)="openAdd()">+ Add Post</button>
+    </div>
+
+    @if (showForm) {
+      <div class="modal-overlay">
+        <div class="modal">
+          <h2>{{ editingId ? 'Edit Post' : 'Add Post' }}</h2>
+          <form (ngSubmit)="save()">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" [(ngModel)]="form.title" name="title" required />
+            </div>
+            <div class="form-group">
+              <label>Excerpt (short summary shown in the list)</label>
+              <textarea [(ngModel)]="form.excerpt" name="excerpt" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Content</label>
+              <textarea [(ngModel)]="form.content" name="content" rows="8" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Featured Image</label>
+              <app-image-upload [(value)]="form.featuredImage" placeholder="Paste image URL…"></app-image-upload>
+            </div>
+            <div class="form-group form-checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="form.isPublished" name="isPublished" />
+                Published (visible on the public site)
+              </label>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+              <button type="submit" class="btn-primary" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+    @if (loading) {
+      <div class="loading">Loading...</div>
+    }
+    @if (!loading) {
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of posts; track p._id || p.id) {
+              <tr>
+                <td>
+                  @if (p.featuredImage) {
+                    <img [src]="previewUrl(p.featuredImage)" class="post-thumb" alt="{{ p.title }}"
+                      (error)="$any($event.target).style.display='none'"
+                      (load)="$any($event.target).style.display='block'" />
+                  } @else {
+                    <div class="post-thumb-placeholder">?</div>
+                  }
+                </td>
+                <td>{{ p.title }}</td>
+                <td>
+                  @if (p.isPublished) {
+                    <span class="status-badge status-published">Published</span>
+                  } @else {
+                    <span class="status-badge status-draft">Draft</span>
+                  }
+                </td>
+                <td class="actions">
+                  <button class="btn-edit" (click)="openEdit(p)">Edit</button>
+                  <button class="btn-delete" (click)="delete(p._id || p.id)">Delete</button>
+                </td>
+              </tr>
+            }
+            @if (posts.length === 0) {
+              <tr><td colspan="4" class="empty">No blog posts yet</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

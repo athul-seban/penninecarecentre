@@ -64,6 +64,20 @@ export class ApiService {
     return this.http.delete(`${this.BASE}/reviews/${id}`, { headers: this.auth.getHeaders() });
   }
 
+  // Blog
+  getBlogPosts(): Observable<any> {
+    return this.http.get(`${this.BASE}/blog`, { headers: this.auth.getHeaders() });
+  }
+  createBlogPost(data: any): Observable<any> {
+    return this.http.post(`${this.BASE}/blog`, data, { headers: this.auth.getHeaders() });
+  }
+  updateBlogPost(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.BASE}/blog/${id}`, data, { headers: this.auth.getHeaders() });
+  }
+  deleteBlogPost(id: string): Observable<any> {
+    return this.http.delete(`${this.BASE}/blog/${id}`, { headers: this.auth.getHeaders() });
+  }
+
   // Settings
   getSettings(): Observable<any> {
     return this.http.get(`${this.BASE}/settings/admin`, { headers: this.auth.getHeaders() });
@@ -82,6 +96,9 @@ export class ApiService {
   deleteContactSubmission(id: string): Observable<any> {
     return this.http.delete(`${this.BASE}/contact/${id}`, { headers: this.auth.getHeaders() });
   }
+  replyToContact(id: string, data: { subject: string; message: string }): Observable<any> {
+    return this.http.post(`${this.BASE}/contact/${id}/reply`, data, { headers: this.auth.getHeaders() });
+  }
 
   // Job Applications
   getApplications(): Observable<any> {
@@ -92,6 +109,9 @@ export class ApiService {
   }
   deleteApplication(id: string): Observable<any> {
     return this.http.delete(`${this.BASE}/applications/${id}`, { headers: this.auth.getHeaders() });
+  }
+  replyToApplication(id: string, data: { subject: string; message: string }): Observable<any> {
+    return this.http.post(`${this.BASE}/applications/${id}/reply`, data, { headers: this.auth.getHeaders() });
   }
 
   // Error Logs

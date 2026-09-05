@@ -1,5 +1,5 @@
 <div id="top">
-<header class="hero-sub">
+<header class="hero-sub" [style.background-image]="'url(' + (sections['headerImage'] || '/assets/images/pennine-suite-interior.png') + ')'">
   <div class="hero-content">
     <p>{{ sections['heroPretext'] || "We'd love to hear from you" }}</p>
     <h1>{{ sections['heroTitle'] || 'Stay Connected' }}</h1>

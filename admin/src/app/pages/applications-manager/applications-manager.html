@@ -108,7 +108,7 @@
 
           <!-- Actions -->
           <div class="action-row">
-            <button class="btn-reply" (click)="mailto(selected)">✉ Email Applicant</button>
+            <button class="btn-reply" (click)="openReply(selected)">✉ Email Applicant</button>
             <button class="btn-save" (click)="save()" [disabled]="saving">{{ saving ? 'Saving…' : 'Save Notes' }}</button>
             <button class="btn-delete" (click)="delete(selected)">🗑 Delete</button>
           </div>
@@ -117,8 +117,34 @@
     </div>
   }
 
+  @if (replying && selected) {
+    <div class="modal-overlay" (click)="closeReply()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <h2>Email {{ selected.fullName }}</h2>
+        <div class="form-group">
+          <label>To</label>
+          <input type="text" [value]="selected.email" disabled />
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" [(ngModel)]="replySubject" name="replySubject" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea [(ngModel)]="replyMessage" name="replyMessage" rows="8" placeholder="Type your message…"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="closeReply()">Cancel</button>
+          <button type="button" class="btn-primary" (click)="sendReply()" [disabled]="sendingReply">
+            {{ sendingReply ? 'Sending…' : 'Send Reply' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
   @if (toast) {
-    <div class="toast">{{ toast }}</div>
+    <div class="toast" [class.toast-error]="toastType === 'error'">{{ toast }}</div>
   }
 </div>
   </div>

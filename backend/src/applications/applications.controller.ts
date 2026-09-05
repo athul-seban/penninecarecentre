@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import { IsEmail, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Throttle } from '@nestjs/throttler';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApplicationsService } from './applications.service';
@@ -35,6 +35,18 @@ class SubmitApplicationDto {
   @IsString()
   @MaxLength(5000)
   coverLetter: string;
+}
+
+class ReplyApplicationDto {
+  @IsString()
+  @IsNotEmpty({ message: 'Subject is required' })
+  @MaxLength(200)
+  subject: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'Message is required' })
+  @MaxLength(5000)
+  message: string;
 }
 
 @Controller('applications')
@@ -75,6 +87,12 @@ export class ApplicationsController {
     @Body() body: { status: ApplicationStatus; notes?: string },
   ) {
     return this.service.updateStatus(id, body.status, body.notes);
+  }
+
+  @Post(':id/reply')
+  @UseGuards(JwtAuthGuard)
+  reply(@Param('id') id: string, @Body() body: ReplyApplicationDto) {
+    return this.service.reply(id, body.subject, body.message);
   }
 
   @Delete(':id')

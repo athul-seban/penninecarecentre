@@ -1,5 +1,5 @@
 <div id="top">
-<header class="hero-sub">
+<header class="hero-sub" [style.background-image]="'url(' + (sections['headerImage'] || '/assets/images/pennine-suite-interior.png') + ')'">
   <div class="hero-content">
     <h1>{{ sections['heroTitle'] || 'Fees & Funding' }}</h1>
     <p>{{ sections['heroSubtitle'] || 'Understanding how care at Pennine Care Centre is funded.' }}</p>

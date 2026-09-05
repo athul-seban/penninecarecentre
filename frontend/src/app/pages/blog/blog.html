@@ -1,0 +1,47 @@
+<div id="top">
+<header class="hero-sub" [style.background-image]="'url(' + (sections['headerImage'] || '/assets/images/pennine-suite-interior.png') + ')'">
+  <div class="hero-content">
+    <h1>{{ sections['heroTitle'] || 'Blog' }}</h1>
+    <p>{{ sections['heroSubtitle'] || 'News, updates, and stories from life at Pennine Care Centre' }}</p>
+  </div>
+</header>
+
+<section class="section-padding reveal-element">
+  @if (loading) {
+    <div class="blog-loading">Loading…</div>
+  }
+
+  @if (!loading && posts.length === 0) {
+    <div class="blog-empty">
+      <p>No posts yet — check back soon.</p>
+    </div>
+  }
+
+  @if (!loading && posts.length > 0) {
+    <div class="blog-list">
+      @for (post of posts; track post.id) {
+        <article class="blog-card">
+          @if (post.featuredImage) {
+            <div class="blog-card-image">
+              <img [src]="post.featuredImage" [alt]="post.title" />
+            </div>
+          }
+          <div class="blog-card-body">
+            <span class="blog-card-date">{{ post.createdAt | date:'d MMMM y' }}</span>
+            <h2>{{ post.title }}</h2>
+            @if (post.excerpt) {
+              <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+            }
+            <p class="blog-card-content">{{ post.content }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  }
+
+  <div class="blog-cta">
+    <p>Have a question about life at Pennine?</p>
+    <a routerLink="/contact" class="btn-gold">Contact Us</a>
+  </div>
+</section>
+</div>

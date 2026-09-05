@@ -35,7 +35,13 @@ export class ApplicationsManager implements OnInit {
   loading = true;
   saving = false;
   toast = '';
+  toastType: 'success' | 'error' = 'success';
   notesDraft = '';
+
+  replying = false;
+  sendingReply = false;
+  replySubject = '';
+  replyMessage = '';
 
   constructor(private api: ApiService) {}
 
@@ -73,9 +79,16 @@ export class ApplicationsManager implements OnInit {
   close() { this.selected = null; }
 
   setStatus(app: CareerApplication, status: ApplicationStatus) {
+    const previous = app.status;
     app.status = status;
-    this.api.updateApplication(app.id, { status, notes: app.notes }).subscribe();
     this.applyFilter();
+    this.api.updateApplication(app.id, { status, notes: app.notes }).subscribe({
+      error: (e) => {
+        app.status = previous;
+        this.applyFilter();
+        this.showToast(this.extractError(e, 'Failed to update status'), 'error');
+      }
+    });
   }
 
   save() {
@@ -93,7 +106,10 @@ export class ApplicationsManager implements OnInit {
         this.saving = false;
         this.showToast('Notes saved');
       },
-      error: () => { this.saving = false; }
+      error: (e) => {
+        this.saving = false;
+        this.showToast(this.extractError(e, 'Failed to save notes'), 'error');
+      }
     });
   }
 
@@ -105,7 +121,8 @@ export class ApplicationsManager implements OnInit {
         this.applyFilter();
         if (this.selected?.id === app.id) this.selected = null;
         this.showToast('Application deleted');
-      }
+      },
+      error: (e) => this.showToast(this.extractError(e, 'Failed to delete application'), 'error')
     });
   }
 
@@ -119,9 +136,16 @@ export class ApplicationsManager implements OnInit {
     }[status];
   }
 
-  showToast(msg: string) {
+  showToast(msg: string, type: 'success' | 'error' = 'success') {
     this.toast = msg;
-    setTimeout(() => this.toast = '', 3000);
+    this.toastType = type;
+    setTimeout(() => this.toast = '', type === 'error' ? 5000 : 3000);
+  }
+
+  private extractError(e: any, fallback: string): string {
+    const msg = e?.error?.message;
+    if (Array.isArray(msg)) return msg.join(', ');
+    return msg || fallback;
   }
 
   countByStatus(status: string): number {
@@ -132,9 +156,40 @@ export class ApplicationsManager implements OnInit {
     return new Date(d).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
-  mailto(app: CareerApplication) {
-    const subject = encodeURIComponent(`Re: Your Application – ${app.position} – Pennine Care Centre`);
-    window.open(`mailto:${app.email}?subject=${subject}`, '_blank');
-    this.setStatus(app, 'reviewing');
+  openReply(app: CareerApplication) {
+    this.replySubject = `Re: Your Application – ${app.position} – Pennine Care Centre`;
+    this.replyMessage = '';
+    this.replying = true;
+  }
+
+  closeReply() {
+    this.replying = false;
+  }
+
+  sendReply() {
+    if (!this.selected) return;
+    if (!this.replySubject.trim()) {
+      this.showToast('Subject is required', 'error');
+      return;
+    }
+    if (!this.replyMessage.trim()) {
+      this.showToast('Message is required', 'error');
+      return;
+    }
+    this.sendingReply = true;
+    this.api.replyToApplication(this.selected.id, {
+      subject: this.replySubject,
+      message: this.replyMessage
+    }).subscribe({
+      next: () => {
+        this.sendingReply = false;
+        this.replying = false;
+        this.showToast('Reply sent to ' + this.selected!.email);
+      },
+      error: (e) => {
+        this.sendingReply = false;
+        this.showToast(this.extractError(e, 'Failed to send email. Check your SMTP settings.'), 'error');
+      }
+    });
   }
 }
