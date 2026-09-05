@@ -19,6 +19,7 @@ export const routes: Routes = [
       { path: 'contact', loadComponent: () => import('./pages/contact-manager/contact-manager').then(m => m.ContactManager) },
       { path: 'applications', loadComponent: () => import('./pages/applications-manager/applications-manager').then(m => m.ApplicationsManager) },
       { path: 'error-logs', loadComponent: () => import('./pages/error-logs/error-logs').then(m => m.ErrorLogs) },
+      { path: 'activity-log', loadComponent: () => import('./pages/activity-log/activity-log').then(m => m.ActivityLog) },
     ]
   }
 ];

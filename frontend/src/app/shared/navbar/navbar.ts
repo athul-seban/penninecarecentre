@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   bannerText = '';
   bannerActive = false;
   bannerDismissed = false;
+  logoUrl = '/assets/images/navbar-logo.png';
 
   constructor(private settings: SettingsService) {}
 
@@ -36,6 +37,13 @@ export class NavbarComponent implements OnInit {
         this.applyDismissedState();
       },
       error: () => { /* fetch failed — banner stays hidden */ }
+    });
+
+    this.settings.getBranding().subscribe({
+      next: (branding) => {
+        if (branding.logoUrl) this.logoUrl = branding.logoUrl;
+      },
+      error: () => { /* keep default logo */ }
     });
   }
 

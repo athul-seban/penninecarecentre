@@ -11,11 +11,25 @@
     @if (!loading) {
       <form (ngSubmit)="save()">
 
+        <!-- ── BRANDING ───────────────────────────────── -->
+        <div class="settings-section">
+          <h2 class="section-heading"><i class="fas fa-image"></i> Branding</h2>
+          <p class="section-desc">Logo shown in the site navigation bar and footer.</p>
+          @for (field of fields; track field.key) {
+            @if (field.group === 'branding') {
+              <div class="form-group">
+                <label>{{ field.label }}</label>
+                <app-image-upload [(value)]="values[field.key]"></app-image-upload>
+              </div>
+            }
+          }
+        </div>
+
         <!-- ── SITE SETTINGS ─────────────────────────── -->
         <div class="settings-section">
           <h2 class="section-heading"><i class="fas fa-cog"></i> Site Configuration</h2>
           @for (field of fields; track field.key) {
-            @if (field.group !== 'email') {
+            @if (field.group !== 'email' && field.group !== 'branding') {
               <div class="form-group">
                 <label>{{ field.label }}</label>
                 @if (field.type === 'toggle') {

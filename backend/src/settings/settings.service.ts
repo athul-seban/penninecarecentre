@@ -15,6 +15,8 @@ const DEFAULT_SETTINGS = [
   { key: 'site.cqcRating', value: '', group: 'seo', label: 'CQC Rating (confirm current rating before publishing)' },
   { key: 'site.googleMapsUrl', value: '', group: 'contact', label: 'Google Maps Embed URL' },
   { key: 'site.theme', value: 'classic', group: 'theme', label: 'Website Design Theme' },
+  { key: 'site.logoUrl', value: '/assets/images/navbar-logo.png', group: 'branding', label: 'Navbar Logo' },
+  { key: 'site.footerLogoUrl', value: '/assets/images/footer-logo.png', group: 'branding', label: 'Footer Logo' },
   { key: 'email.smtp.host', value: '', group: 'email', label: 'SMTP Host (e.g. smtp.gmail.com)' },
   { key: 'email.smtp.port', value: '587', group: 'email', label: 'SMTP Port' },
   { key: 'email.smtp.secure', value: 'false', group: 'email', label: 'Use SSL (true/false)' },

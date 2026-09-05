@@ -16,6 +16,7 @@ import { ApplicationsModule } from './applications/applications.module';
 import { ErrorLogModule } from './error-log/error-log.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { BlogModule } from './blog/blog.module';
+import { AuditLogModule } from './audit-log/audit-log.module';
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { BlogModule } from './blog/blog.module';
     ErrorLogModule,
     AnalyticsModule,
     BlogModule,
+    AuditLogModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

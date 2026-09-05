@@ -122,6 +122,14 @@ export class ApiService {
     return this.http.delete(`${this.BASE}/error-logs`, { headers: this.auth.getHeaders() });
   }
 
+  // Activity Log (per-user audit trail)
+  getAuditLogs(limit = 200): Observable<any> {
+    return this.http.get(`${this.BASE}/audit-logs?limit=${limit}`, { headers: this.auth.getHeaders() });
+  }
+  clearAuditLogs(): Observable<any> {
+    return this.http.delete(`${this.BASE}/audit-logs`, { headers: this.auth.getHeaders() });
+  }
+
   // Analytics
   getAnalytics(): Observable<any> {
     return this.http.get(`${this.BASE}/analytics`, { headers: this.auth.getHeaders() });

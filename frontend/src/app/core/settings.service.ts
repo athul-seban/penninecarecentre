@@ -10,6 +10,11 @@ export interface ContactInfo {
   address: string;
 }
 
+export interface BrandingInfo {
+  logoUrl: string;
+  footerLogoUrl: string;
+}
+
 /** Converts a UK local-format number (e.g. "01457 862466") to a dialable tel: href (e.g. "+441457862466"). */
 export function toTelHref(phone: string): string {
   const digits = phone.replace(/\D/g, '');
@@ -47,6 +52,20 @@ export class SettingsService {
           phone: find('site.phone') ?? '',
           email: find('site.email') ?? '',
           address: find('site.address') ?? '',
+        };
+      }),
+    );
+  }
+
+  /** Convenience accessor for the navbar/footer logo images, editable via Admin → Settings → Branding. */
+  getBranding(): Observable<BrandingInfo> {
+    return this.getSettings().pipe(
+      map((groups) => {
+        const branding = groups?.['branding'] ?? [];
+        const find = (key: string) => branding.find((s: any) => s.key === key)?.value;
+        return {
+          logoUrl: find('site.logoUrl') ?? '',
+          footerLogoUrl: find('site.footerLogoUrl') ?? '',
         };
       }),
     );

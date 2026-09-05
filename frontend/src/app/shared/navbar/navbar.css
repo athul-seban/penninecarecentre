@@ -249,6 +249,7 @@ nav.scrolled .logo img {
 .mobile-menu-overlay.open .mobile-nav-links li:nth-child(5) { opacity: 1; transform: translateX(0); transition-delay: 0.42s; }
 .mobile-menu-overlay.open .mobile-nav-links li:nth-child(6) { opacity: 1; transform: translateX(0); transition-delay: 0.50s; }
 .mobile-menu-overlay.open .mobile-nav-links li:nth-child(7) { opacity: 1; transform: translateX(0); transition-delay: 0.58s; }
+.mobile-menu-overlay.open .mobile-nav-links li:nth-child(8) { opacity: 1; transform: translateX(0); transition-delay: 0.66s; }
 
 .mobile-nav-links a {
   text-decoration: none;

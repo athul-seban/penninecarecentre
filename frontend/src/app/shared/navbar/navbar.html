@@ -10,7 +10,7 @@
 <!-- Main Navigation -->
 <nav [class.scrolled]="scrolled" [style.top]="bannerVisible ? 'var(--banner-height)' : '0'">
   <a class="logo" routerLink="/">
-    <img src="/assets/images/navbar-logo.png" alt="Pennine Care Centre" />
+    <img [src]="logoUrl" alt="Pennine Care Centre" />
   </a>
   <ul class="nav-links">
     <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">About Us</a></li>

@@ -101,6 +101,7 @@ All tables are auto-created by TypeORM `synchronize: true` (dev mode only).
 | `reviews` | Testimonials | Yes (5 real Google reviews) |
 | `media` | Cloudinary file records | No |
 | `contact_submissions` | Website contact form submissions | No |
+| `audit_logs` | Per-user admin activity trail (who changed what) | No |
 
 ---
 
@@ -108,7 +109,9 @@ All tables are auto-created by TypeORM `synchronize: true` (dev mode only).
 
 - URL: `http://localhost:4300/login`
 - **Not linked anywhere on the public website** — access by direct URL only
-- Default: `admin@pinnineCare.com` / `Admin@123`
+- 3 named admin accounts, seeded from `backend/.env` (`ADMIN1_*`/`ADMIN2_*`/`ADMIN3_*` — name/email/password each), one per admin user. Credentials live only in `.env` (gitignored), never in this repo.
+- The original single default admin (`admin@pinnineCare.com` / `Admin@123`) is actively deleted on every backend boot — see `LEGACY_DEFAULT_ADMIN_EMAIL` in `users/users.service.ts`.
+- Every authenticated create/update/delete request is recorded per-user in the `audit_logs` table (`audit-log/` module) and viewable at Admin → **Activity Log**.
 
 ---
 

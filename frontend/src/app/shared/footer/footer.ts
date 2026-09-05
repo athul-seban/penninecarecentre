@@ -13,6 +13,7 @@ export class FooterComponent implements OnInit {
   phone = '01457 862466';
   email = 'Admin@nyms-services.com';
   address = 'Turnlee Road, Glossop, Derbyshire, SK13 6JW';
+  footerLogoUrl = '/assets/images/footer-logo.png';
 
   constructor(private settings: SettingsService) {}
 
@@ -28,6 +29,13 @@ export class FooterComponent implements OnInit {
         if (info.address) this.address = info.address;
       },
       error: () => { /* keep defaults */ }
+    });
+
+    this.settings.getBranding().subscribe({
+      next: (branding) => {
+        if (branding.footerLogoUrl) this.footerLogoUrl = branding.footerLogoUrl;
+      },
+      error: () => { /* keep default logo */ }
     });
   }
 }

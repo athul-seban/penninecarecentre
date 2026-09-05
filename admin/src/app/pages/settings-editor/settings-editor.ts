@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { Sidebar } from '../../shared/sidebar/sidebar';
+import { ImageUpload } from '../../shared/image-upload/image-upload';
 
 @Component({
   selector: 'app-settings-editor',
-  imports: [FormsModule, Sidebar],
+  imports: [FormsModule, Sidebar, ImageUpload],
   templateUrl: './settings-editor.html',
   styleUrl: './settings-editor.css'
 })
@@ -17,6 +18,8 @@ export class SettingsEditor implements OnInit {
   errorMsg = '';
 
   fields = [
+    { key: 'site.logoUrl',        label: 'Navbar Logo',        type: 'image',    group: 'branding' },
+    { key: 'site.footerLogoUrl',  label: 'Footer Logo',        type: 'image',    group: 'branding' },
     { key: 'site.phone',          label: 'Phone Number',       type: 'text',     group: 'contact' },
     { key: 'site.email',          label: 'Contact Email',      type: 'email',    group: 'contact' },
     { key: 'site.address',        label: 'Address',            type: 'text',     group: 'contact' },
