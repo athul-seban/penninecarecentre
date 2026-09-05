@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
+import { SkipThrottle } from '@nestjs/throttler';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { MediaService } from './media.service';
 import * as fs from 'fs';
@@ -21,6 +22,7 @@ export class MediaController {
   // default Cross-Origin-Resource-Policy: same-origin would otherwise block
   // the frontend/admin apps (different origins) from loading it.
   @Get(':id/raw')
+  @SkipThrottle()
   @Header('Cache-Control', 'public, max-age=31536000, immutable')
   @Header('Cross-Origin-Resource-Policy', 'cross-origin')
   async serveRaw(@Param('id') id: string): Promise<StreamableFile> {
