@@ -4,39 +4,56 @@ import { Repository } from 'typeorm';
 import { Media } from './media.entity';
 import * as fs from 'fs';
 import * as path from 'path';
-import { del } from '@vercel/blob';
+import { put, del } from '@vercel/blob';
 
 const ASSETS_DIR = path.join(process.cwd(), '..', 'frontend', 'src', 'assets', 'images');
-
-// Own public origin, used to build the absolute URL for the raw-serving route
-// below — mirrors the domains hardcoded in frontend/admin environment.ts.
-function getPublicApiBase(): string {
-  if (process.env.PUBLIC_API_URL) return process.env.PUBLIC_API_URL.replace(/\/$/, '');
-  if (process.env.NODE_ENV === 'production') return 'https://pinninecare-api.vercel.app';
-  return `http://localhost:${process.env.PORT ?? 3000}`;
-}
+const useBlob = () => !!process.env.BLOB_READ_WRITE_TOKEN;
 
 @Injectable()
 export class MediaService {
   constructor(@InjectRepository(Media) private repo: Repository<Media>) {}
 
+  // Uploads go to Vercel Blob (public, persistent, CDN-served — same pattern
+  // already used for CV uploads in applications.service.ts) when a token is
+  // configured, falling back to writing into the frontend's local assets dir
+  // for local dev without one. New rows no longer store bytes in Postgres —
+  // only pre-existing folder: 'db' rows do, still served via GET :id/raw.
   async upload(file: Express.Multer.File, _folder?: string, altText?: string): Promise<{ url: string }> {
     const resourceType = file.mimetype.startsWith('video') ? 'video' : 'image';
+    const safeName = file.originalname.replace(/[^a-z0-9._-]/gi, '-').toLowerCase();
+    const filename = `${Date.now()}-${safeName}`;
+
+    let url: string;
+    let publicId: string;
+    let folder: string;
+
+    if (useBlob()) {
+      const blob = await put(`media/${filename}`, file.buffer, {
+        access: 'public',
+        contentType: file.mimetype,
+      });
+      url = blob.url;
+      publicId = blob.url;
+      folder = 'blob';
+    } else {
+      if (!fs.existsSync(ASSETS_DIR)) fs.mkdirSync(ASSETS_DIR, { recursive: true });
+      fs.writeFileSync(path.join(ASSETS_DIR, filename), file.buffer);
+      url = `/assets/images/${filename}`;
+      publicId = filename;
+      folder = 'local';
+    }
 
     const media = this.repo.create({
       originalName: file.originalname,
-      url: '',
-      publicId: '',
+      url,
+      publicId,
       resourceType,
-      folder: 'db',
+      folder,
       altText,
-      data: file.buffer,
+      data: null,
       mimeType: file.mimetype,
     });
     await this.repo.save(media);
-
-    const url = `${getPublicApiBase()}/api/media/${media.id}/raw`;
-    await this.repo.update(media.id, { url, publicId: media.id });
 
     return { url };
   }

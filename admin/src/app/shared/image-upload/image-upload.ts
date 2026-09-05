@@ -1,21 +1,20 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-image-upload',
-  imports: [FormsModule],
+  imports: [],
   templateUrl: './image-upload.html',
   styleUrl: './image-upload.css'
 })
 export class ImageUpload {
   @Input() value = '';
   @Output() valueChange = new EventEmitter<string>();
-  @Input() placeholder = 'Paste image URL…';
   @Input() accept = 'image/*';
 
   uploading = false;
+  isDragging = false;
   error = '';
   fullscreenImage = '';
 
@@ -23,25 +22,41 @@ export class ImageUpload {
 
   constructor(private api: ApiService) {}
 
-  onUrlInput(url: string) {
-    this.value = url;
-    this.valueChange.emit(url);
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) this.uploadFile(file);
+    input.value = '';
   }
 
-  onFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    if (!this.uploading) this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    if (this.uploading) return;
+    const file = event.dataTransfer?.files?.[0];
+    if (file) this.uploadFile(file);
+  }
+
+  private uploadFile(file: File) {
     this.uploading = true;
     this.error = '';
     const fd = new FormData();
     fd.append('file', file);
     this.api.uploadMedia(fd).subscribe({
       next: (res: any) => {
-        const url = res.url;
-        this.value = url;
-        this.valueChange.emit(url);
+        this.value = res.url;
+        this.valueChange.emit(res.url);
         this.uploading = false;
-        (event.target as HTMLInputElement).value = '';
       },
       error: () => {
         this.uploading = false;
@@ -53,11 +68,6 @@ export class ImageUpload {
   remove() {
     this.value = '';
     this.valueChange.emit('');
-  }
-
-  isUploadedMedia(url: string): boolean {
-    if (!url) return false;
-    return /\/media\/[0-9a-f-]{36}\/raw(\?.*)?$/i.test(url);
   }
 
   isVideo(url: string): boolean {
