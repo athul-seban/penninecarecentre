@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { timeout, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { SeoService } from '../../core/seo.service';
 import { ContentService } from '../../core/content.service';
 import { environment } from '../../../environments/environment';
@@ -15,6 +17,8 @@ interface BlogPost {
   createdAt: string;
 }
 
+const REQUEST_TIMEOUT_MS = 15000;
+
 @Component({
   selector: 'app-blog',
   standalone: true,
@@ -25,6 +29,7 @@ interface BlogPost {
 export class BlogComponent implements OnInit, AfterViewInit {
   posts: BlogPost[] = [];
   loading = true;
+  loadFailed = false;
   sections: Record<string, string> = {};
   fallbackImage = '/assets/images/pennine-suite-interior.png';
 
@@ -57,10 +62,38 @@ export class BlogComponent implements OnInit, AfterViewInit {
       error: () => { /* keep static header defaults */ }
     });
 
-    this.http.get<BlogPost[]>(`${environment.apiUrl}/blog?published=true`).subscribe({
-      next: (posts) => { this.posts = posts; this.loading = false; },
-      error: () => { this.loading = false; }
+    this.http.get<BlogPost[]>(`${environment.apiUrl}/blog?published=true`).pipe(
+      timeout(REQUEST_TIMEOUT_MS),
+      catchError(() => of(null)),
+    ).subscribe((posts) => {
+      this.loading = false;
+      if (posts === null) { this.loadFailed = true; return; }
+      this.posts = posts;
+      this.updateJsonLd(posts);
     });
+  }
+
+  private updateJsonLd(posts: BlogPost[]): void {
+    if (posts.length === 0) { this.seo.updateJsonLd(null); return; }
+    this.seo.updateJsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      name: 'Pennine Care Centre Blog',
+      url: 'https://penninecarecentre.com/blog',
+      blogPost: posts.map(p => ({
+        '@type': 'BlogPosting',
+        headline: p.title,
+        url: `https://penninecarecentre.com/blog/${p.id}`,
+        datePublished: p.createdAt,
+        image: p.featuredImage ? `https://penninecarecentre.com${p.featuredImage}` : undefined,
+      })),
+    });
+  }
+
+  retry(): void {
+    this.loading = true;
+    this.loadFailed = false;
+    this.ngOnInit();
   }
 
   excerptFor(post: BlogPost): string {

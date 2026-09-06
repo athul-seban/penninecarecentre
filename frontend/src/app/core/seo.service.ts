@@ -13,6 +13,10 @@ export interface SeoOptions {
   path: string;
   image?: string;
   noindex?: boolean;
+  /** Open Graph type — 'article' for blog posts, adds article:published_time/modified_time. */
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -26,17 +30,30 @@ export class SeoService {
     const title = options.title?.trim() || DEFAULT_TITLE;
     const description = options.description?.trim() || DEFAULT_DESCRIPTION;
     const url = `${SITE_URL}${options.path}`;
-    const image = options.image || DEFAULT_IMAGE;
+    const image = this.absoluteUrl(options.image) || DEFAULT_IMAGE;
+    const type = options.type || 'website';
 
     this.titleService.setTitle(title);
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ name: 'robots', content: options.noindex ? 'noindex, nofollow' : 'index, follow' });
 
+    this.meta.updateTag({ property: 'og:site_name', content: 'Pennine Care Centre' });
     this.meta.updateTag({ property: 'og:title', content: title });
     this.meta.updateTag({ property: 'og:description', content: description });
-    this.meta.updateTag({ property: 'og:type', content: 'website' });
+    this.meta.updateTag({ property: 'og:type', content: type });
     this.meta.updateTag({ property: 'og:url', content: url });
     this.meta.updateTag({ property: 'og:image', content: image });
+
+    if (type === 'article' && options.publishedTime) {
+      this.meta.updateTag({ property: 'article:published_time', content: options.publishedTime });
+    } else {
+      this.meta.removeTag('property="article:published_time"');
+    }
+    if (type === 'article' && options.modifiedTime) {
+      this.meta.updateTag({ property: 'article:modified_time', content: options.modifiedTime });
+    } else {
+      this.meta.removeTag('property="article:modified_time"');
+    }
 
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: title });
@@ -44,6 +61,27 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:image', content: image });
 
     this.setCanonical(url);
+  }
+
+  /** Injects/replaces a JSON-LD structured-data block. Pass null to remove it. */
+  updateJsonLd(data: object | null): void {
+    let script = this.doc.head.querySelector<HTMLScriptElement>('script[type="application/ld+json"]#seo-jsonld');
+    if (!data) {
+      script?.remove();
+      return;
+    }
+    if (!script) {
+      script = this.doc.createElement('script');
+      script.type = 'application/ld+json';
+      script.id = 'seo-jsonld';
+      this.doc.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify(data);
+  }
+
+  private absoluteUrl(path?: string): string | undefined {
+    if (!path) return undefined;
+    return path.startsWith('http') ? path : `${SITE_URL}${path}`;
   }
 
   private setCanonical(url: string): void {

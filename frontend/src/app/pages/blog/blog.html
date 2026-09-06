@@ -8,10 +8,40 @@
 
 <section class="section-padding reveal-element">
   @if (loading) {
-    <div class="blog-loading">Loading…</div>
+    <div class="blog-hero blog-skeleton">
+      <div class="skeleton-block skeleton-hero-image"></div>
+      <div class="blog-hero-body">
+        <div class="skeleton-block skeleton-line skeleton-eyebrow"></div>
+        <div class="skeleton-block skeleton-line skeleton-title"></div>
+        <div class="skeleton-block skeleton-line skeleton-date"></div>
+        <div class="skeleton-block skeleton-line"></div>
+        <div class="skeleton-block skeleton-line skeleton-short"></div>
+        <div class="skeleton-block skeleton-button"></div>
+      </div>
+    </div>
+    <div class="blog-grid blog-skeleton">
+      @for (i of [1,2,3]; track i) {
+        <div class="blog-card">
+          <div class="skeleton-block skeleton-card-image"></div>
+          <div class="blog-card-body">
+            <div class="skeleton-block skeleton-line skeleton-date"></div>
+            <div class="skeleton-block skeleton-line skeleton-title"></div>
+            <div class="skeleton-block skeleton-line"></div>
+            <div class="skeleton-block skeleton-line skeleton-short"></div>
+          </div>
+        </div>
+      }
+    </div>
   }
 
-  @if (!loading && posts.length === 0) {
+  @if (!loading && loadFailed) {
+    <div class="blog-empty">
+      <p>We couldn't load the blog right now. Please try again.</p>
+      <button class="btn-gold" (click)="retry()">Retry</button>
+    </div>
+  }
+
+  @if (!loading && !loadFailed && posts.length === 0) {
     <div class="blog-empty">
       <p>No posts yet — check back soon.</p>
     </div>

@@ -1,7 +1,42 @@
 <div id="top">
 
 @if (loading) {
-  <div class="blog-detail-loading">Loading…</div>
+  <div class="hero-sub blog-detail-hero-skeleton"></div>
+  <main class="blog-detail-container">
+    <div class="blog-detail-layout">
+      <article class="blog-detail-card">
+        <div class="skeleton-block skeleton-line skeleton-back-link"></div>
+        <div class="skeleton-block skeleton-line"></div>
+        <div class="skeleton-block skeleton-line"></div>
+        <div class="skeleton-block skeleton-line skeleton-short"></div>
+        <div class="skeleton-block skeleton-line" style="margin-top: 24px"></div>
+        <div class="skeleton-block skeleton-line"></div>
+        <div class="skeleton-block skeleton-line"></div>
+        <div class="skeleton-block skeleton-line skeleton-short"></div>
+      </article>
+      <aside class="blog-sidebar">
+        <div class="skeleton-block skeleton-line skeleton-sidebar-title"></div>
+        <div class="blog-sidebar-list">
+          @for (i of [1,2,3,4,5]; track i) {
+            <div class="blog-sidebar-item">
+              <div class="skeleton-block skeleton-sidebar-thumb"></div>
+              <div class="blog-sidebar-item-body">
+                <div class="skeleton-block skeleton-line skeleton-date"></div>
+                <div class="skeleton-block skeleton-line"></div>
+              </div>
+            </div>
+          }
+        </div>
+      </aside>
+    </div>
+  </main>
+}
+
+@if (!loading && loadFailed) {
+  <div class="blog-detail-error">
+    <p>We couldn't load this post right now. Please try again.</p>
+    <button class="btn-gold" (click)="retry()">Retry</button>
+  </div>
 }
 
 @if (!loading && post) {
