@@ -1,0 +1,473 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Packages ----------
+\usepackage[a4paper,top=2.4cm,bottom=2.6cm,left=2cm,right=2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ---------- Brand colors (Wireframe Solution / Pennine Care Centre) ----------
+\definecolor{brandTeal}{HTML}{16C2A3}
+\definecolor{brandDark}{HTML}{0E8C86}
+\definecolor{brandInk}{HTML}{0B1220}
+\definecolor{brandGray}{HTML}{5B6470}
+\definecolor{rowGray}{HTML}{F4F6F7}
+\definecolor{navy}{HTML}{002B5B}
+\definecolor{gold}{HTML}{C5A059}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=brandDark,
+  urlcolor=brandDark,
+  citecolor=brandDark,
+  bookmarksopen=true,
+  pdftitle={Pennine Care Centre --- Admin Panel User Manual},
+  pdfauthor={Wireframe Solution}
+}
+
+% ---------- Header / footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{brandGray} Pennine Care Centre --- Admin Panel User Manual}
+\fancyhead[R]{\small\color{brandGray} \thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% ---------- Helper: branded section rule under \section ----------
+\newcommand{\mysection}[1]{%
+  \section{#1}%
+  \vspace{-3mm}
+  {\color{brandTeal}\rule{\linewidth}{1.1pt}}\\[2mm]
+}
+
+% ---------- Helper: screenshot with caption, capped so it never overflows a page ----------
+\newcommand{\screenshot}[2]{%
+  \begin{center}
+  \setlength{\fboxrule}{0.6pt}\setlength{\fboxsep}{1.5pt}%
+  \fcolorbox{brandGray!50}{white}{\includegraphics[width=0.94\linewidth,height=0.5\textheight,keepaspectratio]{images/#1}}\\[1.5mm]
+  {\footnotesize\color{brandGray}\textit{#2}}
+  \end{center}
+  \vspace{2mm}
+}
+
+% ---------- Helper: coloured note / tip box ----------
+\newcommand{\note}[2]{%
+  \needspace{3\baselineskip}
+  \vspace{2mm}
+  \noindent\fcolorbox{brandTeal}{rowGray}{%
+    \begin{minipage}{\dimexpr\linewidth-6mm\relax}
+      \vspace{1mm}
+      {\small\bfseries\color{brandDark}#1}\\[0.5mm]
+      {\small\color{brandInk}#2}
+      \vspace{1mm}
+    \end{minipage}%
+  }
+  \vspace{2mm}
+}
+
+\begin{document}
+
+% ================= TITLE PAGE =================
+\thispagestyle{empty}
+\begin{center}
+  \vspace*{1.2cm}
+  \includegraphics[height=2.6cm]{images/pennine-logo.png}\\[10mm]
+  {\Huge\bfseries\color{navy} Admin Panel}\\[2mm]
+  {\LARGE\color{gold}\bfseries User Manual}\\[8mm]
+  {\large\color{brandGray} A step-by-step guide for staff managing the\\
+  Pennine Care Centre website content management system}\\[14mm]
+  \begin{tabular}{@{}rl@{}}
+    \textbf{Admin Panel:} & \url{https://admin.penninecarecentre.com} \\
+    \textbf{Version:} & 2.0 \\
+    \textbf{Date:} & 05 September 2026 \\
+  \end{tabular}
+  \vfill
+  \includegraphics[height=0.85cm]{images/wireframe-logo.png}\\[3mm]
+  {\small\color{brandGray} Prepared by Wireframe Solution --- \href{https://wireframesolution.com}{wireframesolution.com}}\\[1mm]
+  {\small\color{brandGray} contact@wireframesolution.com}
+  \vspace{1cm}
+\end{center}
+\newpage
+
+% ================= TABLE OF CONTENTS =================
+\thispagestyle{empty}
+{\color{brandInk}\tableofcontents}
+\newpage
+
+% ================= INTRODUCTION =================
+\mysection{Introduction}
+
+This manual explains how to use the Pennine Care Centre \textbf{admin panel}
+--- the private control panel where authorised staff update everything shown
+on the public website, without needing a developer.
+
+\subsection*{What you can do from the admin panel}
+\begin{itemize}[leftmargin=5mm, itemsep=1mm]
+  \item Edit the text, images, and videos on every page of the website.
+  \item Add, update, or remove team member profiles, job listings, and reviews.
+  \item Publish blog posts.
+  \item Update site-wide settings --- contact details, the announcement
+    banner, branding logos, and email configuration.
+  \item Review contact form enquiries and job applications, and track their status.
+  \item Manage staff logins and control exactly what each person can access.
+  \item See a full history of who changed what, and when.
+\end{itemize}
+
+\subsection*{Who can access it}
+The admin panel is \textbf{not linked anywhere on the public website} --- it
+is only reachable by going directly to its address. Access requires a
+personal login, and what you see once logged in depends on the
+\textbf{role} your account has been assigned (see Section
+\ref{sec:users-roles}, ``Users \& Roles'').
+
+\note{Note}{This manual shows every section of the admin panel. If your own
+account doesn't show a menu item pictured here (for example, ``Users \&
+Roles'' or ``Error Logs''), that's expected --- it simply means your role
+doesn't include that permission, not that something is broken.}
+
+\subsection*{Roles at a glance}
+Three roles are set up by default. An administrator can change what each
+role can see at any time from \textbf{Users \& Roles} --- the table below
+reflects the current setup.
+
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+  \toprule
+  \rowcolor{brandInk}
+  \textcolor{white}{\textbf{Role}} & \textcolor{white}{\textbf{Typical access}} \\
+  \midrule
+  \textbf{admin} & Everything --- Content, People, Blog, Settings, Contact
+    Enquiries, Job Applications, Error Logs, Activity Log, and Users \& Roles.
+    This role cannot be renamed or deleted. \\
+  \rowcolor{rowGray} \textbf{manager} & Content, People, Blog, Contact
+    Enquiries, and Job Applications --- not Settings, Error Logs, Activity
+    Log, or Users \& Roles. \\
+  \textbf{hr} & Team Members, Job Listings, and Job Applications only. \\
+  \bottomrule
+\end{tabularx}
+
+\newpage
+
+% ================= LOGGING IN =================
+\mysection{Logging In}
+
+\begin{enumerate}[leftmargin=6mm, itemsep=1mm]
+  \item Go to \url{https://admin.penninecarecentre.com/login} in your browser.
+  \item Enter the email address and password you were given.
+  \item Click \textbf{Sign In}.
+\end{enumerate}
+
+\screenshot{01-login.png}{The admin login screen.}
+
+\note{Forgot your password?}{There is no self-service ``forgot password''
+link. Ask a colleague whose role includes \textbf{Users \& Roles} to reset it
+for you from the \textbf{Users} tab (see Section \ref{sec:users-roles}), or
+update it yourself from \textbf{My Account} once you're logged in (Section
+\ref{sec:my-account}).}
+
+\newpage
+
+% ================= DASHBOARD =================
+\mysection{The Dashboard}
+
+The Dashboard is the first thing you see after logging in. It gives an
+at-a-glance overview of the site:
+
+\begin{itemize}[leftmargin=5mm, itemsep=1mm]
+  \item \textbf{Summary tiles} --- current counts of Team Members, Job
+    Listings, Reviews, Contact Enquiries, and Job Applications, each linking
+    straight to the relevant manager.
+  \item \textbf{Page Analytics} --- total visits, today/this week/this month,
+    the most-visited pages, a 7-day visit chart, device breakdown, and traffic
+    sources.
+  \item \textbf{Recent Activity} --- the latest contact enquiries and job
+    applications.
+  \item \textbf{Date Range Report} --- pick any two dates to see visits,
+    enquiries, applications, and reviews for that period, with a chart and an
+    \textbf{Export CSV} button for your own records.
+  \item \textbf{Quick Actions} --- shortcuts to the two most common tasks,
+    editing pages and updating site settings.
+\end{itemize}
+
+\screenshot{02-dashboard.png}{The Dashboard --- summary tiles, analytics, and quick actions.}
+
+\newpage
+
+% ================= CONTENT (PAGES) =================
+\mysection{Managing Website Content}
+
+\textbf{Content} is where you edit the actual text, images, and videos shown
+on the public website --- 13 pages in total (Home, Pennine Suite, Moorland
+Suite, Services, Life at Pennine, Team, Admissions, FAQ, Fees \& Funding,
+Contact, Careers, Blog, and Privacy Policy).
+
+\begin{enumerate}[leftmargin=6mm, itemsep=1mm]
+  \item Click \textbf{Content} in the left sidebar.
+  \item Choose a page from the \textbf{Website Pages} list on the left.
+  \item Every editable field for that page appears on the right, clearly
+    labelled --- plain text, longer text blocks, images (with an upload
+    button), and video links.
+  \item Make your changes, then click \textbf{Save}.
+\end{enumerate}
+
+\screenshot{03-pages-editor.png}{Editing the Home page --- every field is labelled, and images can be uploaded directly.}
+
+\note{Tip}{Only the fields that exist for that particular page are shown ---
+you won't see irrelevant fields cluttering the form. If you upload an image,
+it replaces the one on the live site as soon as you click Save.}
+
+\newpage
+
+% ================= PEOPLE =================
+\mysection{Managing People}
+
+\textbf{People} brings together the three things about staff and public
+feedback that change most often: \textbf{Team Members}, \textbf{Job
+Listings}, and \textbf{Reviews}. Each has its own list on the left, with a
+\textbf{+} button to add a new entry.
+
+\screenshot{04-people.png}{The People manager --- Team Members, Job Listings, and Reviews, each with their own list.}
+
+\subsection{Team Members}
+Click any name to edit their photo, name, role, and bio, reorder them, or
+mark them inactive. Click \textbf{+} next to ``Team Members'' to add someone new.
+
+\screenshot{04-people-team.png}{Editing a team member's profile.}
+
+\subsection{Job Listings}
+Click any listing to edit its title, description, and requirements, or toggle
+it between \textbf{Open} and \textbf{Closed}. Closed jobs stop accepting new
+applications but stay visible in your records.
+
+\screenshot{04-people-careers.png}{Editing a job listing.}
+
+\subsection{Reviews}
+Click any review to edit the author name, star rating, and text, or toggle
+whether it's visible on the public website. Only reviews marked visible
+appear in the homepage testimonials.
+
+\screenshot{04-people-reviews.png}{Editing a testimonial/review.}
+
+\newpage
+
+% ================= BLOG =================
+\mysection{Managing the Blog}
+
+The \textbf{Blog} section publishes news and updates to the public
+\href{https://penninecarecentre.com/blog}{Blog page}.
+
+\begin{enumerate}[leftmargin=6mm, itemsep=1mm]
+  \item Click \textbf{Blog} in the sidebar.
+  \item Click \textbf{+} to write a new post, or select an existing one to edit it.
+  \item Fill in the title and content, then \textbf{Save} to publish (or save as a draft, if that option is shown).
+  \item To remove a post from the site, delete it from the list.
+\end{enumerate}
+
+\screenshot{05-blog.png}{The Blog manager.}
+
+\newpage
+
+% ================= SETTINGS =================
+\mysection{Site Settings}
+
+\textbf{Settings} controls site-wide options that aren't tied to a single
+page:
+
+\begin{itemize}[leftmargin=5mm, itemsep=1mm]
+  \item \textbf{Contact details} --- the address, phone number, and email
+    shown in the footer, the Privacy Policy, and the 404 page. Update it once
+    here and it updates everywhere automatically.
+  \item \textbf{Branding} --- upload a new navbar/footer logo without any
+    code changes.
+  \item \textbf{Announcement banner} --- the text shown in the bar at the top
+    of the website, and a toggle to show or hide it entirely.
+  \item \textbf{Email \& SMTP configuration} --- the mail server settings
+    used to send notification emails for new contact enquiries and job
+    applications.
+\end{itemize}
+
+\screenshot{06-settings.png}{Site Settings.}
+
+\note{Note}{Only accounts with the \textbf{Settings} permission can see or
+change this page --- by default, that's the \textbf{admin} role only.}
+
+\newpage
+
+% ================= CONTACT ENQUIRIES =================
+\mysection{Contact Enquiries}
+
+Every submission from the website's Contact Us form lands here.
+
+\begin{enumerate}[leftmargin=6mm, itemsep=1mm]
+  \item Click \textbf{Contact Enquiries} in the sidebar.
+  \item Click an enquiry to read the full message.
+  \item Update its status --- \textbf{read}, \textbf{replied}, or
+    \textbf{archived} --- and add an internal note if useful (e.g.\ who
+    followed up and how).
+  \item Use the page controls at the bottom of the list to move through older
+    enquiries as the list grows.
+\end{enumerate}
+
+\screenshot{07-contact.png}{Contact Enquiries --- status and notes workflow.}
+
+\newpage
+
+% ================= APPLICATIONS =================
+\mysection{Job Applications}
+
+Applications submitted against a job listing (including any CV/document the
+applicant uploaded) appear here.
+
+\begin{enumerate}[leftmargin=6mm, itemsep=1mm]
+  \item Click \textbf{Job Applications} in the sidebar.
+  \item Click an application to view the applicant's details and download
+    their CV.
+  \item Update its status as it moves through your recruitment process, and
+    add notes.
+\end{enumerate}
+
+\screenshot{08-applications.png}{Job Applications.}
+
+\newpage
+
+% ================= USERS & ROLES =================
+\mysection{Users \& Roles}
+\label{sec:users-roles}
+
+This is where staff logins and permissions are managed. It has two tabs:
+\textbf{Users} and \textbf{Roles}.
+
+\subsection{Users}
+Lists every admin account, the role it's assigned, and when it was added.
+
+\begin{itemize}[leftmargin=5mm, itemsep=1mm]
+  \item Click \textbf{+ Add User} to create a new login --- set their name,
+    email, password, and role.
+  \item Click \textbf{Edit} on any user to change their name, email, or role,
+    or to reset their password.
+  \item Click \textbf{Delete} to remove a login that's no longer needed.
+\end{itemize}
+
+\screenshot{09-users-roles.png}{The Users tab --- every admin login and its assigned role.}
+
+\note{Built-in safeguard}{You can never delete your own account while logged
+in as it --- notice the \textbf{Delete} button is disabled on your own row.
+This exists purely to stop anyone accidentally locking themselves out.}
+
+\subsection{Roles}
+Lists every role, how many users and permissions it has, and lets you create
+new roles for job functions not covered by the three defaults.
+
+\begin{itemize}[leftmargin=5mm, itemsep=1mm]
+  \item Click \textbf{+ Add Role} to create a new role from scratch.
+  \item Click \textbf{Edit} on any role to rename it and tick or untick which
+    of the 11 sections of the admin panel it can access: Content, Team,
+    Careers, Reviews, Blog, Settings, Contact Enquiries, Job Applications,
+    Error Logs, Activity Log, and Users \& Roles.
+\end{itemize}
+
+\screenshot{09-roles-permissions.png}{Editing a role's permissions --- one checkbox per admin section.}
+
+\note{Built-in safeguards}{Two rules protect the system from being
+accidentally locked down: the \textbf{admin} role can never be renamed or
+deleted, and a role can't be deleted while any user is still assigned to
+it --- reassign or remove those users first and the \textbf{Delete} button
+will become available.}
+
+\newpage
+
+% ================= ACTIVITY LOG =================
+\mysection{Activity Log}
+
+Every time someone creates, edits, or deletes something through the admin
+panel, it's recorded here --- \textbf{who} did it, \textbf{what} they
+changed, and \textbf{when}. Password fields are automatically hidden from the
+record for security.
+
+Use this to answer questions like ``who published that blog post'' or ``when
+was this job listing closed'', and as a record of accountability across your
+team.
+
+\screenshot{11-activity-log.png}{The Activity Log --- a full history of admin actions.}
+
+\newpage
+
+% ================= ERROR LOGS =================
+\mysection{Error Logs}
+
+This section records unexpected technical errors from the website's server,
+for troubleshooting purposes. It's intended for developer use --- day-to-day
+content editing never requires looking here, but it's useful to have on hand
+if you ever need to report a problem to Wireframe Solution.
+
+\screenshot{10-error-logs.png}{Error Logs --- for technical troubleshooting.}
+
+\newpage
+
+% ================= MY ACCOUNT =================
+\mysection{My Account}
+\label{sec:my-account}
+
+Every admin user --- regardless of role --- can update their own name,
+email, or password from here. Changes take effect immediately; there's no
+need to log out and back in.
+
+\screenshot{12-my-account.png}{My Account --- update your own login details.}
+
+\newpage
+
+% ================= TROUBLESHOOTING =================
+\mysection{Troubleshooting \& FAQ}
+
+\begin{description}[leftmargin=0mm, style=nextline, itemsep=3mm]
+  \item[``I can't see a menu item I expect.''] Your role doesn't include
+    that permission. Ask an admin-role colleague to check your access under
+    \textbf{Users \& Roles} (Section \ref{sec:users-roles}).
+  \item[``I forgot my password.''] There's no self-service reset link. Ask a
+    colleague with \textbf{Users \& Roles} access to reset it for you, or
+    change it yourself from \textbf{My Account} once logged in.
+  \item[``I made a change but it's not showing on the website.''] Double
+    check you clicked \textbf{Save} --- an unsaved edit never reaches the
+    live site. If you did save, try a hard refresh of the public page
+    (Ctrl+F5 / Cmd+Shift+R) in case your browser is showing a cached version.
+  \item[``I can't delete a role or a user.''] This is a deliberate safeguard,
+    not a bug --- see the notes in Section \ref{sec:users-roles}.
+  \item[``Where do I change the phone number/address shown on the
+    website?''] \textbf{Settings} --- it updates the footer, Privacy Policy,
+    and 404 page everywhere at once (Section 7).
+\end{description}
+
+\newpage
+
+% ================= SUPPORT =================
+\mysection{Getting Help}
+
+If you run into anything this manual doesn't cover, or something looks
+broken, get in touch:
+
+\begin{center}
+\begin{tabular}{@{}rl@{}}
+  \textbf{Wireframe Solution} & Web \& Cloud Infrastructure Team \\
+  \textbf{Email} & contact@wireframesolution.com \\
+  \textbf{Website} & \url{https://wireframesolution.com} \\
+\end{tabular}
+\end{center}
+
+\vspace{6mm}
+{\color{brandTeal}\rule{\linewidth}{1.1pt}}
+\vspace{2mm}
+\begin{center}
+  {\footnotesize\color{brandGray} Wireframe Solution \textbullet{} wireframesolution.com \textbullet{} contact@wireframesolution.com}
+\end{center}
+
+\end{document}
