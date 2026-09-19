@@ -3,10 +3,15 @@
     <div class="footer-col">
       <img [src]="footerLogoUrl" alt="Pennine Care Centre" class="footer-logo" />
       <p>{{ address }}</p>
-      <p class="footer-cqc">
+      <a
+        href="https://www.cqc.org.uk/location/1-8495787563"
+        target="_blank"
+        rel="noopener"
+        class="footer-cqc"
+      >
         <i class="fas fa-shield-alt" style="color: var(--gold); margin-right: 10px"></i
         >{{ cqcRating ? 'Rated ' + cqcRating + ' by the CQC' : 'Regulated by the Care Quality Commission (CQC)' }}
-      </p>
+      </a>
     </div>
     <div class="footer-col">
       <h4>Navigation</h4>
