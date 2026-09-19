@@ -825,6 +825,45 @@
 }
 
 /* ============================================================
+   FLIP CARDS — TOUCH DEVICES
+   No hover means no flip trigger, and iOS Safari has known
+   backface-visibility rendering glitches with nested 3D transforms
+   (the front/back faces can bleed into each other). Touch devices
+   get a tap-toggled opacity crossfade instead of a 3D rotate —
+   triggered by home.ts's toggleFlip()/isFlipped(), which adds the
+   .flipped class — so there is no rotation to go wrong.
+   ============================================================ */
+@media (hover: none), (pointer: coarse) {
+  .flip-card {
+    cursor: pointer;
+  }
+  .flip-card-inner {
+    transform: none !important;
+    transition: none;
+  }
+  .flip-card-front,
+  .flip-card-back {
+    transform: none !important;
+    transition: opacity 0.4s ease;
+  }
+  .flip-card-back {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .flip-card-front {
+    opacity: 1;
+  }
+  .flip-card.flipped .flip-card-front {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .flip-card.flipped .flip-card-back {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ============================================================
    TESTIMONIAL DOT → PILL MORPH
    ============================================================ */
 .testimonial-dots .dot {
@@ -949,6 +988,12 @@
   .feature-card { height: 180px !important; }
   .feature-card h4 { font-size: 0.82rem; padding: 0 8px; }
   .grid-section { padding: 60px 4%; }
+
+  /* Flip-card back face gets more room so tapped-open descriptions aren't clipped */
+  .flip-card { height: 230px !important; }
+  .flip-card-back { padding: 16px; }
+  .flip-card-back h4 { font-size: 0.95rem; margin-bottom: 8px; }
+  .flip-card-back p { font-size: 0.72rem; line-height: 1.45; }
 
   /* Peace */
   .peace-section { padding: 60px 5%; }

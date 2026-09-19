@@ -99,7 +99,14 @@
   <section id="care" class="grid-section reveal-fade-up">
     <h2 class="section-title-line">Our Care</h2>
     <div class="custom-grid stagger-container">
-      <div class="feature-card flip-card reveal-child">
+      <div
+        class="feature-card flip-card reveal-child"
+        [class.flipped]="isFlipped('care-dementia')"
+        (click)="toggleFlip('care-dementia')"
+        role="button"
+        tabindex="0"
+        (keyup.enter)="toggleFlip('care-dementia')"
+      >
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img
@@ -115,7 +122,14 @@
           </div>
         </div>
       </div>
-      <div class="feature-card flip-card reveal-child">
+      <div
+        class="feature-card flip-card reveal-child"
+        [class.flipped]="isFlipped('care-male-only')"
+        (click)="toggleFlip('care-male-only')"
+        role="button"
+        tabindex="0"
+        (keyup.enter)="toggleFlip('care-male-only')"
+      >
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img
@@ -131,7 +145,14 @@
           </div>
         </div>
       </div>
-      <div class="feature-card flip-card reveal-child">
+      <div
+        class="feature-card flip-card reveal-child"
+        [class.flipped]="isFlipped('care-younger-people')"
+        (click)="toggleFlip('care-younger-people')"
+        role="button"
+        tabindex="0"
+        (keyup.enter)="toggleFlip('care-younger-people')"
+      >
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img
@@ -147,7 +168,14 @@
           </div>
         </div>
       </div>
-      <div class="feature-card flip-card reveal-child">
+      <div
+        class="feature-card flip-card reveal-child"
+        [class.flipped]="isFlipped('care-emotional-physical')"
+        (click)="toggleFlip('care-emotional-physical')"
+        role="button"
+        tabindex="0"
+        (keyup.enter)="toggleFlip('care-emotional-physical')"
+      >
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img
@@ -170,7 +198,14 @@
   <section id="life" class="grid-section reveal-fade-up" style="background: var(--navy)">
     <h2 style="color: var(--gold)" class="section-title-line">Life at Pennine Care Centre</h2>
     <div class="custom-grid stagger-container">
-      <div class="feature-card life-card flip-card reveal-child">
+      <div
+        class="feature-card life-card flip-card reveal-child"
+        [class.flipped]="isFlipped('life-gallery')"
+        (click)="toggleFlip('life-gallery')"
+        role="button"
+        tabindex="0"
+        (keyup.enter)="toggleFlip('life-gallery')"
+      >
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img
@@ -186,7 +221,14 @@
           </div>
         </div>
       </div>
-      <div class="feature-card life-card flip-card reveal-child">
+      <div
+        class="feature-card life-card flip-card reveal-child"
+        [class.flipped]="isFlipped('life-person-centered')"
+        (click)="toggleFlip('life-person-centered')"
+        role="button"
+        tabindex="0"
+        (keyup.enter)="toggleFlip('life-person-centered')"
+      >
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img
@@ -202,7 +244,14 @@
           </div>
         </div>
       </div>
-      <div class="feature-card life-card flip-card reveal-child">
+      <div
+        class="feature-card life-card flip-card reveal-child"
+        [class.flipped]="isFlipped('life-activities')"
+        (click)="toggleFlip('life-activities')"
+        role="button"
+        tabindex="0"
+        (keyup.enter)="toggleFlip('life-activities')"
+      >
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img
@@ -218,7 +267,14 @@
           </div>
         </div>
       </div>
-      <div class="feature-card life-card flip-card reveal-child">
+      <div
+        class="feature-card life-card flip-card reveal-child"
+        [class.flipped]="isFlipped('life-nutrition')"
+        (click)="toggleFlip('life-nutrition')"
+        role="button"
+        tabindex="0"
+        (keyup.enter)="toggleFlip('life-nutrition')"
+      >
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img

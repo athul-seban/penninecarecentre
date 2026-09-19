@@ -82,6 +82,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   testimonials: { initial: string; color: string; name: string; subtitle: string; date: string; text: string }[] = [];
 
+  // Touch devices can't hover, so flip-cards are tapped open/closed instead (see home.css touch media query).
+  private flippedCards = new Set<string>();
+  toggleFlip(id: string): void {
+    if (this.flippedCards.has(id)) this.flippedCards.delete(id);
+    else this.flippedCards.add(id);
+  }
+  isFlipped(id: string): boolean {
+    return this.flippedCards.has(id);
+  }
+
   ngOnInit(): void {
     this.content.getPage('home').subscribe({
       next: (s: any) => {
