@@ -70,4 +70,14 @@ export class SettingsService {
       }),
     );
   }
+
+  /** Convenience accessor for the CQC rating shown in the footer, editable via Admin → Settings → SEO. */
+  getCqcRating(): Observable<string> {
+    return this.getSettings().pipe(
+      map((groups) => {
+        const seo = groups?.['seo'] ?? [];
+        return seo.find((s: any) => s.key === 'site.cqcRating')?.value ?? '';
+      }),
+    );
+  }
 }
